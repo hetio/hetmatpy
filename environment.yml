@@ -1,0 +1,4 @@
+name: hetmech
+dependencies:
+- anaconda=4.1.1
+- python=3.5.2
