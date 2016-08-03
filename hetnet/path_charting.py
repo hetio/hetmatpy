@@ -93,6 +93,7 @@ print("Done computing P2, P3.")
 # In[ ]:
 
 # Extract just the gene-compound pairs that have the smallest number of 2- and 3-paths connecting them.
+# FOR NOW, these are the parameters to modify to change range of path counts:
 path_LB = [10, 20]
 path_UB = [100, 100]
 POI = count_paths( P2, P3, path_LB, path_UB )
@@ -105,9 +106,9 @@ for i,j in POI:
     
 # To output list of paths
 # and write list of node-pairs to file
-def chart_paths(pairs_of_interest):
-    path2_lb, path3_lb = path_LB
-    path2_ub, path3_ub = path_UB
+def chart_paths(pairs_of_interest, path_lb, path_ub):
+    path2_lb, path3_lb = path_lb
+    path2_ub, path3_ub = path_ub
     fname = str(path2_lb) + '-' + str(path2_ub) + '-' + str(path3_lb) + '-' + str(path3_ub)
     with open('./path-lists/list-small-paths' + fname + '.txt','w') as outputf:
         for snode,tnode in pairs_of_interest:
@@ -132,5 +133,5 @@ def chart_paths(pairs_of_interest):
 
 # In[7]:
 
-chart_paths(pairs_of_interest)
+chart_paths(pairs_of_interest, path_LB, path_UB)
 
