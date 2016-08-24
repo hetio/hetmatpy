@@ -10,6 +10,7 @@
 from time import perf_counter
 
 import pandas
+from sklearn.metrics import roc_auc_score
 from neo4j.v1 import GraphDatabase
 
 
@@ -71,6 +72,12 @@ treatment_df.tail(3)
 # + `TP` (true positives): the set of GWAS-associated genes that interact with the target 
 # + `FP` (false positives): the set of GWAS-unassociated genes that interact with the target
 # + `precision`: the percent of genes interacting with the target that are disease-associated
+# 
+# The output table contains the following columns for whether the potential mechanistic target has a relationship with the disease:
+# 
+# + associated_target: the target gene is associated with the disease
+# + upregulated_target: the target gene is upregulated by the disease
+# + downregulated_target: the target gene is downregulated by the disease
 
 # In[5]:
 
@@ -98,7 +105,10 @@ RETURN
   associated_interactors,
   interactors,
   TP, `TP + FP`,
-  toFloat(TP) / `TP + FP` AS precision
+  toFloat(TP) / `TP + FP` AS precision,
+  exists((gene_1)-[:ASSOCIATES_DaG]-(:Disease {name: { disease }})) AS associated_target,
+  exists((gene_1)-[:UPREGULATES_DuG]-(:Disease {name: { disease }})) AS upregulated_target,
+  exists((gene_1)-[:DOWNREGULATES_DdG]-(:Disease {name: { disease }})) AS downregulated_target
 ORDER BY precision DESC, `TP + FP`, target
 """
 
@@ -116,6 +126,10 @@ mechanism_df = pandas.concat(dfs)
 for column in 'interactors', 'associated_interactors':
     mechanism_df[column] = mechanism_df[column].str.join(', ')
 
+outcomes = 'associated_target', 'downregulated_target', 'upregulated_target'
+for outcome in outcomes:
+    mechanism_df[outcome] = mechanism_df[outcome].astype(int)
+
 
 # In[6]:
 
@@ -125,10 +139,34 @@ len(mechanism_df)
 
 # In[7]:
 
-mechanism_df.head()
+mechanism_df.iloc[: , :8].head()
 
 
 # In[8]:
 
 mechanism_df.to_csv('CbGiG-candidates.tsv', index=False, sep='\t', float_format='%.3g')
+
+
+# ## Do mechanisms correspond to known disease-genes?
+# 
+# This section computes an average AUROC across all compound-disease pairs. The AUROC measures the ability of the `precision` score to identify disease-related targets.
+
+# In[9]:
+
+def get_auroc(df):
+    series = pandas.Series()
+    for outcome in outcomes:
+        y_true = df[outcome]
+        if y_true.nunique() != 2:
+            series[outcome] = 0.5
+        else:
+            series[outcome] = roc_auc_score(y_true, df.precision)
+    return series
+    
+auroc_df = mechanism_df.groupby(['compound', 'disease']).apply(get_auroc).reset_index()
+
+
+# In[10]:
+
+auroc_df.mean()
 
