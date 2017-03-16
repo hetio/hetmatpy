@@ -1,7 +1,6 @@
 # BSD 3-Clause License
 
-_Copyright © 2016, The Greene Lab at the University of Pennsylvania and Project developers_
-<br>
+_Copyright © 2016, Contributors, the Greene Lab at the University of Pennsylvania, and the Sullivan Lab at North Carolina State University_<br>
 _All rights reserved._
 
 Redistribution and use in source and binary forms, with or without
@@ -14,7 +13,7 @@ modification, are permitted provided that the following conditions are met:
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
 
-* Neither the name of Cognoma nor the names of its
+* Neither the name of the copyright holder nor the names of its
   contributors may be used to endorse or promote products derived from
   this software without specific prior written permission.
 
