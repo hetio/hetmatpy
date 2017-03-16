@@ -1,5 +1,8 @@
 /hetnet/adjacency/data-big
 
+### Python ###
+__pycache__/
+.cache
 
 ### Jupyter Notebook ###
 # Temporary data
