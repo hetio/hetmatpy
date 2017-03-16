@@ -7,7 +7,6 @@ This repository uses [conda](http://conda.pydata.org/docs/ "Conda package manage
 With conda, you can create the `hetmech` environment using:
 
 ```sh
-# Create or overwrite the cognoma-machine-learning conda environment
 conda env create --file environment.yml
 ```
 
