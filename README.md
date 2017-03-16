@@ -1,5 +1,7 @@
 # hetmech: extracting mechanisms from hetnets
 
+[![Build Status](https://travis-ci.org/greenelab/hetmech.svg?branch=master)](https://travis-ci.org/greenelab/hetmech)
+
 Hetmech aims to identify the relevant network connections between a set of query nodes.
 The method is designed to operate on hetnets (networks with multiple node or relationship types). 
 
