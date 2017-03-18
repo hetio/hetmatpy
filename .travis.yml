@@ -15,4 +15,6 @@ install:
   - source activate hetmech
 script:
   - pytest hetmech
+  - jupyter nbconvert --to=script --stdout *.ipynb |
+    flake8 --exit-zero --show-source --ignore=E402,W291,E501,W391 -
   - flake8 hetmech
