@@ -95,8 +95,7 @@ def diffuse_along_metapath(
         adjacency_matrix = dual_normalize(
             adjacency_matrix, row_damping, column_damping)
 
-        # Can use @ in Python 3.5+ https://www.python.org/dev/peps/pep-0465/
-        node_scores = adjacency_matrix.dot(node_scores)
+        node_scores = adjacency_matrix @ node_scores
 
     target_metanode = metapath.target()
     target_node_to_position = get_node_to_position(graph, target_metanode)
