@@ -4,12 +4,29 @@ import numpy
 import hetio.hetnet
 
 
-def dual_normalize(matrix, row_damping=0, column_damping=0):
+def dual_normalize(matrix, row_damping=0, column_damping=0, copy=True):
     """
     Row and column normalize a 2d numpy array
+
+    Parameters
+    ==========
+    matrix : numpy.array
+    column_damping : int or float
+    column_damping : int or float
+    copy : bool
+        `True` gaurantees matrix will not be modified in place. `False`
+        modifies in-place if and only if matrix.dtype == numpy.float64.
+        Users are recommended not to rely on in-place conversion, but instead
+        use `False` when in-place modification is acceptable and efficiency
+        is desired.
+
+    Returns
+    =======
+    numpy.array
+        Normalized matrix with dtype.float64.
     """
     # returns a newly allocated array
-    matrix = matrix.astype(numpy.float64)
+    matrix = matrix.astype(numpy.float64, copy=copy)
 
     # Normalize rows, unless row_damping is 0
     if row_damping != 0:
