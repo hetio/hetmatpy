@@ -1,45 +1,47 @@
 import numpy
+import pytest
 
 from .diffusion import dual_normalize
 
 
-def test_dual_normalize():
+class TestDualNormalize:
     """
-    First attempt at a pytest test.
-    The test itself runs properly, and checks
-    that dual_normalize is doing what it is supposed to.
+    Test hetmech.diffusion.dual_normalize()
     """
-    toy_matrix = numpy.array([
-        [1, 1, 1],
-        [1, 1, 0],
-        [1, 0, 0]
-    ])
-    toy_matrix = toy_matrix.astype('float64')
-    toy_copy = toy_matrix.copy()
-    test1 = dual_normalize(toy_copy, 0.0, 0.0)
-    test1 = test1.astype('float64')
-    assert numpy.sum(numpy.absolute(toy_matrix-test1)) == 0
 
-    test_exponent = 0.5
-    toy_copy = toy_matrix.copy()
-    test2 = dual_normalize(toy_copy, test_exponent, 0.0)
-    test2.astype('float64')
-    true_matrix2 = numpy.array([
-        [1/3**test_exponent, 1/3**test_exponent, 1/3**test_exponent],
-        [1/2**test_exponent, 1/2**test_exponent, 0],
-        [1, 0, 0]
-        ])
-    assert (numpy.sum(numpy.absolute(true_matrix2-test2)) <
-            10*numpy.finfo(float).eps)
+    def get_clean_matrix(self, dtype='float64'):
+        """Return a newly allocated matrix."""
+        matrix = [
+            [1, 1, 1],
+            [1, 1, 0],
+            [1, 0, 0],
+        ]
+        matrix = numpy.array(matrix, dtype=dtype)
+        return matrix
 
-    test_exponent = 0.3
-    toy_copy = toy_matrix.copy()
-    test3 = dual_normalize(toy_copy, 0, test_exponent)
-    true_matrix3 = numpy.array([
-        [1/3**test_exponent, 1/3**test_exponent, 1/3**test_exponent],
-        [1/2**test_exponent, 1/2**test_exponent, 0],
-        [1, 0, 0]
-        ])
-    true_matrix3 = numpy.transpose(true_matrix3)
-    assert (numpy.sum(numpy.absolute(true_matrix3-test3)) <
-            10*numpy.finfo(float).eps)
+    @pytest.mark.parametrize('dtype', ['bool_', 'int8', 'float64'])
+    def test_dual_normalize_passthrough(self, dtype):
+        """Should not change matrix"""
+        matrix = self.get_clean_matrix(dtype)
+        output = dual_normalize(matrix, 0.0, 0.0)
+        assert numpy.array_equal(output, matrix)
+
+    @pytest.mark.parametrize('exponent', [0, 0.3, 0.5, 1, 2, 20])
+    @pytest.mark.parametrize('dtype', ['bool_', 'int8', 'float64'])
+    def test_dual_normalize_column_damping(self, exponent, dtype):
+        """Test column_damping"""
+        original = self.get_clean_matrix(dtype)
+        input_matrix = original.copy()
+        matrix = dual_normalize(input_matrix, exponent, 0.0)
+
+        # Test that the original matrix is unmodified
+        assert numpy.array_equal(original, input_matrix)
+
+        # Test the normalized matrix is as expected
+        expect = [
+            [1/3**exponent, 1/3**exponent, 1/3**exponent],
+            [1/2**exponent, 1/2**exponent, 0],
+            [1, 0, 0],
+        ]
+        expect = numpy.array(expect, dtype='float64')
+        assert numpy.allclose(expect, matrix)
