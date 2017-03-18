@@ -8,16 +8,17 @@ def dual_normalize(matrix, row_damping=0, column_damping=0):
     """
     Row and column normalize a 2d numpy array
     """
-    row_sums = matrix.sum(axis=1)
-    column_sums = matrix.sum(axis=0)
     # Normalize rows, unless row_damping is 0
     if row_damping != 0:
+        row_sums = matrix.sum(axis=1)
         for j, row_sum in enumerate(row_sums):
             if row_sum == 0:
                 continue
             matrix[j, :] *= row_sum ** -row_damping
+
     # Normalize columns, unless column_damping is 0
     if column_damping != 0:
+        column_sums = matrix.sum(axis=0)
         for i, column_sum in enumerate(column_sums):
             if column_sum == 0:
                 continue
