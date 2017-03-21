@@ -4,10 +4,30 @@ import numpy
 import hetio.hetnet
 
 
-def dual_normalize(matrix, row_damping=0, column_damping=0):
+def dual_normalize(matrix, row_damping=0, column_damping=0, copy=True):
     """
     Row and column normalize a 2d numpy array
+
+    Parameters
+    ==========
+    matrix : numpy.array
+    column_damping : int or float
+    column_damping : int or float
+    copy : bool
+        `True` gaurantees matrix will not be modified in place. `False`
+        modifies in-place if and only if matrix.dtype == numpy.float64.
+        Users are recommended not to rely on in-place conversion, but instead
+        use `False` when in-place modification is acceptable and efficiency
+        is desired.
+
+    Returns
+    =======
+    numpy.array
+        Normalized matrix with dtype.float64.
     """
+    # returns a newly allocated array
+    matrix = matrix.astype(numpy.float64, copy=copy)
+
     # Normalize rows, unless row_damping is 0
     if row_damping != 0:
         row_sums = matrix.sum(axis=1)
@@ -40,7 +60,7 @@ def get_node_to_position(graph, metanode):
     return node_to_position
 
 
-def metaedge_to_adjacency_matrix(graph, metaedge):
+def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
     """
     Returns an adjacency matrix where source nodes are columns and target
     nodes are rows.
@@ -51,7 +71,7 @@ def metaedge_to_adjacency_matrix(graph, metaedge):
     source_nodes = list(get_node_to_position(graph, metaedge.source))
     target_node_to_position = get_node_to_position(graph, metaedge.target)
     shape = len(target_node_to_position), len(source_nodes)
-    adjacency_matrix = numpy.zeros(shape)
+    adjacency_matrix = numpy.zeros(shape, dtype=dtype)
     for j, source_node in enumerate(source_nodes):
         for edge in source_node.edges[metaedge]:
             i = target_node_to_position[edge.target]

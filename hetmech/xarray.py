@@ -18,7 +18,7 @@ def graph_to_xarray(graph):
     return dataset
 
 
-def metaedge_to_data_array(graph, metaedge):
+def metaedge_to_data_array(graph, metaedge, dtype=numpy.bool_):
     """
     Return an xarray.DataArray that's an adjacency matrix where source nodes
     are columns and target nodes are rows.
@@ -30,7 +30,7 @@ def metaedge_to_data_array(graph, metaedge):
     source_nodes = list(get_node_to_position(graph, metaedge.source))
     target_node_to_position = get_node_to_position(graph, metaedge.target)
     shape = len(target_node_to_position), len(source_nodes)
-    adjacency_matrix = numpy.zeros(shape)
+    adjacency_matrix = numpy.zeros(shape, dtype=dtype)
     for j, source_node in enumerate(source_nodes):
         for edge in source_node.edges[metaedge]:
             i = target_node_to_position[edge.target]
