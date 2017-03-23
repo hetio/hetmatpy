@@ -11,8 +11,10 @@ def dual_normalize(matrix, row_damping=0, column_damping=0, copy=True):
     Parameters
     ==========
     matrix : numpy.array
+    row_damping : int or float
+        exponent to use in scaling each node's row by its in-degree
     column_damping : int or float
-    column_damping : int or float
+        exponent to use in scaling each node's column by its column-sum
     copy : bool
         `True` gaurantees matrix will not be modified in place. `False`
         modifies in-place if and only if matrix.dtype == numpy.float64.
