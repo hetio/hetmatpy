@@ -4,7 +4,10 @@ import numpy
 import hetio.hetnet
 
 
-def dual_normalize(matrix, row_damping=0, column_damping=0, copy=True):
+def dual_normalize(matrix,
+                   row_damping=0,
+                   column_damping=0,
+                   copy=True):
     """
     Row and column normalize a 2d numpy array
 
