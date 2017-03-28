@@ -78,7 +78,7 @@ def get_node_to_position(graph, metanode):
     """
     if not isinstance(metanode, hetio.hetnet.MetaNode):
         # metanode is a name
-        metanode = graph.node_dict(metanode)
+        metanode = graph.metagraph.node_dict[metanode]
     metanode_to_nodes = graph.get_metanode_to_nodes()
     nodes = sorted(metanode_to_nodes[metanode])
     node_to_position = OrderedDict((n, i) for i, n in enumerate(nodes))
