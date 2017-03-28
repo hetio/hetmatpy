@@ -27,12 +27,8 @@ class TestDualNormalize:
         assert numpy.array_equal(output, matrix)
 
     @pytest.mark.parametrize('exponent', [0, 0.3, 0.5, 1, 2, 20])
-    @pytest.mark.parametrize('dtype', ['bool_', 'int8', 'float32', 'float64'])
-    @pytest.mark.parametrize('copy', [True, False])
-    def test_dual_normalize_row_or_column_damping(self, exponent, dtype, copy):
+    def test_dual_normalize_row_or_column_damping(self, exponent):
         """Test row, column damping individually"""
-        original = self.get_clean_matrix(dtype)
-
         # Create the matrix expected for single normalization
         p = exponent  # for easier reading
         expect = [
@@ -43,32 +39,24 @@ class TestDualNormalize:
         expect = numpy.array(expect, dtype='float64')
 
         # Test row normalization works as expected
-        input_matrix = original.copy()
-        matrix = dual_normalize(input_matrix, p, 0.0, copy=copy)
+        input_matrix = self.get_clean_matrix()
+        matrix = dual_normalize(input_matrix, row_damping=exponent)
         assert numpy.allclose(expect, matrix)
 
         # Test column normalization works as expected
-        input_matrix = original.copy()
-        matrix = dual_normalize(input_matrix, 0.0, p, copy=copy)
+        input_matrix = self.get_clean_matrix()
+        matrix = dual_normalize(input_matrix, column_damping=exponent)
         assert numpy.allclose(numpy.transpose(expect), matrix)
 
-        # Test whether the original matrix is unmodified
-        if copy or dtype != 'float64':
-            assert numpy.array_equal(original, input_matrix)
-        else:
-            assert input_matrix is matrix
-
-    @pytest.mark.parametrize('exponents',
-                             [[0, 0], [0, 0.3], [0.3, 0], [0.5, 1], [1, 0.5]])
-    @pytest.mark.parametrize('dtype', ['bool_', 'int8', 'float32', 'float64'])
-    @pytest.mark.parametrize('copy', [True, False])
-    def test_dual_normalize_row_and_column_damping(self,
-                                                   exponents, dtype, copy):
+    @pytest.mark.parametrize('row_damping', [0, 0.3, 0.5, 1, 2])
+    @pytest.mark.parametrize('column_damping', [0, 0.3, 0.5, 1, 2])
+    def test_dual_normalize_row_and_column_damping(
+            self, row_damping, column_damping):
         """Test simultaneous row and column damping"""
-        original = self.get_clean_matrix(dtype)
+        input_matrix = self.get_clean_matrix()
 
         # Create the matrix expected for simultaneous dual normalization
-        pr, pc = exponents
+        pr, pc = row_damping, column_damping
         expect = [
             [(1/3**pr) / (1/3**pr + 1/2**pr + 1)**pc,
              (1/3**pr) / (1/3**pr + 1/2**pr)**pc,
@@ -79,12 +67,19 @@ class TestDualNormalize:
             [1 / (1/3**pr + 1/2**pr + 1)**pc, 0, 0],
         ]
         expect = numpy.array(expect, dtype='float64')
-        input_matrix = original.copy()
-        matrix = dual_normalize(input_matrix, pr, pc, copy=copy)
+        matrix = dual_normalize(input_matrix, row_damping, column_damping)
         assert numpy.allclose(expect, matrix)
 
+    @pytest.mark.parametrize('dtype', ['bool_', 'int8', 'float32', 'float64'])
+    @pytest.mark.parametrize('copy', [True, False])
+    def test_dual_normalize_copy(self, dtype, copy):
+        """Test the copy argument of dual_normalize"""
+        original = self.get_clean_matrix(dtype)
+        input_matrix = original.copy()
+        matrix = dual_normalize(input_matrix, 0.6, 0.9, copy=copy)
         # Test whether the original matrix is unmodified
         if copy or dtype != 'float64':
             assert numpy.array_equal(original, input_matrix)
+            assert input_matrix is not matrix
         else:
             assert input_matrix is matrix
