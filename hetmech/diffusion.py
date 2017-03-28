@@ -4,16 +4,17 @@ import numpy
 import hetio.hetnet
 
 
-def dual_normalize(matrix,
-                   row_damping=0,
-                   column_damping=0,
-                   copy=True):
+def diffusion_step(
+        matrix, row_damping=0, column_damping=0, copy=True):
     """
-    Row and column normalize a 2d numpy array
+    Return the diffusion adjacency matrix produced by the input matrix
+    with the specified row and column normalization exponents.
 
     Parameters
     ==========
-    matrix : numpy.array
+    matrix : numpy.ndarray
+        adjacency matrix for a given metaedge, where the source nodes are
+        columns and the target nodes are rows
     row_damping : int or float
         exponent to use in scaling each node's row by its in-degree
     column_damping : int or float
@@ -27,32 +28,47 @@ def dual_normalize(matrix,
 
     Returns
     =======
-    numpy.array
+    numpy.ndarray
         Normalized matrix with dtype.float64.
     """
-    # returns a newly allocated array
-    matrix = matrix.astype(numpy.float64, copy=copy)
+    # returns a newly allocated numpy.ndarray
+    matrix = numpy.array(matrix, numpy.float64, copy=copy)
+    assert matrix.ndim == 2
 
-    # Normalize rows, unless row_damping is 0
+    # Perform row normalization
     if row_damping != 0:
         row_sums = matrix.sum(axis=1)
-        row_sums **= -row_damping
-        # If row_sums contained zeros, now it contains Inf, so
-        row_sums[numpy.isinf(row_sums)] = 0.0  # remove Inf
-        # Reshape to normalize matrix by rows
-        row_sums = row_sums.reshape((len(row_sums), 1))
-        matrix *= row_sums
+        matrix = normalize(matrix, row_sums, 'rows', row_damping)
 
-    # Normalize columns, unless column_damping is 0
+    # Perform column normalization
     if column_damping != 0:
         column_sums = matrix.sum(axis=0)
-        column_sums **= -column_damping
-        # If column_sums contained zeros, now it contains Inf, so
-        column_sums[numpy.isinf(column_sums)] = 0.0  # remove Inf
-        # Reshape to normalize matrix by columns
-        column_sums = column_sums.reshape((1, len(column_sums)))
-        matrix *= column_sums
+        matrix = normalize(matrix, column_sums, 'columns', column_damping)
 
+    return matrix
+
+
+def normalize(matrix, vector, axis, damping_exponent):
+    """
+    Normalize a 2D numpy.ndarray in place.
+
+    Parameters
+    ==========
+    matrix : numpy.ndarray
+    vector : numpy.ndarray
+        Vector used for row or column normalization of matrix.
+    axis : str
+        'rows' or 'columns' for which axis to normalize
+    """
+    assert matrix.ndim == 2
+    assert vector.ndim == 1
+    if damping_exponent == 0:
+        return matrix
+    with numpy.errstate(divide='ignore'):
+        vector **= -damping_exponent
+    vector[numpy.isinf(vector)] = 0
+    shape = (len(vector), 1) if axis == 'rows' else (1, len(vector))
+    matrix *= vector.reshape(shape)
     return matrix
 
 
@@ -88,7 +104,7 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
     return adjacency_matrix
 
 
-def diffuse_along_metapath(
+def diffusion(
         graph,
         metapath,
         source_node_weights,
@@ -96,6 +112,8 @@ def diffuse_along_metapath(
         row_damping=0,
         ):
     """
+    Performs diffusion from the specified source nodes.
+
     Parameters
     ==========
     graph : hetio.hetnet.Graph
@@ -122,7 +140,7 @@ def diffuse_along_metapath(
         adjacency_matrix = metaedge_to_adjacency_matrix(graph, metaedge)
 
         # Row/column normalization with degree damping
-        adjacency_matrix = dual_normalize(
+        adjacency_matrix = diffusion_step(
             adjacency_matrix, row_damping, column_damping)
 
         node_scores = adjacency_matrix @ node_scores
