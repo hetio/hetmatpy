@@ -36,18 +36,22 @@ def dual_normalize(matrix,
     # Normalize rows, unless row_damping is 0
     if row_damping != 0:
         row_sums = matrix.sum(axis=1)
-        for j, row_sum in enumerate(row_sums):
-            if row_sum == 0:
-                continue
-            matrix[j, :] *= row_sum ** -row_damping
+        row_sums **= -row_damping
+        # If row_sums contained zeros, now it contains Inf, so
+        row_sums[numpy.isinf(row_sums)] = 0.0  # remove Inf
+        # Reshape to normalize matrix by rows
+        row_sums = row_sums.reshape((len(row_sums), 1))
+        matrix *= row_sums
 
     # Normalize columns, unless column_damping is 0
     if column_damping != 0:
         column_sums = matrix.sum(axis=0)
-        for i, column_sum in enumerate(column_sums):
-            if column_sum == 0:
-                continue
-            matrix[:, i] *= column_sum ** -column_damping
+        column_sums **= -column_damping
+        # If column_sums contained zeros, now it contains Inf, so
+        column_sums[numpy.isinf(column_sums)] = 0.0  # remove Inf
+        # Reshape to normalize matrix by columns
+        column_sums = column_sums.reshape((1, len(column_sums)))
+        matrix *= column_sums
 
     return matrix
 
