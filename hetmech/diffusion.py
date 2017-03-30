@@ -1,19 +1,23 @@
 from collections import OrderedDict
 
 import numpy
-import hetio.hetnet
+
+from .matrix import (normalize,
+                     get_node_to_position,
+                     metaedge_to_adjacency_matrix)
 
 
-def dual_normalize(matrix,
-                   row_damping=0,
-                   column_damping=0,
-                   copy=True):
+def diffusion_step(
+        matrix, row_damping=0, column_damping=0, copy=True):
     """
-    Row and column normalize a 2d numpy array
+    Return the diffusion adjacency matrix produced by the input matrix
+    with the specified row and column normalization exponents.
 
     Parameters
     ==========
-    matrix : numpy.array
+    matrix : numpy.ndarray
+        adjacency matrix for a given metaedge, where the source nodes are
+        columns and the target nodes are rows
     row_damping : int or float
         exponent to use in scaling each node's row by its in-degree
     column_damping : int or float
@@ -27,68 +31,27 @@ def dual_normalize(matrix,
 
     Returns
     =======
-    numpy.array
+    numpy.ndarray
         Normalized matrix with dtype.float64.
     """
-    # returns a newly allocated array
-    matrix = matrix.astype(numpy.float64, copy=copy)
+    # returns a newly allocated numpy.ndarray
+    matrix = numpy.array(matrix, numpy.float64, copy=copy)
+    assert matrix.ndim == 2
 
-    # Normalize rows, unless row_damping is 0
+    # Perform row normalization
     if row_damping != 0:
         row_sums = matrix.sum(axis=1)
-        row_sums **= -row_damping
-        # If row_sums contained zeros, now it contains Inf, so
-        row_sums[numpy.isinf(row_sums)] = 0.0  # remove Inf
-        # Reshape to normalize matrix by rows
-        row_sums = row_sums.reshape((len(row_sums), 1))
-        matrix *= row_sums
+        matrix = normalize(matrix, row_sums, 'rows', row_damping)
 
-    # Normalize columns, unless column_damping is 0
+    # Perform column normalization
     if column_damping != 0:
         column_sums = matrix.sum(axis=0)
-        column_sums **= -column_damping
-        # If column_sums contained zeros, now it contains Inf, so
-        column_sums[numpy.isinf(column_sums)] = 0.0  # remove Inf
-        # Reshape to normalize matrix by columns
-        column_sums = column_sums.reshape((1, len(column_sums)))
-        matrix *= column_sums
+        matrix = normalize(matrix, column_sums, 'columns', column_damping)
 
     return matrix
 
 
-def get_node_to_position(graph, metanode):
-    """
-    Given a metanode, return a dictionary of node to position
-    """
-    if not isinstance(metanode, hetio.hetnet.MetaNode):
-        # metanode is a name
-        metanode = graph.node_dict(metanode)
-    metanode_to_nodes = graph.get_metanode_to_nodes()
-    nodes = sorted(metanode_to_nodes[metanode])
-    node_to_position = OrderedDict((n, i) for i, n in enumerate(nodes))
-    return node_to_position
-
-
-def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
-    """
-    Returns an adjacency matrix where source nodes are columns and target
-    nodes are rows.
-    """
-    if not isinstance(metaedge, hetio.hetnet.MetaEdge):
-        # metaedge is an abbreviation
-        metaedge = graph.metagraph.metapath_from_abbrev(metaedge)[0]
-    source_nodes = list(get_node_to_position(graph, metaedge.source))
-    target_node_to_position = get_node_to_position(graph, metaedge.target)
-    shape = len(target_node_to_position), len(source_nodes)
-    adjacency_matrix = numpy.zeros(shape, dtype=dtype)
-    for j, source_node in enumerate(source_nodes):
-        for edge in source_node.edges[metaedge]:
-            i = target_node_to_position[edge.target]
-            adjacency_matrix[i, j] = 1
-    return adjacency_matrix
-
-
-def diffuse_along_metapath(
+def diffusion(
         graph,
         metapath,
         source_node_weights,
@@ -96,6 +59,8 @@ def diffuse_along_metapath(
         row_damping=0,
         ):
     """
+    Performs diffusion from the specified source nodes.
+
     Parameters
     ==========
     graph : hetio.hetnet.Graph
@@ -122,7 +87,7 @@ def diffuse_along_metapath(
         adjacency_matrix = metaedge_to_adjacency_matrix(graph, metaedge)
 
         # Row/column normalization with degree damping
-        adjacency_matrix = dual_normalize(
+        adjacency_matrix = diffusion_step(
             adjacency_matrix, row_damping, column_damping)
 
         node_scores = adjacency_matrix @ node_scores
