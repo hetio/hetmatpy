@@ -20,19 +20,19 @@ def get_node_to_position(graph, metanode):
 
 def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
     """
-    Returns an adjacency matrix where source nodes are columns and target
-    nodes are rows.
+    Returns an adjacency matrix where source nodes are rows and target
+    nodes are columns.
     """
     if not isinstance(metaedge, hetio.hetnet.MetaEdge):
         # metaedge is an abbreviation
         metaedge = graph.metagraph.metapath_from_abbrev(metaedge)[0]
     source_nodes = list(get_node_to_position(graph, metaedge.source))
     target_node_to_position = get_node_to_position(graph, metaedge.target)
-    shape = len(target_node_to_position), len(source_nodes)
+    shape = len(source_nodes), len(target_node_to_position)
     adjacency_matrix = numpy.zeros(shape, dtype=dtype)
-    for j, source_node in enumerate(source_nodes):
+    for i, source_node in enumerate(source_nodes):
         for edge in source_node.edges[metaedge]:
-            i = target_node_to_position[edge.target]
+            j = target_node_to_position[edge.target]
             adjacency_matrix[i, j] = 1
     return adjacency_matrix
 
