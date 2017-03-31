@@ -12,12 +12,15 @@ def diffusion_step(
     """
     Return the diffusion adjacency matrix produced by the input matrix
     with the specified row and column normalization exponents.
+    Note: the row normalization is performed second, so if a value
+    of row_damping=1 is used, the output will be a row-stochastic
+    matrix regardless of choice of column normalization.
 
     Parameters
     ==========
     matrix : numpy.ndarray
         adjacency matrix for a given metaedge, where the source nodes are
-        columns and the target nodes are rows
+        rows and the target nodes are columns
     row_damping : int or float
         exponent to use in scaling each node's row by its in-degree
     column_damping : int or float
@@ -38,25 +41,25 @@ def diffusion_step(
     matrix = numpy.array(matrix, numpy.float64, copy=copy)
     assert matrix.ndim == 2
 
-    # Perform row normalization
-    if row_damping != 0:
-        row_sums = matrix.sum(axis=1)
-        matrix = normalize(matrix, row_sums, 'rows', row_damping)
-
     # Perform column normalization
     if column_damping != 0:
         column_sums = matrix.sum(axis=0)
         matrix = normalize(matrix, column_sums, 'columns', column_damping)
 
+    # Perform row normalization
+    if row_damping != 0:
+        row_sums = matrix.sum(axis=1)
+        matrix = normalize(matrix, row_sums, 'rows', row_damping)
+
     return matrix
 
 
-def diffusion(
+def diffuse(
         graph,
         metapath,
         source_node_weights,
-        column_damping=1,
-        row_damping=0,
+        column_damping=0,
+        row_damping=1,
         ):
     """
     Performs diffusion from the specified source nodes.
@@ -90,7 +93,7 @@ def diffusion(
         adjacency_matrix = diffusion_step(
             adjacency_matrix, row_damping, column_damping)
 
-        node_scores = adjacency_matrix @ node_scores
+        node_scores = node_scores @ adjacency_matrix
 
     target_metanode = metapath.target()
     target_node_to_position = get_node_to_position(graph, target_metanode)
