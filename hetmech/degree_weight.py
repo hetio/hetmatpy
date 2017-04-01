@@ -13,7 +13,7 @@ def dwwc_step(
     ==========
     matrix : numpy.ndarray
         adjacency matrix for a given metaedge, where the source nodes are
-        columns and the target nodes are rows
+        rows and the target nodes are columns
     row_damping : int or float
         exponent to use in scaling each node's row by its in-degree
     column_damping : int or float
@@ -53,5 +53,5 @@ def dwwc(graph, metapath, damping=0.5):
         if dwwc_matrix is None:
             dwwc_matrix = adj_mat
         else:
-            dwwc_matrix = adj_mat @ dwwc_matrix
+            dwwc_matrix = dwwc_matrix @ adj_mat
     return dwwc_matrix

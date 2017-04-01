@@ -58,13 +58,13 @@ class TestDualNormalize:
         # Create the matrix expected for simultaneous dual normalization
         pr, pc = row_damping, column_damping
         expect = [
-            [(1/3**pr) / (1/3**pr + 1/2**pr + 1)**pc,
-             (1/3**pr) / (1/3**pr + 1/2**pr)**pc,
-             (1/3**pr) / (1/3**pr)**pc],
-            [(1/2**pr) / (1/3**pr + 1/2**pr + 1)**pc,
-             (1/2**pr) / (1/3**pr + 1/2**pr)**pc,
+            [(1/3**pc) / (1/3**pc + 1/2**pc + 1)**pr,
+             (1/2**pc) / (1/3**pc + 1/2**pc + 1)**pr,
+             1 / (1/3**pc + 1/2**pc + 1)**pr],
+            [(1/3**pc) / (1/3**pc + 1/2**pc)**pr,
+             (1/2**pc) / (1/3**pc + 1/2**pc)**pr,
              0],
-            [1 / (1/3**pr + 1/2**pr + 1)**pc, 0, 0],
+            [(1/3**pc) / (1/3**pc)**pr, 0, 0],
         ]
         expect = numpy.array(expect, dtype='float64')
         matrix = diffusion_step(input_matrix, row_damping, column_damping)
