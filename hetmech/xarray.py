@@ -1,8 +1,7 @@
 import numpy
 import xarray
-import hetio.hetnet
 
-from .diffusion import get_node_to_position
+from .matrix import metaedge_to_adjacency_matrix
 
 
 def graph_to_xarray(graph):
@@ -23,24 +22,11 @@ def metaedge_to_data_array(graph, metaedge, dtype=numpy.bool_):
     Return an xarray.DataArray that's an adjacency matrix where source nodes
     are columns and target nodes are rows.
     """
-    if not isinstance(metaedge, hetio.hetnet.MetaEdge):
-        # metaedge is an abbreviation
-        metaedge = graph.metagraph.metapath_from_abbrev(metaedge)[0]
-
-    source_nodes = list(get_node_to_position(graph, metaedge.source))
-    target_node_to_position = get_node_to_position(graph, metaedge.target)
-    shape = len(source_nodes), len(target_node_to_position)
-    adjacency_matrix = numpy.zeros(shape, dtype=dtype)
-    for i, source_node in enumerate(source_nodes):
-        for edge in source_node.edges[metaedge]:
-            j = target_node_to_position[edge.target]
-            adjacency_matrix[i, j] = 1
+    source_node_ids, target_node_ids, adjacency_matrix = (
+        metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_))
 
     dims = metaedge.source.identifier, metaedge.target.identifier
-    coords = (
-        [node.identifier for node in source_nodes],
-        [node.identifier for node in target_node_to_position],
-    )
+    coords = source_node_ids, target_node_ids
 
     data_array = xarray.DataArray(
         adjacency_matrix,

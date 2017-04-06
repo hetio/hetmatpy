@@ -48,7 +48,7 @@ def dwwc(graph, metapath, damping=0.5):
     """
     dwwc_matrix = None
     for metaedge in metapath:
-        adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
+        rows, cols, adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
         adj_mat = dwwc_step(adj_mat, damping, damping)
         if dwwc_matrix is None:
             dwwc_matrix = adj_mat

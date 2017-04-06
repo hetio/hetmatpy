@@ -87,7 +87,8 @@ def diffuse(
         node_scores[i] = weight
 
     for metaedge in metapath:
-        adjacency_matrix = metaedge_to_adjacency_matrix(graph, metaedge)
+        row_names, column_names, adjacency_matrix = (
+            metaedge_to_adjacency_matrix(graph, metaedge))
 
         # Row/column normalization with degree damping
         adjacency_matrix = diffusion_step(
@@ -95,7 +96,5 @@ def diffuse(
 
         node_scores = node_scores @ adjacency_matrix
 
-    target_metanode = metapath.target()
-    target_node_to_position = get_node_to_position(graph, target_metanode)
-    node_to_score = OrderedDict(zip(target_node_to_position, node_scores))
+    node_to_score = OrderedDict(zip(column_names, node_scores))
     return node_to_score
