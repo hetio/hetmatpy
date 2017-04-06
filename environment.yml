@@ -11,5 +11,5 @@ dependencies:
 - xarray=0.9.1
 - pip:
   - neo4j-driver==1.1.2
-  - hetio==0.2.4
+  - hetio==0.2.6
   - regex
