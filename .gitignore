@@ -7,3 +7,6 @@ __pycache__/
 ### Jupyter Notebook ###
 # Temporary data
 **.ipynb_checkpoints/
+
+### IDEA ###
+**.idea/
