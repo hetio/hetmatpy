@@ -1,95 +1,142 @@
 import numpy
-from neo4j.v1 import GraphDatabase
-import hetio.readwrite
-import hetio.neo4j
+
 import hetio.pathtools
+import hetio.readwrite
+import pytest
 
-from hetmech.matrix import get_node_to_position
-from hetmech.path_count import dwpc
-
-
-"""
-Test hetmech.path_county.dwpc()
-"""
+from .degree_weight import dwpc, get_segments
 
 
-def _get_cypher_output(metapath, source, target, damping_exponent):
-    """Calls cypher on input node pair"""
-    query = hetio.neo4j.construct_dwpc_query(metapath,
-                                             property='identifier',
-                                             unique_nodes=True)
-    driver = GraphDatabase.driver("bolt://neo4j.het.io")
-    params = {
-        'source': source,
-        'target': target,
-        'w': damping_exponent,
-    }
-    with driver.session() as session:
-        result = session.run(query, params)
-        result = result.single()
-    cypher_pc = result['PC']
-    cypher_dwpc = result['DWPC']
-    return cypher_pc, cypher_dwpc
+def test_metapath_segmentation():
+    """
+    Test get_segments() for segmenting metapaths for DWPC
+    """
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
+        'test/data/hetionet-v1.0-metagraph.json',
+    )
+    metagraph = hetio.readwrite.read_metagraph(url)
+    metapath = metagraph.metapath_from_abbrev('CrCrCcSEcCbGiGiGaDrDpSpD')
+    segments, duplicates = get_segments(metagraph, metapath)
+
+    # Test metapath segmentation
+    expected = ['CrCrCcSEcC', 'CbG', 'GiGiG', 'GaD', 'DrDpSpD']
+    expected = [metagraph.metapath_from_abbrev(x) for x in expected]
+    assert segments == expected
+
+    # Test duplicate metanode detection
+    expected = ['Compound', None, 'Gene', None, 'Disease']
+    expected = [metagraph.get_node(x) if x else None for x in expected]
+    assert duplicates == expected
 
 
-def dwpc_damping(exponent, graph, metapath, compound_to_position,
-                 disease_to_position):
-    """Test dwpc with different damping parameters"""
+def get_bupropion_subgraph():
+    """
+    Read the bupropion and nicotine dependence Hetionet v1.0 subgraph.
+    """
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
+        'test/data/bupropion-CbGpPWpGaD-subgraph.json.xz',
+    )
+    return hetio.readwrite.read_graph(url)
+
+
+def get_random_subgraph():
+    """
+    Read the bupropion and nicotine dependence Hetionet v1.0 subgraph.
+    """
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
+        'test/data/random-subgraph.json.xz',
+    )
+    return hetio.readwrite.read_graph(url)
+
+
+def test_CbGpPWpGaD_traversal():
+    """
+    Test path counts and degree-weighted path counts for the CbGpPWpGaD
+    metapath between bupropion and nicotine dependence. Expected values from
+    the network traversal methods at https://git.io/vHBh2.
+    """
+    graph = get_bupropion_subgraph()
     compound = 'DB01156'  # Bupropion
     disease = 'DOID:0050742'  # nicotine dependences
-    i = compound_to_position[compound]
-    j = disease_to_position[disease]
-    cypher_pc, cypher_dwpc = _get_cypher_output(metapath, compound,
-                                                disease, exponent)
-    dwpc_matrix = dwpc(graph, metapath, exponent)
-
-    assert numpy.allclose(dwpc_matrix[i, j], cypher_dwpc)
-
-
-def exhaustive_dwpc_check(graph, metapath, compound_to_position,
-                          disease_to_position):
-    """Test dwpc vs cypher for all paths from single source"""
-    exponent = 1
-    dwpc_matrix = dwpc(graph, metapath, exponent)
-    for item, idx in compound_to_position.items():
-        i_idx = idx
-        i_item = item
-        break
-    cypher_output = [0] * len(disease_to_position)
-    for j_item, idx in disease_to_position.items():
-        _, cypher_dwpc = _get_cypher_output(metapath, i_item, j_item, exponent)
-        cypher_output[idx] = cypher_dwpc
-
-    assert numpy.allclose(dwpc_matrix[i_idx, :].todense(), cypher_output)
+    metapath = graph.metagraph.metapath_from_abbrev('CbGpPWpGaD')
+    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
+    i = rows.index(compound)
+    j = cols.index(disease)
+    assert pc_matrix[i, j] == 142
+    assert dwpc_matrix[i, j] == pytest.approx(0.03287590886921623)
 
 
-def test_all():
-    """Load objects for all other tests to use"""
-    print("Preprocessing begin.")
-    url = 'https://github.com/dhimmel/hetionet/raw/' + \
-          '76550e6c93fbe92124edc71725e8c7dd4ca8b1f5/' + \
-          'hetnet/json/hetionet-v1.0.json.bz2'
-    graph = hetio.readwrite.read_graph(url)
-    metagraph = graph.metagraph
+def test_CbGiGiGaD_traversal():
+    """
+    Test path counts and degree-weighted path counts for the CbGiGiGaD
+    metapath between bupropion and nicotine dependence. These values are not
+    intended to correspond to the values from the entire Hetionet v1.0. Hence,
+    the expected values are generated using hetio.pathtools.
+    """
+    graph = get_bupropion_subgraph()
+    compound = 'DB01156'  # Bupropion
+    disease = 'DOID:0050742'  # nicotine dependences
+    metapath = graph.metagraph.metapath_from_abbrev('CbGiGiGaD')
+    paths = hetio.pathtools.paths_between(
+        graph,
+        source=('Compound', compound),
+        target=('Disease', disease),
+        metapath=metapath,
+        duplicates=False,
+    )
+    hetio_dwpc = hetio.pathtools.DWPC(paths, damping_exponent=0.4)
 
-    # CbGpPWpGaD contains duplicate metanodes,
-    # so DWPC is not equivalent to DWPC
-    metapath = metagraph.metapath_from_abbrev('CbGpPWpGaD')
-    metapath.get_unicode_str()
+    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
+    i = rows.index(compound)
+    j = cols.index(disease)
 
-    compound_to_position = {x.identifier: i for x, i in
-                            get_node_to_position(graph,
-                                                 'Compound').items()}
-    disease_to_position = {x.identifier: i for x, i in
-                           get_node_to_position(graph,
-                                                'Disease').items()}
+    assert pc_matrix[i, j] == len(paths)
+    assert dwpc_matrix[i, j] == pytest.approx(hetio_dwpc)
 
-    print("Preprocessing done.")
 
-    exhaustive_dwpc_check(graph, metapath, compound_to_position,
-                          disease_to_position)
+@pytest.mark.parametrize('metapath', [
+                                      'CbGaD',
+                                      'CbGbCtD',
+                                      'CrCtD',
+                                      'CtDrD',
+                                      'CuGr>GuD',
+                                      'CuG<rGuD',
+                                      'CcSEcCtDpSpD',
+                                     ])
+def test_path_traversal(metapath):
+    """
+    Test PC (path count) and DWPC (degree-weighted path count) computation
+    on the random subgraph of Hetionet v1.0. Evaluates max path count
+    compound-disease pair where errors are most likely to appear.
+    """
+    # Read graph
+    graph = get_random_subgraph()
+    metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
-    for exponent in [0, 0.2, 0.4, 0.7, 1]:
-        print("Testing dwpc with exponent {}".format(exponent))
-        dwpc_damping(exponent, graph, metapath, compound_to_position,
-                     disease_to_position)
+    # Matrix computations
+    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
+
+    # Find compound-disease pair with the max path count
+    i, j = numpy.unravel_index(pc_matrix.argmax(), pc_matrix.shape)
+    compound = rows[i]
+    disease = cols[j]
+
+    # hetio.pathtools computations
+    paths = hetio.pathtools.paths_between(
+        graph,
+        source=('Compound', compound),
+        target=('Disease', disease),
+        metapath=metapath,
+        duplicates=False,
+    )
+    hetio_dwpc = hetio.pathtools.DWPC(paths, damping_exponent=0.4)
+
+    # Check matrix values match hetio.pathtools
+    assert pc_matrix[i, j] == len(paths)
+    assert dwpc_matrix[i, j] == pytest.approx(hetio_dwpc)

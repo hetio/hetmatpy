@@ -18,7 +18,7 @@ def test_disease_gene_example_dwwc():
 
     # Compute GiGaD path count and DWWC matrices
     metapath = metagraph.metapath_from_abbrev('GiGaD')
-    rows, cols, pc_matrix = dwwc(graph, metapath, damping=0)
+    rows, cols, wc_matrix = dwwc(graph, metapath, damping=0)
     rows, cols, dwwc_matrix = dwwc(graph, metapath, damping=0.5)
 
     # Check row and column name assignment
@@ -33,5 +33,5 @@ def test_disease_gene_example_dwwc():
     # because none of the GiGaD paths contain duplicate nodes. Since, GiGaD
     # contains duplicate metanodes, WC and PC are not gauranteed to be the
     # same. However, they happen to be equivalent for this example.
-    assert pc_matrix[i, j] == 3
+    assert wc_matrix[i, j] == 3
     assert dwwc_matrix[i, j] == pytest.approx(0.25 + 0.25 + 32**-0.5)
