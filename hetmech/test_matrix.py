@@ -1,9 +1,48 @@
 import hetio.readwrite
+import numpy
+import pytest
+from scipy import sparse
+
 from .matrix import metaedge_to_adjacency_matrix
-import numpy as np
 
 
-def test_metaedge_to_adjacency_matrix():
+def get_arrays(edge, mat_type, dtype):
+    node_dict = {
+        'G': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
+        'D': ["Crohn's Disease", 'Multiple Sclerosis'],
+        'T': ['Leukocyte', 'Lung']
+    }
+    adj_dict = {
+        'GiG': [[0, 0, 1, 0, 1, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0],
+                [1, 1, 0, 1, 0, 0, 1],
+                [0, 0, 1, 0, 0, 0, 0],
+                [1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0]],
+        'GaD': [[0, 1],
+                [0, 1],
+                [1, 0],
+                [0, 1],
+                [0, 0],
+                [1, 1],
+                [0, 0]],
+        'DlT': [[0, 0],
+                [1, 0]],
+        'TlD': [[0, 1],
+                [0, 0]]
+    }
+    row_names = node_dict[edge[0]]
+    col_names = node_dict[edge[-1]]
+    adj_matrix = mat_type(adj_dict[edge], dtype=dtype)
+    return row_names, col_names, adj_matrix
+
+
+@pytest.mark.parametrize("test_edge", ['GiG', 'GaD', 'DlT', 'TlD'])
+@pytest.mark.parametrize("mat_type", [numpy.array, sparse.csc_matrix,
+                                      sparse.csr_matrix, numpy.matrix])
+@pytest.mark.parametrize("dtype", [numpy.bool_, numpy.int64, numpy.float64])
+def test_metaedge_to_adjacency_matrix(test_edge, mat_type, dtype):
     """
     Test the functionality of metaedge_to_adjacency_matrix in generating
     numpy arrays. Uses same test data as in test_degree_weight.py
@@ -15,53 +54,14 @@ def test_metaedge_to_adjacency_matrix():
         'test/data/disease-gene-example-graph.json',
     )
     graph = hetio.readwrite.read_graph(url)
+    row_names, col_names, adj_mat = \
+        metaedge_to_adjacency_matrix(graph, test_edge, matrix_type=mat_type,
+                                     dtype=dtype)
+    exp_row, exp_col, exp_adj = get_arrays(test_edge, mat_type, dtype)
 
-    # Verify GiG matrix
-    gig_rows = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
-    gig_cols = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
-
-    row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'GiG')
-    assert np.array_equal(row_names, gig_rows)
-    assert np.array_equal(col_names, gig_cols)
-    assert np.array_equal(adj_mat, [[0, 0, 1, 0, 1, 0, 0],
-                                    [0, 0, 1, 0, 0, 0, 0],
-                                    [1, 1, 0, 1, 0, 0, 1],
-                                    [0, 0, 1, 0, 0, 0, 0],
-                                    [1, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 1, 0, 0, 0, 0]])
-
-    # Verify GaD matrix
-    gad_rows = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
-    gad_cols = ["Crohn's Disease", 'Multiple Sclerosis']
-
-    row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'GaD')
-    assert np.array_equal(row_names, gad_rows)
-    assert np.array_equal(col_names, gad_cols)
-    assert np.array_equal(adj_mat, [[0, 1],
-                                    [0, 1],
-                                    [1, 0],
-                                    [0, 1],
-                                    [0, 0],
-                                    [1, 1],
-                                    [0, 0]])
-
-    # Verify DlT matrix
-    dlt_rows = ["Crohn's Disease", 'Multiple Sclerosis']
-    dlt_cols = ['Leukocyte', 'Lung']
-
-    row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'DlT')
-    assert np.array_equal(row_names, dlt_rows)
-    assert np.array_equal(col_names, dlt_cols)
-    assert np.array_equal(adj_mat, [[0, 0],
-                                    [1, 0]])
-
-    # Verify TlD matrix
-    tld_rows = ['Leukocyte', 'Lung']
-    tld_cols = ["Crohn's Disease", 'Multiple Sclerosis']
-
-    row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, "TlD")
-    assert np.array_equal(row_names, tld_rows)
-    assert np.array_equal(col_names, tld_cols)
-    assert np.array_equal(adj_mat, [[0, 1],
-                                    [0, 0]])
+    assert row_names == exp_row
+    assert col_names == exp_col
+    assert type(adj_mat) == type(exp_adj)
+    assert adj_mat.dtype == dtype
+    assert adj_mat.shape == exp_adj.shape
+    assert (adj_mat != exp_adj).sum() == 0
