@@ -2,7 +2,6 @@ import hetio.readwrite
 import pytest
 
 from .degree_weight import dwwc
-from .matrix import get_node_to_position
 
 
 def test_disease_gene_example_dwwc():
@@ -19,14 +18,16 @@ def test_disease_gene_example_dwwc():
 
     # Compute GiGaD path count and DWWC matrices
     metapath = metagraph.metapath_from_abbrev('GiGaD')
-    pc_matrix = dwwc(graph, metapath, damping=0)
-    dwwc_matrix = dwwc(graph, metapath, damping=0.5)
+    rows, cols, pc_matrix = dwwc(graph, metapath, damping=0)
+    rows, cols, dwwc_matrix = dwwc(graph, metapath, damping=0.5)
+
+    # Check row and column name assignment
+    assert rows == ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
+    assert cols == ["Crohn's Disease", 'Multiple Sclerosis']
 
     # Check concordance with https://doi.org/10.1371/journal.pcbi.1004259.g002
-    gene_index = get_node_to_position(graph, 'Gene')
-    disease_index = get_node_to_position(graph, 'Disease')
-    i = gene_index[graph.node_dict['Gene', 'IRF1']]
-    j = disease_index[graph.node_dict['Disease', 'Multiple Sclerosis']]
+    i = rows.index('IRF1')
+    j = cols.index('Multiple Sclerosis')
 
     # Warning: the WC (walk count) and PC (path count) are only equivalent
     # because none of the GiGaD paths contain duplicate nodes. Since, GiGaD

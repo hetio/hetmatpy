@@ -47,11 +47,13 @@ def dwwc(graph, metapath, damping=0.5):
     Compute the degree-weighted walk count (DWWC).
     """
     dwwc_matrix = None
+    row_names = None
     for metaedge in metapath:
         rows, cols, adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
         adj_mat = dwwc_step(adj_mat, damping, damping)
         if dwwc_matrix is None:
+            row_names = rows
             dwwc_matrix = adj_mat
         else:
             dwwc_matrix = dwwc_matrix @ adj_mat
-    return dwwc_matrix
+    return row_names, cols, dwwc_matrix
