@@ -4,7 +4,8 @@ import numpy
 
 from .matrix import (normalize,
                      get_node_to_position,
-                     metaedge_to_adjacency_matrix)
+                     metaedge_to_adjacency_matrix,
+                     copy_array)
 
 
 def diffusion_step(
@@ -26,7 +27,7 @@ def diffusion_step(
     column_damping : int or float
         exponent to use in scaling each node's column by its column-sum
     copy : bool
-        `True` gaurantees matrix will not be modified in place. `False`
+        `True` guarantees matrix will not be modified in place. `False`
         modifies in-place if and only if matrix.dtype == numpy.float64.
         Users are recommended not to rely on in-place conversion, but instead
         use `False` when in-place modification is acceptable and efficiency
@@ -37,18 +38,17 @@ def diffusion_step(
     numpy.ndarray
         Normalized matrix with dtype.float64.
     """
-    # returns a newly allocated numpy.ndarray
-    matrix = numpy.array(matrix, numpy.float64, copy=copy)
-    assert matrix.ndim == 2
+    # returns a newly allocated array
+    matrix = copy_array(matrix, copy=copy)
 
     # Perform column normalization
     if column_damping != 0:
-        column_sums = matrix.sum(axis=0)
+        column_sums = numpy.array(matrix.sum(axis=0)).flatten()
         matrix = normalize(matrix, column_sums, 'columns', column_damping)
 
     # Perform row normalization
     if row_damping != 0:
-        row_sums = matrix.sum(axis=1)
+        row_sums = numpy.array(matrix.sum(axis=1)).flatten()
         matrix = normalize(matrix, row_sums, 'rows', row_damping)
 
     return matrix
@@ -59,7 +59,7 @@ def diffuse(
         metapath,
         source_node_weights,
         column_damping=0,
-        row_damping=1,
+        row_damping=1
         ):
     """
     Performs diffusion from the specified source nodes.
@@ -67,7 +67,7 @@ def diffuse(
     Parameters
     ==========
     graph : hetio.hetnet.Graph
-        graph to extract adjacency matrixes along
+        graph to extract adjacency matrices along
     metapath : hetio.hetnet.MetaPath
         metapath to diffuse along
     source_node_weights : dict

@@ -4,20 +4,22 @@ import itertools
 import operator
 
 import numpy
-# import scipy.sparse
+from scipy import sparse
 
-from .matrix import normalize, metaedge_to_adjacency_matrix
+from .matrix import (normalize,
+                     metaedge_to_adjacency_matrix,
+                     auto_convert,
+                     copy_array)
 
 
-def dwwc_step(
-        matrix, row_damping=0, column_damping=0, copy=True):
+def dwwc_step(matrix, row_damping=0, column_damping=0, copy=True):
     """
     Return the degree-weighted adjacency matrix produced by the input matrix
     with the specified row and column normalization exponents.
 
     Parameters
     ==========
-    matrix : numpy.ndarray
+    matrix : numpy.ndarray or scipy.sparse
         adjacency matrix for a given metaedge, where the source nodes are
         rows and the target nodes are columns
     row_damping : int or float
@@ -25,7 +27,7 @@ def dwwc_step(
     column_damping : int or float
         exponent to use in scaling each node's column by its column-sum
     copy : bool
-        `True` gaurantees matrix will not be modified in place. `False`
+        `True` guarantees matrix will not be modified in place. `False`
         modifies in-place if and only if matrix.dtype == numpy.float64.
         Users are recommended not to rely on in-place conversion, but instead
         use `False` when in-place modification is acceptable and efficiency
@@ -33,31 +35,32 @@ def dwwc_step(
 
     Returns
     =======
-    numpy.ndarray
+    numpy.ndarray or scipy.sparse
         Normalized matrix with dtype.float64.
     """
-    # returns a newly allocated numpy.ndarray
-    matrix = numpy.array(matrix, numpy.float64, copy=copy)
-    assert matrix.ndim == 2
+    # returns a newly allocated array
+    matrix = copy_array(matrix, copy)
 
-    row_sums = matrix.sum(axis=1)
-    column_sums = matrix.sum(axis=0)
+    row_sums = numpy.array(matrix.sum(axis=1)).flatten()
+    column_sums = numpy.array(matrix.sum(axis=0)).flatten()
     matrix = normalize(matrix, row_sums, 'rows', row_damping)
     matrix = normalize(matrix, column_sums, 'columns', column_damping)
 
     return matrix
 
 
-def dwwc(graph, metapath, damping=0.5):
+def dwwc(graph, metapath, damping=0.5, sparse_threshold=0):
     """
-    Compute the degree-weighted walk count (DWWC).
+    Compute the degree-weighted walk count (DWWC). Special case of function
+    dwpc_duplicated_metanode.
     """
-    return dwpc_duplicated_metanode(graph, metapath, None, damping)
+    return dwpc_duplicated_metanode(graph, metapath, None, damping,
+                                    sparse_threshold=sparse_threshold)
 
 
 def pairwise(iterable):
     """
-    Yield consequitive pairs of items from the iterable, but skip pairs where
+    Yield consecutive pairs of items from the iterable, but skip pairs where
     the items are equal.
     Modified from recipe in itertools docs at
     https://docs.python.org/3/library/itertools.html
@@ -114,34 +117,50 @@ def get_segments(metagraph, metapath):
     return segments, duplicates
 
 
-def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5):
+def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
+                             sparse_threshold=0):
     """
     Compute the degree-weighted path count (DWPC) when a single metanode is
     duplicated (any number of times). User must specify the duplicated
     metanode.
+
+    Parameters
+    ==========
+    graph : hetio.hetnet.Graph
+    metapath : hetio.hetnet.MetaPath
+    duplicate : hetio.hetnet.MetaNode or None
+    damping : float
+    sparse_threshold : float (0 <= sparse_threshold <= 1)
+        sets the density threshold above which a sparse matrix will be
+        converted to a dense automatically.
     """
     if duplicate is not None:
         assert metapath.source() == duplicate
     dwpc_matrix = None
     row_names = None
     for metaedge in metapath:
-        rows, cols, adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
+        rows, cols, adj_mat = metaedge_to_adjacency_matrix(
+            graph, metaedge, sparse_threshold=sparse_threshold)
         adj_mat = dwwc_step(adj_mat, damping, damping)
         if dwpc_matrix is None:
             row_names = rows
             dwpc_matrix = adj_mat
         else:
             dwpc_matrix = dwpc_matrix @ adj_mat
+            dwpc_matrix = auto_convert(dwpc_matrix, sparse_threshold)
         if metaedge.target == duplicate:
-            # # scipy.sparse method threw ValueError:
-            # # Different number of diagonals and offsets.
-            # diag_matrix = scipy.sparse.diags(dwpc_matrix.diagonal())
-            diag_matrix = numpy.diag(dwpc_matrix.diagonal())
-            dwpc_matrix -= diag_matrix
+            mat_type = type(dwpc_matrix)
+            if mat_type == numpy.ndarray:
+                mat_type = numpy.array
+            diag_matrix = sparse.diags(dwpc_matrix.diagonal())
+            dwpc_matrix = mat_type(dwpc_matrix - diag_matrix,
+                                   dtype=numpy.float64, copy=False)
+
+    dwpc_matrix = auto_convert(dwpc_matrix, sparse_threshold)
     return row_names, cols, dwpc_matrix
 
 
-def dwpc(graph, metapath, damping=0.5):
+def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
     """
     Compute the degree-weighted path count (DWPC).
     """
@@ -154,10 +173,12 @@ def dwpc(graph, metapath, damping=0.5):
     row_names = None
     for segment, duplicate in zip(segments, duplicates):
         if duplicate is None:
-            rows, cols, matrix = dwwc(graph, segment, damping)
+            rows, cols, matrix = dwwc(
+                graph, segment, damping, sparse_threshold=sparse_threshold)
         else:
             rows, cols, matrix = dwpc_duplicated_metanode(
-                graph, segment, duplicate, damping)
+                graph, segment, duplicate, damping,
+                sparse_threshold=sparse_threshold)
         if row_names is None:
             row_names = rows
         parts.append(matrix)

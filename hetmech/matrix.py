@@ -19,10 +19,19 @@ def get_node_to_position(graph, metanode):
 
 
 def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
-                                 matrix_type=numpy.array):
+                                 sparse_threshold=0):
     """
     Returns an adjacency matrix where source nodes are rows and target
     nodes are columns.
+
+    Parameters
+    ==========
+    graph : hetio.hetnet.graph
+    metaedge : hetio.hetnet.MetaEdge
+    dtype : type
+    sparse_threshold : float (0 < sparse_threshold < 1)
+        sets the density threshold above which a sparse matrix will be
+        converted to a dense automatically.
     """
     if not isinstance(metaedge, hetio.hetnet.MetaEdge):
         # metaedge is an abbreviation
@@ -38,12 +47,7 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
             data.append(1)
     adjacency_matrix = sparse.csc_matrix((data, (row, col)), shape=shape,
                                          dtype=dtype)
-    if matrix_type == numpy.array or matrix_type == numpy.ndarray:
-        adjacency_matrix = adjacency_matrix.toarray()
-    elif matrix_type == numpy.matrix:
-        adjacency_matrix = adjacency_matrix.todense()
-    else:
-        adjacency_matrix = matrix_type(adjacency_matrix)
+    adjacency_matrix = auto_convert(adjacency_matrix, sparse_threshold)
     row_names = [node.identifier for node in source_nodes]
     column_names = [node.identifier for node in target_node_to_position]
     return row_names, column_names, adjacency_matrix
@@ -55,11 +59,13 @@ def normalize(matrix, vector, axis, damping_exponent):
 
     Parameters
     ==========
-    matrix : numpy.ndarray
+    matrix : numpy.ndarray or scipy.sparse
     vector : numpy.ndarray
         Vector used for row or column normalization of matrix.
     axis : str
         'rows' or 'columns' for which axis to normalize
+    damping_exponent : float
+        exponent to use in scaling a node's row or column
     """
     assert matrix.ndim == 2
     assert vector.ndim == 1
@@ -69,5 +75,43 @@ def normalize(matrix, vector, axis, damping_exponent):
         vector **= -damping_exponent
     vector[numpy.isinf(vector)] = 0
     shape = (len(vector), 1) if axis == 'rows' else (1, len(vector))
-    matrix *= vector.reshape(shape)
+    vector = vector.reshape(shape)
+    if sparse.issparse(matrix):
+        matrix = matrix.multiply(vector)
+    else:
+        matrix *= vector
+    return matrix
+
+
+def auto_convert(matrix, threshold):
+    """
+    Automatically convert a scipy.sparse to a numpy.ndarray if the percent
+    nonzero is above a given threshold. Automatically convert a numpy.ndarray
+    to scipy.sparse if the percent nonzero is below a given threshold.
+
+    Parameters
+    ==========
+    matrix : numpy.ndarray or scipy.sparse
+    threshold : float (0 < threshold < 1)
+        percent nonzero above which the matrix is converted to dense
+
+    Returns
+    =======
+    matrix : numpy.ndarray or scipy.sparse
+    """
+    above_thresh = (matrix != 0).sum() / numpy.prod(matrix.shape) >= threshold
+    if sparse.issparse(matrix) and above_thresh:
+        return matrix.toarray()
+    elif not above_thresh:
+        return sparse.csc_matrix(matrix)
+    return matrix
+
+
+def copy_array(matrix, copy=True):
+    """Returns a newly allocated array if copy is True"""
+    mat_type = type(matrix)
+    if mat_type == numpy.ndarray:
+        mat_type = numpy.array
+    matrix = mat_type(matrix, dtype=numpy.float64, copy=copy)
+    assert matrix.ndim == 2
     return matrix
