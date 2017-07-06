@@ -8,14 +8,14 @@ from .matrix import (normalize,
                      copy_array)
 
 
-def diffusion_step(
-        matrix, row_damping=0, column_damping=0, copy=True):
+def diffusion_step(matrix, row_damping=0, column_damping=0):
     """
     Return the diffusion adjacency matrix produced by the input matrix
     with the specified row and column normalization exponents.
     Note: the row normalization is performed second, so if a value
     of row_damping=1 is used, the output will be a row-stochastic
-    matrix regardless of choice of column normalization.
+    matrix regardless of choice of column normalization. Matrix will
+    not be modified in place.
 
     Parameters
     ==========
@@ -26,12 +26,6 @@ def diffusion_step(
         exponent to use in scaling each node's row by its in-degree
     column_damping : int or float
         exponent to use in scaling each node's column by its column-sum
-    copy : bool
-        `True` guarantees matrix will not be modified in place. `False`
-        modifies in-place if and only if matrix.dtype == numpy.float64.
-        Users are recommended not to rely on in-place conversion, but instead
-        use `False` when in-place modification is acceptable and efficiency
-        is desired.
 
     Returns
     =======
@@ -39,7 +33,7 @@ def diffusion_step(
         Normalized matrix with dtype.float64.
     """
     # returns a newly allocated array
-    matrix = copy_array(matrix, copy=copy)
+    matrix = copy_array(matrix)
 
     # Perform column normalization
     if column_damping != 0:

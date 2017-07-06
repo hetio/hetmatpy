@@ -69,17 +69,3 @@ class TestDualNormalize:
         expect = numpy.array(expect, dtype='float64')
         matrix = diffusion_step(input_matrix, row_damping, column_damping)
         assert numpy.allclose(expect, matrix)
-
-    @pytest.mark.parametrize('dtype', ['bool_', 'int8', 'float32', 'float64'])
-    @pytest.mark.parametrize('copy', [True, False])
-    def test_diffusion_step_copy(self, dtype, copy):
-        """Test the copy argument of dual_normalize"""
-        original = self.get_clean_matrix(dtype)
-        input_matrix = original.copy()
-        matrix = diffusion_step(input_matrix, 0.6, 0.9, copy=copy)
-        # Test whether the original matrix is unmodified
-        if copy or dtype != 'float64':
-            assert numpy.array_equal(original, input_matrix)
-            assert input_matrix is not matrix
-        else:
-            assert input_matrix is matrix

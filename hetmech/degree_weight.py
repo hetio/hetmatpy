@@ -38,7 +38,7 @@ def dwwc_step(matrix, row_damping=0, column_damping=0, copy=True):
     numpy.ndarray or scipy.sparse
         Normalized matrix with dtype.float64.
     """
-    # returns a newly allocated array
+    # returns a newly allocated array if copy is True
     matrix = copy_array(matrix, copy)
 
     row_sums = numpy.array(matrix.sum(axis=1)).flatten()
