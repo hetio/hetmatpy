@@ -47,9 +47,100 @@ def dwpc_baab(graph, metapath, damping=0.5):
     A function to handle metapath (segments) of the form BAAB.
     This function will handle arbitrary lengths of this repeated
     pattern. For example, ABCCBA, ABCDDCBA, etc. all work with this
-    function.
+    function. Random non-repeat inserts are supported. The metapath
+    must start and end with a repeated node, though.
+
+    Covers all variants of symmetrically repeated metanodes with
+    support for random non-repeat metanode inserts at any point.
+    Metapath must start and end with a repeated metanode.
+
+
+    Parameters
+    ----------
+    graph : hetio.hetnet.Graph
+    metapath : hetio.hetnet.MetaPath
+    damping : float
+
+    Examples
+    --------
+    Acceptable metapaths forms include the following:
+    B-A-A-B
+    B-C-A-A-B
+    B-C-A-D-A-E-B
+    B-C-D-E-A-F-A-B
     """
-    raise NotImplementedError("See PR #61")
+    metanodes = list(metapath.get_nodes())
+    repeated_nodes = [v for i, v in enumerate(metanodes) if
+                      v in metanodes[i + 1:]]
+    # Find the indices of the innermost repeat (eg. BACAB -> 1,3)
+    first_inner, second_inner = [i for i, metanode in enumerate(metanodes) if
+                                 metanode == repeated_nodes[-1]]
+    dwpc_inner = None
+
+    # Traverse between and including innermost repeated metanodes
+    inner_metapath = graph.metagraph.get_metapath(
+        metapath[first_inner:second_inner])
+    dwpc_inner = dwpc_short_repeat(graph, inner_metapath, damping=damping)[2]
+
+    def next_outer(first_ind, last_ind, inner_array):
+        """
+        A recursive function. Works outward from the middle of a
+        metapath. Multiplies non-repeat metanodes as appropriate and
+        builds outward. When identical metanodes are ahead of and
+        behind the middle segment being worked with, this function
+        multiplies by both and subtracts the main diagonal.
+
+        Parameters
+        ----------
+        first_ind : int
+            index at the beginning of the middle segment
+        last_ind : int
+            index at the end of the middle segment
+        inner_array : numpy.ndarray
+            The working dwpc_matrix, which is multiplied from the front
+            and back depending on which side has a duplicated metanode
+            at the closest position
+        """
+        # case where node at the end is a repeated metanode
+        if metanodes[last_ind + 1] in repeated_nodes:
+            # if middle segment surrounded by repeated metanodes
+            if metanodes[first_ind - 1] == metanodes[last_ind + 1]:
+                adj1 = metaedge_to_adjacency_matrix(
+                    graph, metapath[first_ind - 1])[2]
+                adj2 = metaedge_to_adjacency_matrix(
+                    graph, metapath[last_ind])[2]
+                adj1 = degree_weight(adj1, damping)
+                adj2 = degree_weight(adj2, damping)
+
+                inner_array = adj1 @ (inner_array @ adj2)
+                inner_array = remove_diag(inner_array)
+                first_ind, last_ind = first_ind - 1, last_ind + 1
+            # only trailing metanode is a repeat
+            else:
+                adj = metaedge_to_adjacency_matrix(
+                    graph, metapath[first_ind - 1])[2]
+                adj = degree_weight(adj, damping)
+                inner_array = adj @ inner_array
+                first_ind -= 1
+        # trailing metanode is not a repeated
+        else:
+            adj = metaedge_to_adjacency_matrix(graph, metapath[last_ind])[2]
+            adj = degree_weight(adj, damping)
+            inner_array = inner_array @ adj
+            last_ind += 1
+        # the middle segment spans the entire metapath
+        if len(metapath) == last_ind - first_ind:
+            return inner_array
+        else:
+            return next_outer(first_ind, last_ind, inner_array)
+
+    # get source and target ID arrays
+    row_names = metaedge_to_adjacency_matrix(
+        graph, metapath[0], dtype=numpy.float64)[0]
+    col_names = metaedge_to_adjacency_matrix(
+        graph, metapath[-1], dtype=numpy.float64)[1]
+    dwpc_matrix = next_outer(first_inner, second_inner, dwpc_inner)
+    return row_names, col_names, dwpc_matrix
 
 
 def dwpc_baba(graph, metapath, damping=0.5):
