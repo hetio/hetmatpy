@@ -3,30 +3,7 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .degree_weight import dwpc, get_segments
-
-
-def test_metapath_segmentation():
-    """
-    Test get_segments() for segmenting metapaths for DWPC
-    """
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
-        'test/data/hetionet-v1.0-metagraph.json',
-    )
-    metagraph = hetio.readwrite.read_metagraph(url)
-    metapath = metagraph.metapath_from_abbrev('CrCrCcSEcCbGiGiGaDrDpSpD')
-    segments, duplicates = get_segments(metagraph, metapath)
-
-    # Test metapath segmentation
-    expected = ['CrCrCcSEcC', 'CbG', 'GiGiG', 'GaD', 'DrDpSpD']
-    expected = [metagraph.metapath_from_abbrev(x) for x in expected]
-    assert segments == expected
-
-    # Test duplicate metanode detection
-    expected = ['Compound', None, 'Gene', None, 'Disease']
-    expected = [metagraph.get_node(x) if x else None for x in expected]
-    assert duplicates == expected
+from .degree_weight import dwpc
 
 
 def get_bupropion_subgraph():
@@ -61,8 +38,8 @@ def test_CbGpPWpGaD_traversal():
     compound = 'DB01156'  # Bupropion
     disease = 'DOID:0050742'  # nicotine dependence
     metapath = graph.metagraph.metapath_from_abbrev('CbGpPWpGaD')
-    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
-    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
+    rows, cols, pc_matrix, t = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix, t = dwpc(graph, metapath, damping=0.4)
     i = rows.index(compound)
     j = cols.index(disease)
     assert pc_matrix[i, j] == 142
@@ -89,8 +66,8 @@ def test_CbGiGiGaD_traversal():
     )
     hetio_dwpc = hetio.pathtools.DWPC(paths, damping_exponent=0.4)
 
-    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
-    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
+    rows, cols, pc_matrix, t = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix, t = dwpc(graph, metapath, damping=0.4)
     i = rows.index(compound)
     j = cols.index(disease)
 
@@ -118,8 +95,8 @@ def test_path_traversal(metapath):
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
     # Matrix computations
-    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
-    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
+    rows, cols, pc_matrix, t = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix, t = dwpc(graph, metapath, damping=0.4)
 
     # Find compound-disease pair with the max path count
     i, j = numpy.unravel_index(pc_matrix.argmax(), pc_matrix.shape)

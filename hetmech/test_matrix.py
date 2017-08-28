@@ -60,7 +60,7 @@ def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
     )
     graph = hetio.readwrite.read_graph(url)
     row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(
-            graph, test_edge, dtype=dtype, sparse_threshold=threshold)
+        graph, test_edge, dtype=dtype, sparse_threshold=threshold)
     exp_row, exp_col, exp_adj = get_arrays(test_edge, dtype, threshold)
 
     assert row_names == exp_row
