@@ -1,18 +1,18 @@
 name: hetmech
 dependencies:
+- anaconda::flake8=3.3.0
+- anaconda::ipykernel=4.6.1
+- anaconda::notebook=5.0.0
+- anaconda::numpy=1.13.1
+- anaconda::pandas=0.20.3
+- anaconda::pytest=3.2.1
+- anaconda::python=3.6.2
+- anaconda::scikit-learn=0.18.2
+- anaconda::scipy=0.19.1
+- anaconda::tqdm=4.15.0
+- anaconda::xarray=0.9.6
 - conda-forge::nb_conda_kernels=2.1.0
-- flake8=3.3.0
-- ipykernel=4.6.1
-- notebook=5.0.0
-- numpy=1.12.1
-- pandas=0.20.1
-- pytest=3.0.7
-- python=3.6.0
-- scikit-learn=0.18.1
-- scipy=0.19.0
-- tqdm=4.11.2
-- xarray=0.9.5
 - pip:
   - hetio==0.2.6
-  - neo4j-driver==1.3.0
-  - py2neo==2.0.9
+  - neo4j-driver==1.4.0
+  - py2neo==3.1.2
