@@ -504,9 +504,14 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, sparse_threshold=0):
     """
     segments = get_segments(graph.metagraph, metapath)
     assert len(segments) <= 3
+
     # Account for different head and tail possibilities.
     head_segment = None
     tail_segment = None
+    dwpc_matrix = None
+    dwpc_tail = None
+
+    # Label the segments as head, tail, and repeat
     for i, segment in enumerate(segments):
         if segment.source() == segment.target():
             repeat_segment = segment
@@ -516,20 +521,40 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, sparse_threshold=0):
             else:
                 tail_segment = segment
 
+    # Calculate DWPC for the middle ("repeat") segment
     repeated_metanode = repeat_segment.source()
-    dwpc_matrix = None
-    for edge in repeat_segment:
-        rows, col_names, adj = metaedge_to_adjacency_matrix(
-            graph, edge, dtype=numpy.float64,
+
+    index_of_repeats = [i for i, v in enumerate(repeat_segment.get_nodes()) if
+                        v == repeated_metanode]
+
+    for metaedge in repeat_segment[:index_of_repeats[1]]:
+        rows, cols, adj = metaedge_to_adjacency_matrix(
+            graph, metaedge, dtype=numpy.float64,
             sparse_threshold=sparse_threshold)
-        weighted = _degree_weight(adj, damping=damping)
+        adj = _degree_weight(adj, damping)
         if dwpc_matrix is None:
-            dwpc_matrix = weighted
             row_names = rows
+            dwpc_matrix = adj
         else:
-            dwpc_matrix = dwpc_matrix  @ weighted
-            if edge.target == repeated_metanode:
-                dwpc_matrix = remove_diag(dwpc_matrix)
+            dwpc_matrix = dwpc_matrix @ adj
+
+    dwpc_matrix = remove_diag(dwpc_matrix)
+
+    # Extra correction for random metanodes in the repeat segment
+    if len(index_of_repeats) == 3:
+        for metaedge in repeat_segment[index_of_repeats[1]:]:
+            rows, cols, adj = metaedge_to_adjacency_matrix(
+                graph, metaedge, dtype=numpy.float64,
+                sparse_threshold=sparse_threshold)
+            adj = _degree_weight(adj, damping)
+            if dwpc_tail is None:
+                dwpc_tail = adj
+            else:
+                dwpc_tail = dwpc_tail @ adj
+        dwpc_tail = remove_diag(dwpc_tail)
+        dwpc_matrix = dwpc_matrix @ dwpc_tail
+        dwpc_matrix = remove_diag(dwpc_matrix)
+    col_names = cols
 
     if head_segment:
         row_names, cols, head_dwpc = dwwc(graph, head_segment, damping=damping,
