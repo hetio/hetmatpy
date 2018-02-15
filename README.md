@@ -16,7 +16,7 @@ Install the environment with:
 conda env create --file=environment.yml
 ```
 
-Then use `source activate hetmech` and `source deactivate` to activate or deactivate the environment.
+Then use `conda activate hetmech` and `conda deactivate` to activate or deactivate the environment.
 
 ## Acknowledgements
 

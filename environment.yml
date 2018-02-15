@@ -1,21 +1,23 @@
 name: hetmech
+channels:
+  - conda-forge
 dependencies:
-- anaconda::flake8=3.3.0
-- anaconda::ipykernel=4.6.1
-- anaconda::ipywidgets=6.0.0
-- anaconda::notebook=5.0.0
-- anaconda::numpy=1.13.1
-- anaconda::pandas=0.20.3
-- anaconda::pytest=3.2.1
-- anaconda::python=3.6.2
-- anaconda::requests=2.14.2
-- anaconda::scikit-learn=0.18.2
-- anaconda::scipy=0.19.1
-- anaconda::tqdm=4.15.0
-- anaconda::xarray=0.9.6
-- conda-forge::nb_conda_kernels=2.1.0
-- conda-forge::plotnine=0.2.1
-- pip:
-  - hetio==0.2.6
-  - neo4j-driver==1.4.0
-  - py2neo==3.1.2
+  - conda-forge::flake8=3.5.0
+  - conda-forge::ipykernel=4.8.1
+  - conda-forge::ipywidgets=7.1.1
+  - conda-forge::nb_conda_kernels=2.1.0
+  - conda-forge::notebook=5.4.0
+  - conda-forge::numpy=1.14.0
+  - conda-forge::pandas=0.22.0
+  - conda-forge::plotnine=0.3.0
+  - conda-forge::py2neo=3.1.2
+  - conda-forge::pytest=3.4.0
+  - conda-forge::python=3.6.4
+  - conda-forge::requests=2.18.4
+  - conda-forge::scikit-learn=0.19.1
+  - conda-forge::scipy=1.0.0
+  - conda-forge::tqdm=4.19.5
+  - conda-forge::xarray=0.10.0
+  - pip:
+    - hetio==0.2.7
+    - neo4j-driver==1.5.3

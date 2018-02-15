@@ -54,7 +54,7 @@ def dwpc(graph, metapath, damping=0.5, sparse_threshold=0, use_general=False):
     numpy.ndarray or scipy.sparse.csc_matrix
         the DWPC matrix
     float
-        the computation time
+        the computation time in seconds
     """
     start_time = time.perf_counter()
 
