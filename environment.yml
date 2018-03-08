@@ -18,6 +18,7 @@ dependencies:
   - conda-forge::scipy=1.0.0
   - conda-forge::tqdm=4.19.5
   - conda-forge::xarray=0.10.0
+  - conda-forge::xlrd=1.1.0
   - pip:
     - hetio==0.2.7
     - neo4j-driver==1.5.3
