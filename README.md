@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/greenelab/hetmech.svg?branch=master)](https://travis-ci.org/greenelab/hetmech)
 
 Hetmech aims to identify the relevant network connections between a set of query nodes.
-The method is designed to operate on hetnets (networks with multiple node or relationship types). 
+The method is designed to operate on hetnets (networks with multiple node or relationship types).
 
 This project is still under development. Use with caution.
 
@@ -17,6 +17,10 @@ conda env create --file=environment.yml
 ```
 
 Then use `conda activate hetmech` and `conda deactivate` to activate or deactivate the environment.
+
+For local development, run the following with the hetmech environment activated:
+
+`pip install --editable .`
 
 ## Acknowledgements
 

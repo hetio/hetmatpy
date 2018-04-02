@@ -13,6 +13,7 @@ before_install:
 install:
   - conda env create --quiet --file environment.yml
   - source activate hetmech
+  - pip install --editable .
 script:
   - pytest hetmech
   - jupyter nbconvert --to=script --stdout *.ipynb |
