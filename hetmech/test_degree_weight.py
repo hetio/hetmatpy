@@ -214,7 +214,7 @@ def test__dwpc_baab(metapath, expected):
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
     row, col, dwpc_matrix = _dwpc_baab(graph, metapath, damping=0.5,
-                                       sparse_threshold=1)
+                                       dense_threshold=1)
 
     expected = numpy.array(expected, dtype=numpy.float64)
 
@@ -314,7 +314,7 @@ def test__dwpc_baba(m_path):
 
     row_sol, col_sol, adj_sol = get_baba_matrices(m_path)
     row, col, dwpc_matrix = _dwpc_baba(graph, metapath, damping=0.5,
-                                       sparse_threshold=0)
+                                       dense_threshold=0)
 
     assert row_sol == row
     assert col_sol == col
@@ -459,7 +459,7 @@ def test_get_segments(metapath, solution):
     assert output == solution
 
 
-@pytest.mark.parametrize('sparsity', [0, 1])
+@pytest.mark.parametrize('dense_threshold', [0, 1])
 @pytest.mark.parametrize('metapath,expected', [
     ('DaGiGiG', [[0., 0., 0., 0., 0.1767767, 0., 0.],
                  [0.1767767, 0.21338835, 0., 0.21338835, 0., 0., 0.33838835]]),
@@ -569,7 +569,7 @@ def test_get_segments(metapath, solution):
     ('TeGaDaG', [[0., 0., 0., 0., 0., 0.25, 0.],
                  [0., 0., 0., 0., 0., 0.25, 0.]])
 ])
-def test_dwpc(metapath, expected, sparsity):
+def test_dwpc(metapath, expected, dense_threshold):
     if expected is not None:
         expected = numpy.array(expected, dtype=numpy.float64)
 
@@ -581,12 +581,12 @@ def test_dwpc(metapath, expected, sparsity):
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
     if expected is None:
         with pytest.raises(Exception):
-            dwpc(graph, metapath, damping=0.5, sparse_threshold=sparsity)
+            dwpc(graph, metapath, damping=0.5, dense_threshold=dense_threshold)
     else:
         row, col, dwpc_matrix, t = dwpc(graph, metapath, damping=0.5,
-                                        sparse_threshold=sparsity)
+                                        dense_threshold=dense_threshold)
         assert abs(expected - dwpc_matrix).max() == pytest.approx(0, abs=1e-7)
-        if sparsity == 1:
+        if dense_threshold == 1:
             assert sparse.issparse(dwpc_matrix)
         else:
             assert not sparse.issparse(dwpc_matrix)

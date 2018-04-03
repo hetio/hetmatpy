@@ -1,7 +1,6 @@
 import numpy
 import xarray
-
-from .matrix import metaedge_to_adjacency_matrix
+from hetio.matrix import metaedge_to_adjacency_matrix
 
 
 def graph_to_xarray(graph):

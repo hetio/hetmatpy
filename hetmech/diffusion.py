@@ -1,11 +1,15 @@
 from collections import OrderedDict
 
 import numpy
+from hetio.matrix import (
+    get_node_to_position,
+    metaedge_to_adjacency_matrix,
+)
 
-from .matrix import (normalize,
-                     get_node_to_position,
-                     metaedge_to_adjacency_matrix,
-                     copy_array)
+from .matrix import (
+    normalize,
+    copy_array,
+)
 
 
 def diffusion_step(matrix, row_damping=0, column_damping=0):

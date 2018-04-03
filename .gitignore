@@ -3,6 +3,7 @@
 ### Python ###
 __pycache__/
 .cache
+.pytest_cache/
 
 ### Jupyter Notebook ###
 # Temporary data
