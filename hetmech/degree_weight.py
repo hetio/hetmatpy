@@ -24,7 +24,8 @@ def category_to_function(category):
                            'BAAB': _dwpc_baab,
                            'BABA': _dwpc_baba,
                            'repeat_around': _dwpc_repeat_around,
-                           'interior_complete_group': _dwpc_baba}
+                           'interior_complete_group': _dwpc_baba,
+                           'other': _dwpc_general_case}
     return function_dictionary[category]
 
 
