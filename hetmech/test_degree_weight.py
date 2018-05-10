@@ -590,3 +590,18 @@ def test_dwpc(metapath, expected, dense_threshold):
             assert sparse.issparse(dwpc_matrix)
         else:
             assert not sparse.issparse(dwpc_matrix)
+
+
+@pytest.mark.parametrize('metapath,dtype', [
+    ('TeGaDaG', numpy.float64),
+    ('TeGaDaG', numpy.float32),
+])
+def test_dtype(metapath, dtype):
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metapath = graph.metagraph.metapath_from_abbrev(metapath)
+    rows, cols, dwpc_matrix, t = dwpc(graph, metapath, dtype=dtype)
+    assert dwpc_matrix.dtype == dtype

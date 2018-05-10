@@ -29,7 +29,8 @@ def category_to_function(category):
     return function_dictionary[category]
 
 
-def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False):
+def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
+         dtype=numpy.float64):
     """
     A unified function to compute the degree-weighted path count.
     This function will call get_segments, then the appropriate
@@ -48,6 +49,9 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False):
         on metapaths which are categorized 'other' and 'long_repeat'.
         If False, an exception is raised when such a metapath is given,
         and the general function will not be called.
+    dtype : dtype object
+        numpy.float32 or numpy.float64. At present, numpy.float16 fails when
+        using sparse matrices, due to a bug in scipy.sparse
 
     Returns
     -------
@@ -74,13 +78,14 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False):
 
     else:
         row_names, col_names, dwpc_matrix = dwpc_function(
-            graph, metapath, damping, dense_threshold=dense_threshold)
+            graph, metapath, damping, dense_threshold=dense_threshold,
+            dtype=dtype)
 
     total_time = time.perf_counter() - start_time
     return row_names, col_names, dwpc_matrix, total_time
 
 
-def dwwc(graph, metapath, damping=0.5, dense_threshold=0):
+def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Compute the degree-weighted walk count (DWWC) in which nodes can be
     repeated within a path.
@@ -93,13 +98,14 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0):
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold at which a sparse matrix will be
         converted to a dense automatically.
+    dtype : dtype object
     """
     dwwc_matrix = None
     row_names = None
     for metaedge in metapath:
         rows, cols, adj_mat = metaedge_to_adjacency_matrix(
-            graph, metaedge, dense_threshold=dense_threshold)
-        adj_mat = _degree_weight(adj_mat, damping)
+            graph, metaedge, dense_threshold=dense_threshold, dtype=dtype)
+        adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
         if dwwc_matrix is None:
             row_names = rows
             dwwc_matrix = adj_mat
@@ -326,27 +332,28 @@ def get_segments(metagraph, metapath):
     return segments
 
 
-def remove_diag(mat):
+def remove_diag(mat, dtype=numpy.float64):
     """Set the main diagonal of a square matrix to zeros."""
     assert mat.shape[0] == mat.shape[1]  # must be square
     if sparse.issparse(mat):
-        return mat - sparse.diags(mat.diagonal(), dtype=numpy.float64)
+        return mat - sparse.diags(mat.diagonal(), dtype=dtype)
     else:
         return mat - numpy.diag(mat.diagonal())
 
 
-def _degree_weight(matrix, damping, copy=True):
+def _degree_weight(matrix, damping, copy=True, dtype=numpy.float64):
     """Normalize an adjacency matrix by the in and out degree."""
-    matrix = copy_array(matrix, copy)
-    row_sums = numpy.array(matrix.sum(axis=1)).flatten()
-    column_sums = numpy.array(matrix.sum(axis=0)).flatten()
+    matrix = copy_array(matrix, copy, dtype=dtype)
+    row_sums = numpy.array(matrix.sum(axis=1), dtype=dtype).flatten()
+    column_sums = numpy.array(matrix.sum(axis=0), dtype=dtype).flatten()
     matrix = normalize(matrix, row_sums, 'rows', damping)
     matrix = normalize(matrix, column_sums, 'columns', damping)
 
     return matrix
 
 
-def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0):
+def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0,
+                   dtype=numpy.float64):
     """DWPC for disjoint repeats or disjoint groups"""
     segments = get_segments(graph.metagraph, metapath)
     row_names = None
@@ -356,7 +363,8 @@ def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0):
         segment_category = categorize(segment)
         dwpc_function = category_to_function(segment_category)
         rows, cols, seg_matrix = dwpc_function(
-            graph, segment, damping=damping, dense_threshold=dense_threshold)
+            graph, segment, damping=damping, dense_threshold=dense_threshold,
+            dtype=dtype)
         if row_names is None:
             row_names = rows
         if segment is segments[-1]:
@@ -369,23 +377,27 @@ def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0):
     return row_names, col_names, dwpc_matrix
 
 
-def _dwpc_repeat_around(graph, metapath, damping=0.5, dense_threshold=0):
+def _dwpc_repeat_around(graph, metapath, damping=0.5, dense_threshold=0,
+                        dtype=numpy.float64):
     """DWPC for situations in which we have a surrounding repeat like
     B----B, where the middle group is a more complicated group. The
     purpose of this function is just as an order-of-operations
     simplification"""
     segments = get_segments(graph.metagraph, metapath)
     mid = dwpc(graph, segments[1], damping=damping,
-               dense_threshold=dense_threshold)[2]
+               dense_threshold=dense_threshold, dtype=dtype)[2]
     row_names, cols, adj0, t = dwpc(graph, segments[0], damping=damping,
-                                    dense_threshold=dense_threshold)
+                                    dense_threshold=dense_threshold,
+                                    dtype=dtype)
     rows, col_names, adj1, t = dwpc(graph, segments[-1], damping=damping,
-                                    dense_threshold=dense_threshold)
-    dwpc_matrix = remove_diag(adj0 @ mid @ adj1)
+                                    dense_threshold=dense_threshold,
+                                    dtype=dtype)
+    dwpc_matrix = remove_diag(adj0 @ mid @ adj1, dtype=dtype)
     return row_names, col_names, dwpc_matrix
 
 
-def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0):
+def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0,
+               dtype=numpy.float64):
     """
     A function to handle metapath (segments) of the form BAAB.
     This function will handle arbitrary lengths of this repeated
@@ -404,6 +416,7 @@ def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0):
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold above which a sparse matrix will be
         converted to a dense automatically.
+    dtype : dtype object
 
     Examples
     --------
@@ -422,8 +435,9 @@ def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0):
             mid_seg = s
             mid_ind = i
     rows, cols, dwpc_mid, seconds = dwpc(
-        graph, mid_seg, damping=damping, dense_threshold=dense_threshold)
-    dwpc_mid = remove_diag(dwpc_mid)
+        graph, mid_seg, damping=damping, dense_threshold=dense_threshold,
+        dtype=dtype)
+    dwpc_mid = remove_diag(dwpc_mid, dtype=dtype)
 
     # Get two indices for the segments ahead of and behind the middle region
     head_ind = mid_ind
@@ -437,23 +451,24 @@ def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0):
         if head is not None:
             row_names, cols, dwpc_head, seconds = dwpc(
                 graph, head, damping=damping,
-                dense_threshold=dense_threshold)
+                dense_threshold=dense_threshold, dtype=dtype)
             dwpc_mid = dwpc_head @ dwpc_mid
         # Multiply on the tail
         if tail is not None:
             rows, col_names, dwpc_tail, seconds = dwpc(
                 graph, tail, damping=damping,
-                dense_threshold=dense_threshold)
+                dense_threshold=dense_threshold, dtype=dtype)
             dwpc_mid = dwpc_mid @ dwpc_tail
         # Remove the diagonal if the head and tail are repeats
         if head and tail:
             if head.source() == tail.target():
-                dwpc_mid = remove_diag(dwpc_mid)
+                dwpc_mid = remove_diag(dwpc_mid, dtype=dtype)
 
     return row_names, col_names, dwpc_mid
 
 
-def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0):
+def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0,
+               dtype=numpy.float64):
     """
     Computes the degree-weighted path count for overlapping metanode
     repeats of the form B-A-B-A. Supports random inserts.
@@ -470,11 +485,14 @@ def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0):
             seg_bed = segments[-1] if segments[-1] != seg_azb else None
     # Collect segment DWPC and corrections
     row_names, cols, axb, seconds = dwpc(graph, seg_axb, damping=damping,
-                                         dense_threshold=dense_threshold)
+                                         dense_threshold=dense_threshold,
+                                         dtype=dtype)
     rows, cols, bya, seconds = dwpc(graph, seg_bya, damping=damping,
-                                    dense_threshold=dense_threshold)
+                                    dense_threshold=dense_threshold,
+                                    dtype=dtype)
     rows, col_names, azb, seconds = dwpc(graph, seg_azb, damping=damping,
-                                         dense_threshold=dense_threshold)
+                                         dense_threshold=dense_threshold,
+                                         dtype=dtype)
 
     correction_a = numpy.diag((axb @ bya).diagonal()) @ azb if \
         not sparse.issparse(axb) else \
@@ -490,16 +508,19 @@ def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0):
     # Account for possible head and tail segments outside the BABA group
     if seg_cda is not None:
         row_names, cols, cda, seconds = dwpc(graph, seg_cda, damping=damping,
-                                             dense_threshold=dense_threshold)
+                                             dense_threshold=dense_threshold,
+                                             dtype=dtype)
         dwpc_matrix = cda @ dwpc_matrix
     if seg_bed is not None:
         rows, col_names, bed, seconds = dwpc(graph, seg_bed, damping=damping,
-                                             dense_threshold=dense_threshold)
+                                             dense_threshold=dense_threshold,
+                                             dtype=dtype)
         dwpc_matrix = dwpc_matrix @ bed
     return row_names, col_names, dwpc_matrix
 
 
-def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0):
+def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0,
+                       dtype=numpy.float64):
     """
     One metanode repeated 3 or fewer times (A-A-A), not (A-A-A-A)
     This can include other random inserts, so long as they are not
@@ -533,47 +554,49 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0):
 
     for metaedge in repeat_segment[:index_of_repeats[1]]:
         rows, cols, adj = metaedge_to_adjacency_matrix(
-            graph, metaedge, dtype=numpy.float64,
+            graph, metaedge, dtype=dtype,
             dense_threshold=dense_threshold)
-        adj = _degree_weight(adj, damping)
+        adj = _degree_weight(adj, damping, dtype=dtype)
         if dwpc_matrix is None:
             row_names = rows
             dwpc_matrix = adj
         else:
             dwpc_matrix = dwpc_matrix @ adj
 
-    dwpc_matrix = remove_diag(dwpc_matrix)
+    dwpc_matrix = remove_diag(dwpc_matrix, dtype=dtype)
 
     # Extra correction for random metanodes in the repeat segment
     if len(index_of_repeats) == 3:
         for metaedge in repeat_segment[index_of_repeats[1]:]:
             rows, cols, adj = metaedge_to_adjacency_matrix(
-                graph, metaedge, dtype=numpy.float64,
+                graph, metaedge, dtype=dtype,
                 dense_threshold=dense_threshold)
-            adj = _degree_weight(adj, damping)
+            adj = _degree_weight(adj, damping, dtype=dtype)
             if dwpc_tail is None:
                 dwpc_tail = adj
             else:
                 dwpc_tail = dwpc_tail @ adj
-        dwpc_tail = remove_diag(dwpc_tail)
+        dwpc_tail = remove_diag(dwpc_tail, dtype=dtype)
         dwpc_matrix = dwpc_matrix @ dwpc_tail
-        dwpc_matrix = remove_diag(dwpc_matrix)
+        dwpc_matrix = remove_diag(dwpc_matrix, dtype=dtype)
     col_names = cols
 
     if head_segment:
         row_names, cols, head_dwpc = dwwc(graph, head_segment, damping=damping,
-                                          dense_threshold=dense_threshold)
+                                          dense_threshold=dense_threshold,
+                                          dtype=dtype)
         dwpc_matrix = head_dwpc @ dwpc_matrix
     if tail_segment:
         rows, col_names, tail_dwpc = dwwc(graph, tail_segment, damping=damping,
-                                          dense_threshold=dense_threshold)
+                                          dense_threshold=dense_threshold,
+                                          dtype=dtype)
         dwpc_matrix = dwpc_matrix @ tail_dwpc
 
     return row_names, col_names, dwpc_matrix
 
 
 def _node_to_children(graph, metapath, node, metapath_index, damping=0,
-                      history=None):
+                      history=None, dtype=numpy.float64):
     """
     Returns a history adjusted list of child nodes. Used in _dwpc_general_case.
 
@@ -585,6 +608,7 @@ def _node_to_children(graph, metapath, node, metapath_index, damping=0,
     metapath_index : int
     damping : float
     history : numpy.ndarray
+    dtype : dtype object
 
     Returns
     -------
@@ -601,16 +625,16 @@ def _node_to_children(graph, metapath, node, metapath_index, damping=0,
         history = {
             i.target: numpy.ones(
                 len(metaedge_to_adjacency_matrix(graph, i)[1]
-                    ), dtype=numpy.float64)
+                    ), dtype=dtype)
             for i in metapath if i.target in repeated
         }
     history = history.copy()
     if metaedge.source in history:
-        history[metaedge.source] -= numpy.array(node != 0, dtype=numpy.float64)
+        history[metaedge.source] -= numpy.array(node != 0, dtype=dtype)
 
     rows, cols, adj = metaedge_to_adjacency_matrix(graph, metaedge,
-                                                   dtype=numpy.float64)
-    adj = _degree_weight(adj, damping)
+                                                   dtype=dtype)
+    adj = _degree_weight(adj, damping, dtype=dtype)
     vector = node @ adj
 
     if metaedge.target in history:
@@ -621,7 +645,7 @@ def _node_to_children(graph, metapath, node, metapath_index, damping=0,
             'next_index': metapath_index + 1}
 
 
-def _dwpc_general_case(graph, metapath, damping=0):
+def _dwpc_general_case(graph, metapath, damping=0, dtype=numpy.float64):
     """
     A slow but general function to compute the degree-weighted
     path count. Works by splitting the metapath at junctions
@@ -632,9 +656,11 @@ def _dwpc_general_case(graph, metapath, damping=0):
     graph : hetio.hetnet.Graph
     metapath : hetio.hetnet.MetaPath
     damping : float
+    dtype : dtype object
     """
     dwpc_step = functools.partial(_node_to_children, graph=graph,
-                                  metapath=metapath, damping=damping)
+                                  metapath=metapath, damping=damping,
+                                  dtype=dtype)
 
     start_nodes, cols, adj = metaedge_to_adjacency_matrix(graph, metapath[0])
     rows, fin_nodes, adj = metaedge_to_adjacency_matrix(graph, metapath[-1])
@@ -644,7 +670,7 @@ def _dwpc_general_case(graph, metapath, damping=0):
     dwpc_matrix = []
     if len(metapath) > 1:
         for i in range(number_start):
-            search = numpy.zeros(number_start, dtype=numpy.float64)
+            search = numpy.zeros(number_start, dtype=dtype)
             search[i] = 1
             step1 = [dwpc_step(node=search, metapath_index=0, history=None)]
             k = 1
@@ -671,6 +697,6 @@ def _dwpc_general_case(graph, metapath, damping=0):
                 end_nodes = numpy.zeros(number_end)
             dwpc_matrix.append(end_nodes)
     else:
-        dwpc_matrix = _degree_weight(adj, damping=damping)
-    dwpc_matrix = numpy.array(dwpc_matrix, dtype=numpy.float64)
+        dwpc_matrix = _degree_weight(adj, damping=damping, dtype=dtype)
+    dwpc_matrix = numpy.array(dwpc_matrix, dtype=dtype)
     return start_nodes, fin_nodes, dwpc_matrix

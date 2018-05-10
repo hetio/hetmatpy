@@ -32,7 +32,7 @@ def normalize(matrix, vector, axis, damping_exponent):
     return matrix
 
 
-def copy_array(matrix, copy=True):
+def copy_array(matrix, copy=True, dtype=numpy.float64):
     """Returns a newly allocated array if copy is True"""
     assert matrix.ndim == 2
     assert matrix.dtype != 'O'  # Ensures no empty row
@@ -46,5 +46,5 @@ def copy_array(matrix, copy=True):
     mat_type = type(matrix)
     if mat_type == numpy.ndarray:
         mat_type = numpy.array
-    matrix = mat_type(matrix, dtype=numpy.float64, copy=copy)
+    matrix = mat_type(matrix, dtype=dtype, copy=copy)
     return matrix
