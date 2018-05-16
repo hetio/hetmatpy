@@ -8,11 +8,14 @@ import time
 import numpy
 from scipy import sparse
 from hetio.matrix import (
-    metaedge_to_adjacency_matrix,
     sparsify_or_densify,
 )
 
-from .matrix import copy_array, normalize
+from .matrix import (
+    copy_array,
+    metaedge_to_adjacency_matrix,
+    normalize,
+)
 
 
 def category_to_function(category):

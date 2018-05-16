@@ -7,8 +7,7 @@ __pycache__/
 *.egg-info/
 
 ### Jupyter Notebook ###
-# Temporary data
-**.ipynb_checkpoints/
+.ipynb_checkpoints
 
 ### IDEA ###
 **.idea/

@@ -3,12 +3,12 @@ from collections import OrderedDict
 import numpy
 from hetio.matrix import (
     get_node_to_position,
-    metaedge_to_adjacency_matrix,
 )
 
 from .matrix import (
-    normalize,
     copy_array,
+    metaedge_to_adjacency_matrix,
+    normalize,
 )
 
 

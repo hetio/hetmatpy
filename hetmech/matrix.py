@@ -1,6 +1,24 @@
 import numpy
 import scipy.sparse
 
+import hetio.hetnet
+import hetio.matrix
+
+import hetmech.hetmat
+
+
+def metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs):
+    """
+    Return an adjacency matrix tuple like (rows, cols, matrix) for a specified
+    metapath. This function is a compatibility wrapper allowing
+    graph_or_hetmat to be either a hetio.hetnet.Graph or hetmech.hetmat.HetMat.
+    """
+    if isinstance(graph_or_hetmat, hetmech.hetmat.HetMat):
+        return graph_or_hetmat.metaedge_to_adjacency_matrix(*args, **kwargs)
+    if isinstance(graph_or_hetmat, hetio.hetnet.Graph):
+        return hetio.matrix.metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs)
+    raise TypeError(f'graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}')
+
 
 def normalize(matrix, vector, axis, damping_exponent):
     """
