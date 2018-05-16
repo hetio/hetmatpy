@@ -2,18 +2,17 @@ dist: trusty
 sudo: false
 language: generic
 before_install:
-  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  - wget https://repo.continuum.io/miniconda/Miniconda3-4.5.1-Linux-x86_64.sh
     --output-document miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
+  - source $HOME/miniconda/etc/profile.d/conda.sh
   - conda config --set always_yes yes --set changeps1 no
-  - conda update --quiet conda
   - conda info --all
 install:
   - conda env create --quiet --file environment.yml
-  - source activate hetmech
+  - conda activate hetmech
   - pip install --editable .
+  - conda list
 script:
   - pytest hetmech
   - jupyter nbconvert --to=script --stdout *.ipynb |
