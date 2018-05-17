@@ -1,4 +1,5 @@
 /hetnet/adjacency/data-big
+/data/hetionet-v1.0.hetmat/permutations/*.bak
 
 ### Python ###
 __pycache__/

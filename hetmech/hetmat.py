@@ -1,5 +1,6 @@
 import functools
 import pathlib
+import shutil
 
 import pandas
 import numpy
@@ -10,7 +11,7 @@ import hetio.readwrite
 import hetio.matrix
 
 
-def hetmat_from_graph(graph, path):
+def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_edges=True):
     """
     Create a hetmat.HetMat from a hetio.hetnet.Graph.
     """
@@ -39,6 +40,30 @@ def hetmat_from_graph(graph, path):
     return hetmat
 
 
+def hetmat_from_permuted_graph(hetmat, permutation_id, permuted_graph):
+    """
+    Assumes subdirectory structure and that permutations inherit nodes but not
+    edges.
+    """
+    if not hetmat.permutations_directory.is_dir():
+        hetmat.permutations_directory.mkdir()
+    directory = hetmat.permutations_directory.joinpath(f'{permutation_id}.hetmat')
+    if directory.is_dir():
+        # If directory exists, back it up using a .bak extension
+        backup_directory = directory.with_name(directory.name + '.bak')
+        if backup_directory.is_dir():
+            shutil.rmtree(backup_directory)
+        shutil.move(directory, backup_directory)
+    permuted_hetmat = HetMat(directory, initialize=True)
+    permuted_hetmat.is_permutation = True
+    permuted_hetmat.metagraph_path.symlink_to('../../metagraph.json')
+    permuted_hetmat.nodes_directory.rmdir()
+    permuted_hetmat.nodes_directory.symlink_to('../../nodes', target_is_directory=True)
+    permuted_hetmat = hetmat_from_graph(
+        permuted_graph, directory, save_metagraph=False, save_nodes=False)
+    return permuted_hetmat
+
+
 def read_matrix(path, file_format='infer'):
     path = str(path)
     if file_format == 'infer':
@@ -63,7 +88,7 @@ def find_read_matrix(path, file_formats=['sparse.npz', 'npy']):
     """
     path = pathlib.Path(path)
     for file_format in file_formats:
-        path = path.with_suffix(f'.{file_format}')
+        path = path.with_name(f'{path.name}.{file_format}')
         if not path.is_file():
             continue
         return read_matrix(path, file_format=file_format)
@@ -97,6 +122,9 @@ class HetMat:
         self.metagraph_path = self.directory.joinpath('metagraph.json')
         self.nodes_directory = self.directory.joinpath('nodes')
         self.edges_directory = self.directory.joinpath('edges')
+        # Permutations should set is_permutation=True
+        self.is_permutation = False
+        self.permutations_directory = self.directory.joinpath('permutations')
         if initialize:
             self.initialize()
 
@@ -114,6 +142,24 @@ class HetMat:
         for directory in directories:
             if not directory.is_dir():
                 directory.mkdir()
+
+    @property
+    @functools.lru_cache()
+    def permutations(self):
+        """
+        Return a dictionary of permutation name to permutation directory.
+        Assumes permutation name is the directory name minus its .hetmat
+        extension.
+        """
+        permutations = {}
+        for directory in sorted(self.permutations_directory.glob('*.hetmat')):
+            if not directory.is_dir():
+                continue
+            permutation = HetMat(directory)
+            permutation.is_permutation = True
+            name, _ = directory.name.rsplit('.', 1)
+            permutations[name] = permutation
+        return permutations
 
     @property
     @functools.lru_cache()
@@ -142,7 +188,7 @@ class HetMat:
         metanode = self.metagraph.get_metanode(metanode)
         path = self.nodes_directory.joinpath(f'{metanode}')
         if file_format is not None:
-            path = path.with_suffix(f'.{file_format}')
+            path = path.with_name(f'{path.name}.{file_format}')
         return path
 
     def get_edges_path(self, metaedge, file_format='npy'):
@@ -153,7 +199,7 @@ class HetMat:
         metaedge_abbrev = self.metagraph.get_metaedge(metaedge).get_abbrev()
         path = self.edges_directory.joinpath(f'{metaedge_abbrev}')
         if file_format is not None:
-            path = path.with_suffix(f'.{file_format}')
+            path = path.with_name(f'{path.name}.{file_format}')
         return path
 
     @functools.lru_cache()
