@@ -1,14 +1,16 @@
 import functools
+import itertools
 import pathlib
 import shutil
 
-import pandas
+import hetio.hetnet
+import hetio.matrix
+import hetio.readwrite
 import numpy
+import pandas
 import scipy.sparse
 
-import hetio.hetnet
-import hetio.readwrite
-import hetio.matrix
+import hetmech.degree_weight
 
 
 def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_edges=True):
@@ -82,19 +84,33 @@ def read_matrix(path, file_format='infer'):
     raise ValueError(f'file_format={file_format} is not supported.')
 
 
-def find_read_matrix(path, file_formats=['sparse.npz', 'npy']):
+def read_first_matrix(specs):
     """
-    Read a matrix at the given path (without an extenstion)
+    Attempt to read each path provided by specs, until one exists. If none of
+    the specs point to an existing path, raise a FileNotFoundError.
+    specs should be a list where each element is a dictionary specifying a
+    potential path from which to read a matrix. Currently, the spec dictionary
+    supports the following keys:
+    - path: path to the file
+    - transpose: whether to tranpose the file after reading it. If omitted,
+      then False.
+    - file_format: format of the matrix. If omitted, then infer.
     """
-    path = pathlib.Path(path)
-    for file_format in file_formats:
-        path = path.with_name(f'{path.name}.{file_format}')
+    paths = list()
+    for spec in specs:
+        path = pathlib.Path(spec['path'])
+        paths.append(str(path))
         if not path.is_file():
             continue
-        return read_matrix(path, file_format=file_format)
+        transpose = spec.get('transpose', False)
+        file_format = spec.get('file_format', 'infer')
+        matrix = read_matrix(path, file_format=file_format)
+        if transpose:
+            matrix = matrix.transpose()
+        return matrix
     raise FileNotFoundError(
-        f'No matrix files found at {path} with any of these extensions: ' +
-        ', '.join(file_formats))
+        f'No matrix files found at the specified paths:\n' +
+        '\n'.join(paths))
 
 
 class HetMat:
@@ -122,6 +138,7 @@ class HetMat:
         self.metagraph_path = self.directory.joinpath('metagraph.json')
         self.nodes_directory = self.directory.joinpath('nodes')
         self.edges_directory = self.directory.joinpath('edges')
+        self.path_counts_directory = self.directory.joinpath('path-counts')
         # Permutations should set is_permutation=True
         self.is_permutation = False
         self.permutations_directory = self.directory.joinpath('permutations')
@@ -202,6 +219,16 @@ class HetMat:
             path = path.with_name(f'{path.name}.{file_format}')
         return path
 
+    def get_path_counts_path(self, metapath, metric, damping, file_format):
+        """
+        Setting file_format=None returns the path without any exension suffix.
+        Supported metrics are 'dwpc' and 'dwwc'.
+        """
+        path = self.path_counts_directory.joinpath(f'{metric}-{damping}/{metapath}')
+        if file_format is not None:
+            path = path.with_name(f'{path.name}.{file_format}')
+        return path
+
     @functools.lru_cache()
     def get_node_identifiers(self, metanode):
         """
@@ -219,19 +246,52 @@ class HetMat:
         file_formats sets the precedence of which file to read in
         """
         metaedge = self.metagraph.get_metaedge(metaedge)
-        # Attempt to read the edge matrix in the specified orientation
-        path = self.get_edges_path(metaedge, file_format=None)
-        try:
-            matrix = find_read_matrix(path, file_formats=file_formats)
-        except FileNotFoundError:
-            # Read the edge matrix in the inverse orientation, then transpose
-            path = self.get_edges_path(metaedge.inverse, file_format=None)
-            matrix = find_read_matrix(path, file_formats=file_formats)
-            matrix = matrix.transpose()
+        specs = list()
+        configurations = itertools.product(file_formats, (True, False))
+        for file_format, invert in configurations:
+            path = self.get_edges_path(
+                metaedge=metaedge.inverse if invert else metaedge,
+                file_format=file_format,
+            )
+            spec = {'path': path, 'transpose': invert, 'file_format': file_format}
+            specs.append(spec)
+        matrix = read_first_matrix(specs)
         if dense_threshold is not None:
             matrix = hetio.matrix.sparsify_or_densify(matrix, dense_threshold=dense_threshold)
         if dtype is not None:
             matrix = matrix.astype(dtype)
         row_ids = self.get_node_identifiers(metaedge.source)
         col_ids = self.get_node_identifiers(metaedge.target)
+        return row_ids, col_ids, matrix
+
+    def read_path_counts(
+            self, metapath, metric, damping,
+            file_formats=['sparse.npz', 'npy']):
+        """
+        Read matrix with values of a path-count-based metric. Attempts to
+        locate any files with the matrix (or with trivial transformations).
+        """
+        category = hetmech.degree_weight.categorize(metapath)
+        metrics = [metric]
+        if metric == 'dwpc' and category == 'no_repeats':
+            metrics.append('dwwc')
+        if metric == 'dwwc' and category == 'no_repeats':
+            metrics.append('dwpc')
+        specs = list()
+        configurations = itertools.product(
+            file_formats,
+            metrics,
+            (True, False),
+        )
+        for file_format, metric, invert in configurations:
+            path = self.get_path_counts_path(
+                metapath=metapath.inverse if invert else metapath, metric=metric,
+                damping=damping,
+                file_format=file_format,
+            )
+            spec = {'path': path, 'transpose': invert, 'file_format': file_format}
+            specs.append(spec)
+        row_ids = self.get_node_identifiers(metapath.source())
+        col_ids = self.get_node_identifiers(metapath.target())
+        matrix = read_first_matrix(specs)
         return row_ids, col_ids, matrix
