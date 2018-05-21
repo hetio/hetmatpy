@@ -5,12 +5,14 @@ import shutil
 
 import hetio.hetnet
 import hetio.matrix
+import hetio.permute
 import hetio.readwrite
 import numpy
 import pandas
 import scipy.sparse
 
 import hetmech.degree_weight
+import hetmech.matrix
 
 
 def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_edges=True):
@@ -47,6 +49,25 @@ def hetmat_from_permuted_graph(hetmat, permutation_id, permuted_graph):
     Assumes subdirectory structure and that permutations inherit nodes but not
     edges.
     """
+    permuted_hetmat = initialize_permutation_directory(hetmat, permutation_id)
+    permuted_hetmat = hetmat_from_graph(
+        permuted_graph, permuted_hetmat.directory, save_metagraph=False, save_nodes=False)
+    return permuted_hetmat
+
+
+def initialize_permutation_directory(hetmat, permutation_id):
+    """
+    Initializes the directory structure of a HetMat permutation.
+
+    Parameters
+    ----------
+    hetmat : HetMat
+    permutation_id : str
+
+    Returns
+    -------
+    HetMat
+    """
     if not hetmat.permutations_directory.is_dir():
         hetmat.permutations_directory.mkdir()
     directory = hetmat.permutations_directory.joinpath(f'{permutation_id}.hetmat')
@@ -61,8 +82,6 @@ def hetmat_from_permuted_graph(hetmat, permutation_id, permuted_graph):
     permuted_hetmat.metagraph_path.symlink_to('../../metagraph.json')
     permuted_hetmat.nodes_directory.rmdir()
     permuted_hetmat.nodes_directory.symlink_to('../../nodes', target_is_directory=True)
-    permuted_hetmat = hetmat_from_graph(
-        permuted_graph, directory, save_metagraph=False, save_nodes=False)
     return permuted_hetmat
 
 
@@ -111,7 +130,7 @@ def read_first_matrix(specs):
     potential path from which to read a matrix. Currently, the spec dictionary
     supports the following keys:
     - path: path to the file
-    - transpose: whether to tranpose the file after reading it. If omitted,
+    - transpose: whether to transpose the file after reading it. If omitted,
       then False.
     - file_format: format of the matrix. If omitted, then infer.
     """
@@ -197,6 +216,58 @@ class HetMat:
             permutations[name] = permutation
         return permutations
 
+    def permute_graph(self, num_new_permutations=None, namer=None, start_from=None,
+                      multiplier=10, seed=0):
+        """
+        Generate and save permutations of the HetMat adjacency matrices.
+
+        Parameters
+        ----------
+        num_new_permutations : int
+            The number of new, permuted HetMats to generate
+        namer : generator
+            Yields the names of new permutations. Cannot pass names of existing permutations
+        start_from : str
+            Name of permutation to use as starting point. For multiple permutations,
+            the first permutation starts from start_from, and future permutations
+            continue from the previous one.
+        multiplier : int
+            How many attempts to make when cross-swapping edges.
+        seed : int
+            Random seed for generating new permutations
+        """
+        if namer is None:
+            # If no namer given, continue increasing names by one for new permutations
+            namer = (f'{x:03}' for x in itertools.count(start=1))
+
+        stat_dfs = list()
+        for _ in range(num_new_permutations):
+            permutation_name = next(namer)
+            new_hetmat = initialize_permutation_directory(self, permutation_name)
+
+            if start_from is None:
+                start_from = self
+            elif isinstance(start_from, str):
+                start_from = self.permutations[start_from]
+            assert isinstance(start_from, HetMat)
+
+            metaedges = list(self.metagraph.get_edges(exclude_inverts=True))
+            for metaedge in metaedges:
+                rows, cols, original_matrix = start_from.metaedge_to_adjacency_matrix(
+                    metaedge, dense_threshold=1)
+                is_directed = metaedge.direction != 'both'
+                permuted_matrix, stats = hetmech.matrix.permute_matrix(
+                    original_matrix, directed=is_directed, multiplier=multiplier,
+                    seed=seed)
+                path = new_hetmat.get_edges_path(metaedge, file_format=None)
+                save_matrix(permuted_matrix, path)
+                stat_df = pandas.DataFrame(stats)
+                stat_df['permutation'] = permutation_name
+                stat_dfs.append(stat_df)
+            start_from = permutation_name
+            seed += 1
+        return pandas.concat(stat_dfs)
+
     @property
     @functools.lru_cache()
     def metagraph(self):
@@ -219,7 +290,7 @@ class HetMat:
     def get_nodes_path(self, metanode, file_format='tsv'):
         """
         Get the path for the nodes file for the specified metanode. Setting
-        file_format=None returns the path without any exension suffix.
+        file_format=None returns the path without any extension suffix.
         """
         metanode = self.metagraph.get_metanode(metanode)
         path = self.nodes_directory.joinpath(f'{metanode}')
@@ -230,7 +301,7 @@ class HetMat:
     def get_edges_path(self, metaedge, file_format='npy'):
         """
         Get the path for the edges file for the specified metaedge. Setting
-        file_format=None returns the path without any exension suffix.
+        file_format=None returns the path without any extension suffix.
         """
         metaedge_abbrev = self.metagraph.get_metaedge(metaedge).get_abbrev()
         path = self.edges_directory.joinpath(f'{metaedge_abbrev}')
@@ -240,7 +311,7 @@ class HetMat:
 
     def get_path_counts_path(self, metapath, metric, damping, file_format):
         """
-        Setting file_format=None returns the path without any exension suffix.
+        Setting file_format=None returns the path without any extension suffix.
         Supported metrics are 'dwpc' and 'dwwc'.
         """
         path = self.path_counts_directory.joinpath(f'{metric}-{damping}/{metapath}')

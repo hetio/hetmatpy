@@ -3,6 +3,7 @@ import scipy.sparse
 
 import hetio.hetnet
 import hetio.matrix
+import hetio.permute
 
 import hetmech.hetmat
 
@@ -66,3 +67,49 @@ def copy_array(matrix, copy=True, dtype=numpy.float64):
         mat_type = numpy.array
     matrix = mat_type(matrix, dtype=dtype, copy=copy)
     return matrix
+
+
+def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
+                   excluded_pair_set=set(), seed=0):
+    """
+    Perform a degree-preserving permutation on a given adjacency matrix. Assumes
+    boolean matrix, and is incompatible with weighted edges.
+
+    Parameters
+    ----------
+    adjacency_matrix : numpy.ndarray or scipy.sparse
+    directed : bool
+    multiplier : float
+        Number of times to try edge swaps as a fraction of the number of edges.
+        Default is ten times the number of tries as edges.
+    excluded_pair_set : set
+        Pairs of nodes to exclude from the permutation
+    seed : int
+
+    Returns
+    -------
+    numpy.ndarray or scipy.sparse, list
+        Permuted adjacency matrix of the same type as was passed. List of
+        OrderedDicts of information on the permutations performed.
+    """
+    edge_list = list(zip(*adjacency_matrix.nonzero()))
+    permuted_edges, stats = hetio.permute.permute_pair_list(
+        edge_list, directed=directed, multiplier=multiplier,
+        excluded_pair_set=excluded_pair_set, seed=seed)
+
+    edges = numpy.array(permuted_edges)
+    ones = numpy.ones(len(edges), dtype=adjacency_matrix.dtype)
+    permuted_adjacency = scipy.sparse.csc_matrix((ones, (edges[:, 0], edges[:, 1])),
+                                                 shape=adjacency_matrix.shape)
+
+    # Keep the same sparse type as adjacency_matrix
+    if scipy.sparse.issparse(adjacency_matrix):
+        permuted_adjacency = type(adjacency_matrix)(permuted_adjacency)
+    else:
+        permuted_adjacency = permuted_adjacency.toarray()
+
+    # Ensure node degrees have been preserved
+    assert (permuted_adjacency.sum(axis=1) == adjacency_matrix.sum(axis=1)).all()
+    assert (permuted_adjacency.sum(axis=0) == adjacency_matrix.sum(axis=0)).all()
+
+    return permuted_adjacency, stats
