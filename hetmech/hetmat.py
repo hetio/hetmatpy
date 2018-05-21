@@ -37,8 +37,8 @@ def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_ed
     metaedges = list(graph.metagraph.get_edges(exclude_inverts=True))
     for metaedge in metaedges:
         rows, cols, matrix = hetio.matrix.metaedge_to_adjacency_matrix(graph, metaedge, dense_threshold=1)
-        path = hetmat.get_edges_path(metaedge, file_format='sparse.npz')
-        scipy.sparse.save_npz(str(path), matrix, compressed=True)
+        path = hetmat.get_edges_path(metaedge, file_format=None)
+        save_matrix(matrix, path)
     return hetmat
 
 
@@ -82,6 +82,25 @@ def read_matrix(path, file_format='infer'):
         # https://docs.scipy.org/doc/numpy-1.14.0/reference/generated/numpy.load.html
         return numpy.load(path)
     raise ValueError(f'file_format={file_format} is not supported.')
+
+
+def save_matrix(matrix, path):
+    """
+    Save a matrix to a the file specified by path.
+    Path should not include it's extension which is inferred.
+    """
+    path = pathlib.Path(path)
+    if not path.parent.exists():
+        path.parent.mkdir()
+    path = str(path)
+    if isinstance(matrix, numpy.ndarray):
+        if not path.endswith('.npy'):
+            path += '.npy'
+        numpy.save(path, matrix)
+    elif scipy.sparse.issparse(matrix):
+        if not path.endswith('.sparse.npz'):
+            path += '.sparse.npz'
+        scipy.sparse.save_npz(path, matrix, compressed=True)
 
 
 def read_first_matrix(specs):
