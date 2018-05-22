@@ -1,9 +1,9 @@
 import collections
 import copy
 import functools
+import inspect
 import itertools
 import logging
-import time
 
 import numpy
 from scipy import sparse
@@ -11,7 +11,8 @@ from hetio.matrix import (
     sparsify_or_densify,
 )
 
-from .matrix import (
+import hetmech.hetmat
+from hetmech.matrix import (
     copy_array,
     metaedge_to_adjacency_matrix,
     normalize,
@@ -32,6 +33,43 @@ def category_to_function(category):
     return function_dictionary[category]
 
 
+def path_count_cache(metric):
+    """
+    Decorator to apply caching to the DWWC and DWPC functions.
+    """
+    def decorator(user_function):
+        signature = inspect.signature(user_function)
+
+        @functools.wraps(user_function)
+        def wrapper(*args, **kwargs):
+            bound_args = signature.bind(*args, **kwargs)
+            bound_args.apply_defaults()
+            arguments = bound_args.arguments
+            # Replace below with caching
+            graph = arguments['graph']
+            metapath = arguments['metapath']
+            damping = arguments['damping']
+            cached_result = None
+            set_cache = False
+            if isinstance(graph, hetmech.hetmat.HetMat) and graph.path_counts_cache:
+                cache_key = {'metapath': metapath, 'metric': metric, 'damping': damping}
+                cached_result = graph.path_counts_cache.get(**cache_key)
+                if cached_result:
+                    row_names, col_names, matrix = cached_result
+                    matrix = sparsify_or_densify(matrix, arguments['dense_threshold'])
+                    matrix = matrix.astype(arguments['dtype'])
+                else:
+                    set_cache = True
+            if cached_result is None:
+                row_names, col_names, matrix = user_function(*args, **kwargs)
+                if set_cache:
+                    graph.path_counts_cache.set(**cache_key, matrix=matrix)
+            return row_names, col_names, matrix
+        return wrapper
+    return decorator
+
+
+@path_count_cache(metric='dwpc')
 def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
          dtype=numpy.float64):
     """
@@ -64,11 +102,7 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
         column labels
     numpy.ndarray or scipy.sparse.csc_matrix
         the DWPC matrix
-    float
-        the computation time in seconds
     """
-    start_time = time.perf_counter()
-
     category = categorize(metapath)
     dwpc_function = category_to_function(category)
     if category in ('long_repeat', 'other'):
@@ -78,16 +112,15 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
         else:
             raise NotImplementedError(
                 'Metapath category will use _dwpc_general_case')
-
     else:
         row_names, col_names, dwpc_matrix = dwpc_function(
             graph, metapath, damping, dense_threshold=dense_threshold,
             dtype=dtype)
 
-    total_time = time.perf_counter() - start_time
-    return row_names, col_names, dwpc_matrix, total_time
+    return row_names, col_names, dwpc_matrix
 
 
+@path_count_cache(metric='dwwc')
 def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Compute the degree-weighted walk count (DWWC) in which nodes can be
@@ -179,8 +212,8 @@ def categorize(metapath):
             assert repeats_only[1] == repeats_only[2]
             return 'BAAB'
         else:
-            assert repeats_only[0] == repeats_only[2] and \
-                   repeats_only[1] == repeats_only[3]
+            assert (repeats_only[0] == repeats_only[2] and
+                    repeats_only[1] == repeats_only[3])
             return 'BABA'
     elif len(repeats_only) == 5 and max(map(len, grouped)) == 3:
         if repeats_only[0] == repeats_only[-1]:
@@ -363,9 +396,8 @@ def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0,
     col_names = None
     dwpc_matrix = None
     for segment in segments:
-        rows, cols, seg_matrix, t = dwpc(graph, segment, damping=damping,
-                                         dense_threshold=dense_threshold,
-                                         dtype=dtype)
+        rows, cols, seg_matrix = dwpc(graph, segment, damping=damping,
+                                      dense_threshold=dense_threshold, dtype=dtype)
         if row_names is None:
             row_names = rows
         if segment is segments[-1]:
@@ -380,19 +412,18 @@ def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0,
 
 def _dwpc_repeat_around(graph, metapath, damping=0.5, dense_threshold=0,
                         dtype=numpy.float64):
-    """DWPC for situations in which we have a surrounding repeat like
+    """
+    DWPC for situations in which we have a surrounding repeat like
     B----B, where the middle group is a more complicated group. The
-    purpose of this function is just as an order-of-operations
-    simplification"""
+    purpose of this function is just as an order-of-operations simplification
+    """
     segments = get_segments(graph.metagraph, metapath)
     mid = dwpc(graph, segments[1], damping=damping,
                dense_threshold=dense_threshold, dtype=dtype)[2]
-    row_names, cols, adj0, t = dwpc(graph, segments[0], damping=damping,
-                                    dense_threshold=dense_threshold,
-                                    dtype=dtype)
-    rows, col_names, adj1, t = dwpc(graph, segments[-1], damping=damping,
-                                    dense_threshold=dense_threshold,
-                                    dtype=dtype)
+    row_names, cols, adj0 = dwpc(graph, segments[0], damping=damping,
+                                 dense_threshold=dense_threshold, dtype=dtype)
+    rows, col_names, adj1 = dwpc(graph, segments[-1], damping=damping,
+                                 dense_threshold=dense_threshold, dtype=dtype)
     dwpc_matrix = remove_diag(adj0 @ mid @ adj1, dtype=dtype)
     return row_names, col_names, dwpc_matrix
 
@@ -435,7 +466,7 @@ def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0,
         if s.source() == s.target():
             mid_seg = s
             mid_ind = i
-    rows, cols, dwpc_mid, seconds = dwpc(
+    rows, cols, dwpc_mid = dwpc(
         graph, mid_seg, damping=damping, dense_threshold=dense_threshold,
         dtype=dtype)
     dwpc_mid = remove_diag(dwpc_mid, dtype=dtype)
@@ -450,13 +481,13 @@ def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0,
         tail = segments[tail_ind] if tail_ind < len(segments) else None
         # Multiply on the head
         if head is not None:
-            row_names, cols, dwpc_head, seconds = dwpc(
+            row_names, cols, dwpc_head = dwpc(
                 graph, head, damping=damping,
                 dense_threshold=dense_threshold, dtype=dtype)
             dwpc_mid = dwpc_head @ dwpc_mid
         # Multiply on the tail
         if tail is not None:
-            rows, col_names, dwpc_tail, seconds = dwpc(
+            rows, col_names, dwpc_tail = dwpc(
                 graph, tail, damping=damping,
                 dense_threshold=dense_threshold, dtype=dtype)
             dwpc_mid = dwpc_mid @ dwpc_tail
@@ -485,15 +516,12 @@ def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0,
             seg_cda = segments[0] if i == 1 else None
             seg_bed = segments[-1] if segments[-1] != seg_azb else None
     # Collect segment DWPC and corrections
-    row_names, cols, axb, seconds = dwpc(graph, seg_axb, damping=damping,
-                                         dense_threshold=dense_threshold,
-                                         dtype=dtype)
-    rows, cols, bya, seconds = dwpc(graph, seg_bya, damping=damping,
-                                    dense_threshold=dense_threshold,
-                                    dtype=dtype)
-    rows, col_names, azb, seconds = dwpc(graph, seg_azb, damping=damping,
-                                         dense_threshold=dense_threshold,
-                                         dtype=dtype)
+    row_names, cols, axb = dwpc(graph, seg_axb, damping=damping,
+                                dense_threshold=dense_threshold, dtype=dtype)
+    rows, cols, bya = dwpc(graph, seg_bya, damping=damping,
+                           dense_threshold=dense_threshold, dtype=dtype)
+    rows, col_names, azb = dwpc(graph, seg_azb, damping=damping,
+                                dense_threshold=dense_threshold, dtype=dtype)
 
     correction_a = numpy.diag((axb @ bya).diagonal()) @ azb if \
         not sparse.issparse(axb) else \
@@ -504,18 +532,15 @@ def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0,
     correction_c = axb * bya.T * azb if not sparse.issparse(bya) else \
         (axb.multiply(bya.T)).multiply(azb)
     # Apply the corrections
-    dwpc_matrix = (axb @ bya @ azb - correction_a - correction_b
-                   + correction_c)
+    dwpc_matrix = axb @ bya @ azb - correction_a - correction_b + correction_c
     # Account for possible head and tail segments outside the BABA group
     if seg_cda is not None:
-        row_names, cols, cda, seconds = dwpc(graph, seg_cda, damping=damping,
-                                             dense_threshold=dense_threshold,
-                                             dtype=dtype)
+        row_names, cols, cda = dwpc(graph, seg_cda, damping=damping,
+                                    dense_threshold=dense_threshold, dtype=dtype)
         dwpc_matrix = cda @ dwpc_matrix
     if seg_bed is not None:
-        rows, col_names, bed, seconds = dwpc(graph, seg_bed, damping=damping,
-                                             dense_threshold=dense_threshold,
-                                             dtype=dtype)
+        rows, col_names, bed = dwpc(graph, seg_bed, damping=damping,
+                                    dense_threshold=dense_threshold, dtype=dtype)
         dwpc_matrix = dwpc_matrix @ bed
     return row_names, col_names, dwpc_matrix
 

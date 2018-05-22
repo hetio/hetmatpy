@@ -177,6 +177,7 @@ class HetMat:
         self.nodes_directory = self.directory.joinpath('nodes')
         self.edges_directory = self.directory.joinpath('edges')
         self.path_counts_directory = self.directory.joinpath('path-counts')
+        self.path_counts_cache = None
         # Permutations should set is_permutation=True
         self.is_permutation = False
         self.permutations_directory = self.directory.joinpath('permutations')

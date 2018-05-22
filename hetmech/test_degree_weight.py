@@ -183,7 +183,7 @@ def test_disjoint_dwpc(metapath, exp_row, exp_col, exp_data, shape):
     graph = hetio.readwrite.read_graph(url)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
-    row, col, dwpc_matrix, t = dwpc(graph, metapath)
+    row, col, dwpc_matrix = dwpc(graph, metapath)
 
     # expected = numpy.array(expected, dtype=numpy.float64)
     expected = sparse.coo_matrix((exp_data, (exp_row, exp_col)), shape=shape)
@@ -583,8 +583,8 @@ def test_dwpc(metapath, expected, dense_threshold):
         with pytest.raises(Exception):
             dwpc(graph, metapath, damping=0.5, dense_threshold=dense_threshold)
     else:
-        row, col, dwpc_matrix, t = dwpc(graph, metapath, damping=0.5,
-                                        dense_threshold=dense_threshold)
+        row, col, dwpc_matrix = dwpc(graph, metapath, damping=0.5,
+                                     dense_threshold=dense_threshold)
         assert abs(expected - dwpc_matrix).max() == pytest.approx(0, abs=1e-7)
         if dense_threshold == 1:
             assert sparse.issparse(dwpc_matrix)
@@ -603,5 +603,5 @@ def test_dtype(metapath, dtype):
     )
     graph = hetio.readwrite.read_graph(url)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
-    rows, cols, dwpc_matrix, t = dwpc(graph, metapath, dtype=dtype)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, dtype=dtype)
     assert dwpc_matrix.dtype == dtype

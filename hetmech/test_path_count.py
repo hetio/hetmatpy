@@ -38,8 +38,8 @@ def test_CbGpPWpGaD_traversal():
     compound = 'DB01156'  # Bupropion
     disease = 'DOID:0050742'  # nicotine dependence
     metapath = graph.metagraph.metapath_from_abbrev('CbGpPWpGaD')
-    rows, cols, pc_matrix, t = dwpc(graph, metapath, damping=0)
-    rows, cols, dwpc_matrix, t = dwpc(graph, metapath, damping=0.4)
+    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
     i = rows.index(compound)
     j = cols.index(disease)
     assert pc_matrix[i, j] == 142
@@ -66,8 +66,8 @@ def test_CbGiGiGaD_traversal():
     )
     hetio_dwpc = hetio.pathtools.DWPC(paths, damping_exponent=0.4)
 
-    rows, cols, pc_matrix, t = dwpc(graph, metapath, damping=0)
-    rows, cols, dwpc_matrix, t = dwpc(graph, metapath, damping=0.4)
+    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
     i = rows.index(compound)
     j = cols.index(disease)
 
@@ -95,8 +95,8 @@ def test_path_traversal(metapath):
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
     # Matrix computations
-    rows, cols, pc_matrix, t = dwpc(graph, metapath, damping=0)
-    rows, cols, dwpc_matrix, t = dwpc(graph, metapath, damping=0.4)
+    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
 
     # Find compound-disease pair with the max path count
     i, j = numpy.unravel_index(pc_matrix.argmax(), pc_matrix.shape)
