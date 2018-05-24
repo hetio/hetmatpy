@@ -3,7 +3,7 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .degree_weight import dwpc
+from hetmech.degree_weight import dwpc
 
 
 def get_bupropion_subgraph():

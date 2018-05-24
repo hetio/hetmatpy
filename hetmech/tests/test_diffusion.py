@@ -1,7 +1,7 @@
 import numpy
 import pytest
 
-from .diffusion import diffusion_step
+from hetmech.diffusion import diffusion_step
 
 
 class TestDualNormalize:

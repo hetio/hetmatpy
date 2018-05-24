@@ -3,7 +3,7 @@ import numpy
 import pytest
 from scipy import sparse
 
-from .degree_weight import _dwpc_baab, _dwpc_baba, _dwpc_general_case, \
+from hetmech.degree_weight import _dwpc_baab, _dwpc_baba, _dwpc_general_case, \
     _dwpc_short_repeat, categorize, dwpc, dwwc, get_segments
 
 
