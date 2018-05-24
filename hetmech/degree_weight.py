@@ -368,6 +368,72 @@ def get_segments(metagraph, metapath):
     return segments
 
 
+def get_all_segments(metagraph, metapath):
+    """
+    Return all subsegments of a given metapath, including those segments that
+    appear only after early splits.
+
+    Parameters
+    ----------
+    metagraph : hetio.hetnet.MetaGraph
+    metapath : hetio.hetnet.MetaPath
+
+    Returns
+    -------
+    list
+
+    Example
+    -------
+    >>> get_all_segments(metagraph, CrCbGaDrDaG)
+    [CrC, CbG, GaDrDaG, GaD, DrD, DaG]
+    """
+    segments = get_segments(metagraph, metapath)
+    if len(segments) == 1:
+        return [metapath]
+    all_subsegments = []
+    for segment in segments:
+        subsegments = get_all_segments(metagraph, segment)
+        next_split = subsegments if len(subsegments) > 1 else []
+        all_subsegments = all_subsegments + [segment] + next_split
+    return all_subsegments
+
+
+def order_segments(metagraph, metapaths, store_inverses=False):
+    """
+    Gives the frequencies of metapath segments that occur when computing DWPC.
+    In DWPC computation, metapaths are split a number of times for simpler computation.
+    This function finds the frequencies that segments would be used when computing
+    DWPC for all given metapaths. For the targeted caching of the most frequently
+    used segments.
+
+    Parameters
+    ----------
+    metagraph : hetio.hetnet.MetaGraph
+    metapaths : list
+        list of hetio.hetnet.MetaPath objects
+    store_inverses : bool
+        Whether or not to include both forward and backward directions of segments.
+        For example, if False: [CbG, GbC] -> [CbG, CbG], else no change.
+
+    Returns
+    -------
+    collections.Counter
+        Number of times each metapath segment appears when getting all segments.
+    """
+    all_segments = [segment for metapath in metapaths for segment in get_all_segments(metagraph, metapath)]
+    if not store_inverses:
+        # Change all instances of inverted segments to the same direction, using a first-seen ordering
+        seen = set()
+        aligned_segments = list()
+        for segment in all_segments:
+            add = segment.inverse if segment.inverse in seen else segment
+            aligned_segments.append(add)
+            seen.add(add)
+        all_segments = aligned_segments
+    segment_counts = collections.Counter(all_segments)
+    return segment_counts
+
+
 def remove_diag(mat, dtype=numpy.float64):
     """Set the main diagonal of a square matrix to zeros."""
     assert mat.shape[0] == mat.shape[1]  # must be square
