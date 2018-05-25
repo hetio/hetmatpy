@@ -263,10 +263,13 @@ class HetMat:
                 path = new_hetmat.get_edges_path(metaedge, file_format=None)
                 save_matrix(permuted_matrix, path)
                 stat_df = pandas.DataFrame(stats)
+                stat_df['metaedge'] = metaedge
+                stat_df['abbrev'] = metaedge.get_abbrev()
                 stat_df['permutation'] = permutation_name
                 stat_dfs.append(stat_df)
             start_from = permutation_name
             seed += 1
+            self.permutations[permutation_name] = new_hetmat
         return pandas.concat(stat_dfs)
 
     @property
