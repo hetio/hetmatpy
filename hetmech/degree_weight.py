@@ -4,6 +4,7 @@ import functools
 import inspect
 import itertools
 import logging
+import time
 
 import numpy
 from scipy import sparse
@@ -45,25 +46,25 @@ def path_count_cache(metric):
             bound_args = signature.bind(*args, **kwargs)
             bound_args.apply_defaults()
             arguments = bound_args.arguments
-            # Replace below with caching
             graph = arguments['graph']
-            metapath = arguments['metapath']
+            metapath = graph.metagraph.get_metapath(arguments['metapath'])
+            arguments['metapath'] = metapath
             damping = arguments['damping']
             cached_result = None
-            set_cache = False
-            if isinstance(graph, hetmech.hetmat.HetMat) and graph.path_counts_cache:
+            start = time.perf_counter()
+            supports_cache = isinstance(graph, hetmech.hetmat.HetMat) and graph.path_counts_cache
+            if supports_cache:
                 cache_key = {'metapath': metapath, 'metric': metric, 'damping': damping}
                 cached_result = graph.path_counts_cache.get(**cache_key)
                 if cached_result:
                     row_names, col_names, matrix = cached_result
                     matrix = sparsify_or_densify(matrix, arguments['dense_threshold'])
                     matrix = matrix.astype(arguments['dtype'])
-                else:
-                    set_cache = True
             if cached_result is None:
-                row_names, col_names, matrix = user_function(*args, **kwargs)
-                if set_cache:
-                    graph.path_counts_cache.set(**cache_key, matrix=matrix)
+                row_names, col_names, matrix = user_function(**arguments)
+            if supports_cache:
+                runtime = time.perf_counter() - start
+                graph.path_counts_cache.set(**cache_key, matrix=matrix, runtime=runtime)
             return row_names, col_names, matrix
         return wrapper
     return decorator
@@ -290,6 +291,7 @@ def get_segments(metagraph, metapath):
             indices = indices + [(indices[-1][-1], len(metapath))]
         return indices
 
+    metapath = metagraph.get_metapath(metapath)
     category = categorize(metapath)
     metanodes = metapath.get_nodes()
     freq = collections.Counter(metanodes)
@@ -387,10 +389,11 @@ def get_all_segments(metagraph, metapath):
     >>> get_all_segments(metagraph, CrCbGaDrDaG)
     [CrC, CbG, GaDrDaG, GaD, DrD, DaG]
     """
+    metapath = metagraph.get_metapath(metapath)
     segments = get_segments(metagraph, metapath)
     if len(segments) == 1:
         return [metapath]
-    all_subsegments = []
+    all_subsegments = [metapath]
     for segment in segments:
         subsegments = get_all_segments(metagraph, segment)
         next_split = subsegments if len(subsegments) > 1 else []

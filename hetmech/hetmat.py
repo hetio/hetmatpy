@@ -1,4 +1,5 @@
 import functools
+import heapq
 import itertools
 import pathlib
 import shutil
@@ -389,3 +390,105 @@ class HetMat:
         col_ids = self.get_node_identifiers(metapath.target())
         matrix = read_first_matrix(specs)
         return row_ids, col_ids, matrix
+
+
+class PathCountCache:
+
+    def __init__(self, hetmat):
+        self.hetmat = hetmat
+        self.cache = {}
+        self.hits = {
+            'memory': 0,
+            'disk': 0,
+            'absent': 0,
+        }
+
+    def get(self, metapath, metric, damping):
+        """
+        Return cached (row_ids, col_ids, matrix) with the specified path count
+        metric or None if the cache does not contain the matrix. Attempts
+        in-memory cache before falling back to on-disk cache.
+        """
+        matrix = None
+        for metapath_, invert in (metapath, False), (metapath.inverse, True):
+            key = metapath_, metric, damping
+            if key in self.cache:
+                matrix = self.cache[key]
+                if invert:
+                    matrix = matrix.transpose()
+        if matrix is not None:
+            self.hits['memory'] += 1
+            row_ids = self.hetmat.get_node_identifiers(metapath.source())
+            col_ids = self.hetmat.get_node_identifiers(metapath.target())
+            return row_ids, col_ids, matrix
+        try:
+            result = self.hetmat.read_path_counts(metapath, metric, damping)
+            self.hits['disk'] += 1
+            return result
+        except FileNotFoundError:
+            self.hits['absent'] += 1
+            return None
+
+    def set(self, metapath, metric, damping, matrix, runtime):
+        """
+        Gives the cache the option of caching this matrix. This method never
+        caches anything. Override this method in a subclass to enable setting
+        the cache.
+        """
+        pass
+
+
+class PathCountPriorityCache(PathCountCache):
+
+    def __init__(self, hetmat, allocate_GB):
+        super().__init__(hetmat)
+        self.allocate_B = 1_000_000_000 * allocate_GB
+        self.current_B = 0
+        # Dictionary of key to priority, where higher numbers are higher caching priority
+        self.priorities = {}
+        self.priority_queue = []
+        # Use to generate a tie-breaker value for the queue as per
+        # https://stackoverflow.com/a/40205720/4651668
+        self.priority_queue_counter = itertools.count()
+
+    def set(self, metapath, metric, damping, matrix, runtime):
+        """
+        Gives the cache the option of caching this matrix.
+        """
+        key = metapath, metric, damping
+        if key in self.cache:
+            return
+        priority = self.priorities.get(key, 0)
+        tie_breaker = next(self.priority_queue_counter)
+        nbytes = get_matrix_size(matrix)
+        if nbytes > self.allocate_B:
+            return
+        item = priority, tie_breaker, key, nbytes
+        while self.current_B + nbytes > self.allocate_B:
+            popped = heapq.heappop(self.priority_queue)
+            popped_priority, _, popped_key, popped_nbytes = popped
+            if popped_priority > priority:
+                heapq.heappush(self.priority_queue, popped)
+                break
+            del self.cache[popped_key]
+            self.current_B -= popped_nbytes
+        else:
+            heapq.heappush(self.priority_queue, item)
+            self.cache[key] = matrix
+            self.current_B += nbytes
+
+
+def get_matrix_size(matrix):
+    """
+    Estimate the size of a matrix object in bytes.
+    """
+    if isinstance(matrix, numpy.ndarray):
+        return matrix.nbytes
+    if scipy.sparse.isspmatrix_coo(matrix):
+        return matrix.col.nbytes + matrix.row.nbytes + matrix.data.nbytes
+    if scipy.sparse.isspmatrix_csc(matrix) or scipy.sparse.isspmatrix_csr(matrix) or scipy.sparse.isspmatrix_bsr(matrix):  # noqa: E501
+        return matrix.data.nbytes + matrix.indptr.nbytes + matrix.indices.nbytes
+    if scipy.sparse.isparse(matrix):
+        # Estimate size based on number of nonzeros for remaining sparse types
+        return 2 * matrix.nnz * 4 + matrix.data.nbytes
+    raise NotImplementedError(f'cannot calculate get_matrix_size for type {type(matrix)}')
