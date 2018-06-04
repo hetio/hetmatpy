@@ -152,6 +152,82 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     return row_names, cols, dwwc_matrix
 
 
+@path_count_cache(metric='dwwc')
+def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
+    """
+    Recursive DWWC implementation to take better advantage of caching.
+    """
+    rows, cols, adj_mat = hetmech.matrix.metaedge_to_adjacency_matrix(
+        graph, metapath[0], dense_threshold=dense_threshold, dtype=dtype)
+    adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
+    if len(metapath) > 1:
+        _, cols, dwwc_next = dwwc_recursive(graph, metapath[1:], damping=damping,
+                                            dense_threshold=dense_threshold, dtype=dtype)
+        dwwc_matrix = adj_mat @ dwwc_next
+    else:
+        dwwc_matrix = adj_mat
+    dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
+    return rows, cols, dwwc_matrix
+
+
+def _multi_dot(metapath, order, i, j, graph, damping, dense_threshold, dtype):
+    """
+    Perform matrix multiplication with the given order. Modified from
+    numpy.linalg.linalg._multi_dot (https://git.io/vh31f) which is released
+    under a 3-Clause BSD License (https://git.io/vhCDC).
+    """
+    if i == j:
+        _, _, adj_mat = metaedge_to_adjacency_matrix(
+            graph, metapath[i], dense_threshold=dense_threshold, dtype=dtype)
+        adj_mat = _degree_weight(adj_mat, damping=damping)
+        return adj_mat
+    return _multi_dot(metapath, order, i, order[i, j], graph, damping, dense_threshold, dtype) \
+        @ _multi_dot(metapath, order, order[i, j] + 1, j, graph, damping, dense_threshold, dtype)
+
+
+def _dimensions_to_ordering(dimensions):
+    # Find optimal matrix chain ordering. See https://git.io/vh38o
+    n = len(dimensions) - 1
+    m = numpy.zeros((n, n), dtype=numpy.double)
+    ordering = numpy.empty((n, n), dtype=numpy.intp)
+    for l in range(1, n):
+        for i in range(n - l):
+            j = i + l
+            m[i, j] = numpy.inf
+            for k in range(i, j):
+                q = m[i, k] + m[k + 1, j] + dimensions[i] * dimensions[k + 1] * dimensions[j + 1]
+                if q < m[i, j]:
+                    m[i, j] = q
+                    ordering[i, j] = k
+    return ordering
+
+
+@path_count_cache(metric='dwwc')
+def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
+    """
+    Uses optimal matrix chain multiplication as in numpy.multi_dot, but allows
+    for sparse matrices. Uses ordering modified from numpy.linalg.linalg._multi_dot
+    (https://git.io/vh31f) which is released under a 3-Clause BSD License
+    (https://git.io/vhCDC).
+    """
+    metapath = graph.metagraph.get_metapath(metapath)
+    row_names = None
+    array_dims = []
+    for edge in metapath:
+        source = edge.source
+        target = edge.target
+        rows = graph.get_node_identifiers(source)
+        array_dims.append(len(rows))
+        if row_names is None:
+            row_names = rows
+    column_names = graph.get_node_identifiers(target)
+    array_dims.append(len(column_names))
+    ordering = _dimensions_to_ordering(array_dims)
+    dwwc_matrix = _multi_dot(metapath, ordering, 0, len(metapath) - 1, graph, damping, dense_threshold, dtype)
+    dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
+    return row_names, column_names, dwwc_matrix
+
+
 def categorize(metapath):
     """
     Returns the classification of a given metapath as one of
@@ -677,12 +753,12 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0,
     col_names = cols
 
     if head_segment:
-        row_names, cols, head_dwpc = dwwc(graph, head_segment, damping=damping,
+        row_names, cols, head_dwpc = dwpc(graph, head_segment, damping=damping,
                                           dense_threshold=dense_threshold,
                                           dtype=dtype)
         dwpc_matrix = head_dwpc @ dwpc_matrix
     if tail_segment:
-        rows, col_names, tail_dwpc = dwwc(graph, tail_segment, damping=damping,
+        rows, col_names, tail_dwpc = dwpc(graph, tail_segment, damping=damping,
                                           dense_threshold=dense_threshold,
                                           dtype=dtype)
         dwpc_matrix = dwpc_matrix @ tail_dwpc
