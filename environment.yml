@@ -20,5 +20,5 @@ dependencies:
   - conda-forge::xarray=0.10.0
   - conda-forge::xlrd=1.1.0
   - pip:
-    - git+https://github.com/dhimmel/hetio@aa58b2bbdd7232b6a71c2ba3cd35047f313e4378
+    - git+https://github.com/dhimmel/hetio@1c69ce4a05f65000096e2da66728844cb342260b
     - neo4j-driver==1.5.3

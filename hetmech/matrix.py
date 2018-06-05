@@ -21,6 +21,18 @@ def metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs):
     raise TypeError(f'graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}')
 
 
+def get_node_identifiers(graph_or_hetmat, metanode):
+    """
+    Return node identifiers for a given metanode.
+    """
+    metanode = graph_or_hetmat.metagraph.get_metanode(metanode)
+    if isinstance(graph_or_hetmat, hetmech.hetmat.HetMat):
+        return graph_or_hetmat.get_node_identifiers(metanode)
+    if isinstance(graph_or_hetmat, hetio.hetnet.Graph):
+        return hetio.matrix.get_node_identifiers(graph_or_hetmat, metanode)
+    raise TypeError(f'graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}')
+
+
 def normalize(matrix, vector, axis, damping_exponent):
     """
     Normalize a 2D numpy.ndarray.

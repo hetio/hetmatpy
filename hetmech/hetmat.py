@@ -333,6 +333,11 @@ class HetMat:
         node_df = pandas.read_table(path)
         return list(node_df['identifier'])
 
+    @functools.lru_cache()
+    def count_nodes(self, metanode):
+        nodes = self.get_node_identifiers(metanode)
+        return len(nodes)
+
     def metaedge_to_adjacency_matrix(
             self, metaedge,
             dtype=None, dense_threshold=None,

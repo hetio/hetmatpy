@@ -20,17 +20,19 @@ from hetmech.matrix import (
 )
 
 
-def category_to_function(category):
-    function_dictionary = {'no_repeats': dwwc,
-                           'disjoint': _dwpc_disjoint,
-                           'disjoint_groups': _dwpc_disjoint,
-                           'short_repeat': _dwpc_short_repeat,
-                           'long_repeat': _dwpc_general_case,
-                           'BAAB': _dwpc_baab,
-                           'BABA': _dwpc_baba,
-                           'repeat_around': _dwpc_repeat_around,
-                           'interior_complete_group': _dwpc_baba,
-                           'other': _dwpc_general_case}
+def _category_to_function(category, dwwc_method):
+    function_dictionary = {
+        'no_repeats': dwwc_method,
+        'disjoint': _dwpc_disjoint,
+        'disjoint_groups': _dwpc_disjoint,
+        'short_repeat': _dwpc_short_repeat,
+        'long_repeat': _dwpc_general_case,
+        'BAAB': _dwpc_baab,
+        'BABA': _dwpc_baba,
+        'repeat_around': _dwpc_repeat_around,
+        'interior_complete_group': _dwpc_baba,
+        'other': _dwpc_general_case,
+    }
     return function_dictionary[category]
 
 
@@ -61,6 +63,8 @@ def path_count_cache(metric):
                     matrix = sparsify_or_densify(matrix, arguments['dense_threshold'])
                     matrix = matrix.astype(arguments['dtype'])
             if cached_result is None:
+                if arguments['dwwc_method'] is None:
+                    arguments['dwwc_method'] = default_dwwc_method
                 row_names, col_names, matrix = user_function(**arguments)
             if supports_cache:
                 runtime = time.perf_counter() - start
@@ -72,7 +76,7 @@ def path_count_cache(metric):
 
 @path_count_cache(metric='dwpc')
 def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
-         dtype=numpy.float64):
+         dtype=numpy.float64, dwwc_method=None):
     """
     A unified function to compute the degree-weighted path count.
     This function will call get_segments, then the appropriate
@@ -94,6 +98,9 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
     dtype : dtype object
         numpy.float32 or numpy.float64. At present, numpy.float16 fails when
         using sparse matrices, due to a bug in scipy.sparse
+    dwwc_method : function
+        dwwc method to use for computing DWWCs. If set to None, use
+        module-level default (default_dwwc_method).
 
     Returns
     -------
@@ -105,7 +112,7 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
         the DWPC matrix
     """
     category = categorize(metapath)
-    dwpc_function = category_to_function(category)
+    dwpc_function = _category_to_function(category, dwwc_method=dwwc_method)
     if category in ('long_repeat', 'other'):
         if use_general:
             row_names, col_names, dwpc_matrix = _dwpc_general_case(
@@ -122,7 +129,34 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
 
 
 @path_count_cache(metric='dwwc')
-def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
+def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64, dwwc_method=None):
+    """
+    Compute the degree-weighted walk count (DWWC) in which nodes can be
+    repeated within a path.
+
+    Parameters
+    ----------
+    graph : hetio.hetnet.Graph
+    metapath : hetio.hetnet.MetaPath
+    damping : float
+    dense_threshold : float (0 <= dense_threshold <= 1)
+        sets the density threshold at which a sparse matrix will be
+        converted to a dense automatically.
+    dtype : dtype object
+    dwwc_method : function
+        dwwc method to use for computing DWWCs. If set to None, use
+        module-level default (default_dwwc_method).
+    """
+    return dwwc_method(
+        graph=graph,
+        metapath=metapath,
+        damping=damping,
+        dense_threshold=dense_threshold,
+        dtype=dtype,
+    )
+
+
+def dwwc_sequential(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Compute the degree-weighted walk count (DWWC) in which nodes can be
     repeated within a path.
@@ -152,7 +186,6 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     return row_names, cols, dwwc_matrix
 
 
-@path_count_cache(metric='dwwc')
 def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Recursive DWWC implementation to take better advantage of caching.
@@ -161,8 +194,9 @@ def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.
         graph, metapath[0], dense_threshold=dense_threshold, dtype=dtype)
     adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
     if len(metapath) > 1:
-        _, cols, dwwc_next = dwwc_recursive(graph, metapath[1:], damping=damping,
-                                            dense_threshold=dense_threshold, dtype=dtype)
+        _, cols, dwwc_next = dwwc(
+            graph, metapath[1:], damping=damping, dense_threshold=dense_threshold,
+            dtype=dtype, dwwc_method=dwwc_recursive)
         dwwc_matrix = adj_mat @ dwwc_next
     else:
         dwwc_matrix = adj_mat
@@ -179,7 +213,7 @@ def _multi_dot(metapath, order, i, j, graph, damping, dense_threshold, dtype):
     if i == j:
         _, _, adj_mat = metaedge_to_adjacency_matrix(
             graph, metapath[i], dense_threshold=dense_threshold, dtype=dtype)
-        adj_mat = _degree_weight(adj_mat, damping=damping)
+        adj_mat = _degree_weight(adj_mat, damping=damping, dtype=dtype)
         return adj_mat
     return _multi_dot(metapath, order, i, order[i, j], graph, damping, dense_threshold, dtype) \
         @ _multi_dot(metapath, order, order[i, j] + 1, j, graph, damping, dense_threshold, dtype)
@@ -202,7 +236,6 @@ def _dimensions_to_ordering(dimensions):
     return ordering
 
 
-@path_count_cache(metric='dwwc')
 def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Uses optimal matrix chain multiplication as in numpy.multi_dot, but allows
@@ -211,21 +244,13 @@ def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.floa
     (https://git.io/vhCDC).
     """
     metapath = graph.metagraph.get_metapath(metapath)
-    row_names = None
-    array_dims = []
-    for edge in metapath:
-        source = edge.source
-        target = edge.target
-        rows = graph.get_node_identifiers(source)
-        array_dims.append(len(rows))
-        if row_names is None:
-            row_names = rows
-    column_names = graph.get_node_identifiers(target)
-    array_dims.append(len(column_names))
+    array_dims = [graph.count_nodes(mn) for mn in metapath.get_nodes()]
+    row_ids = hetmech.matrix.get_node_identifiers(graph, metapath.source())
+    columns_ids = hetmech.matrix.get_node_identifiers(graph, metapath.target())
     ordering = _dimensions_to_ordering(array_dims)
     dwwc_matrix = _multi_dot(metapath, ordering, 0, len(metapath) - 1, graph, damping, dense_threshold, dtype)
     dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
-    return row_names, column_names, dwwc_matrix
+    return row_ids, columns_ids, dwwc_matrix
 
 
 def categorize(metapath):
@@ -529,7 +554,6 @@ def _degree_weight(matrix, damping, copy=True, dtype=numpy.float64):
     column_sums = numpy.array(matrix.sum(axis=0), dtype=dtype).flatten()
     matrix = normalize(matrix, row_sums, 'rows', damping)
     matrix = normalize(matrix, column_sums, 'columns', damping)
-
     return matrix
 
 
@@ -871,3 +895,7 @@ def _dwpc_general_case(graph, metapath, damping=0, dtype=numpy.float64):
         dwpc_matrix = _degree_weight(adj, damping=damping, dtype=dtype)
     dwpc_matrix = numpy.array(dwpc_matrix, dtype=dtype)
     return start_nodes, fin_nodes, dwpc_matrix
+
+
+# Default DWWC method to use, when not specified
+default_dwwc_method = dwwc_chain
