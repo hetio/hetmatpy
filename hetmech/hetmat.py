@@ -3,6 +3,7 @@ import heapq
 import itertools
 import pathlib
 import shutil
+import textwrap
 
 import hetio.hetnet
 import hetio.matrix
@@ -442,12 +443,24 @@ class PathCountCache:
         """
         pass
 
+    def get_stats(self):
+        """
+        Return a str with formatted stats about cache operations
+        """
+        hits_str = ', '.join(f'{kind} = {count:,}' for kind, count in self.hits.items())
+        stats_str = textwrap.dedent(f'''\
+            {self.__class__.__name__} containing {len(self.cache):,} items
+              total gets: {sum(self.hits.values()):,}
+              cache hits: {hits_str}''')
+        return stats_str
+
 
 class PathCountPriorityCache(PathCountCache):
 
     def __init__(self, hetmat, allocate_GB):
         super().__init__(hetmat)
-        self.allocate_B = 1_000_000_000 * allocate_GB
+        self.bytes_per_gigabyte = 1_000_000_000
+        self.allocate_B = self.bytes_per_gigabyte * allocate_GB
         self.current_B = 0
         # Dictionary of key to priority, where higher numbers are higher caching priority
         self.priorities = {}
@@ -464,10 +477,10 @@ class PathCountPriorityCache(PathCountCache):
         if key in self.cache:
             return
         priority = self.priorities.get(key, 0)
-        tie_breaker = next(self.priority_queue_counter)
         nbytes = get_matrix_size(matrix)
         if nbytes > self.allocate_B:
             return
+        tie_breaker = next(self.priority_queue_counter)
         item = priority, tie_breaker, key, nbytes
         while self.current_B + nbytes > self.allocate_B:
             popped = heapq.heappop(self.priority_queue)
@@ -481,6 +494,14 @@ class PathCountPriorityCache(PathCountCache):
             heapq.heappush(self.priority_queue, item)
             self.cache[key] = matrix
             self.current_B += nbytes
+
+    def get_stats(self):
+        """
+        Return a str with formatted stats about cache operations
+        """
+        stats_str = super().get_stats()
+        stats_str += f"\n  {self.current_B / self.bytes_per_gigabyte:.2f} GB in use of {self.allocate_B / self.bytes_per_gigabyte:.2f} GB allocated"  # noqa: E501
+        return stats_str
 
 
 def get_matrix_size(matrix):
