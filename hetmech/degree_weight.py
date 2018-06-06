@@ -26,6 +26,7 @@ def _category_to_function(category, dwwc_method):
         'disjoint': _dwpc_disjoint,
         'disjoint_groups': _dwpc_disjoint,
         'short_repeat': _dwpc_short_repeat,
+        'four_repeat': _dwpc_baba,
         'long_repeat': _dwpc_general_case,
         'BAAB': _dwpc_baab,
         'BABA': _dwpc_baba,
@@ -272,8 +273,8 @@ def categorize(metapath):
     --------
     GbCtDlA -> 'no_repeats'
     GiGiG   -> 'short_repeat'
-    GiGiGcG -> 'long_repeat'
-    GiGcGiG -> 'long_repeat'
+    GiGiGcG -> 'four_repeat'
+    GiGcGiGiG -> 'long_repeat'
     GiGbCrC -> 'disjoint'
     GbCbGbC -> 'BABA'
     GbCrCbG -> 'BAAB'
@@ -301,6 +302,8 @@ def categorize(metapath):
         if len(repeated) == 1:
             if max(freq.values()) < 4:
                 return 'short_repeat'
+            elif max(freq.values()) == 4:
+                return 'four_repeat'
             else:
                 return 'long_repeat'
 
@@ -425,6 +428,17 @@ def get_segments(metagraph, metapath):
             if v[-1] != indices[i + 1][0]:
                 inds.append([v[-1], indices[i + 1][0]])
         indices = inds + [indices[-1]]
+
+    elif category == 'four_repeat':
+        nodes = set(metanodes)
+        repeat_indices = (
+            [[i for i, v in enumerate(metanodes)
+              if v == metanode] for metanode in nodes])
+        repeat_indices = [i for i in repeat_indices if len(i) > 1]
+        simple_repeats = [i for group in repeat_indices for i in group]
+        seconds = simple_repeats[1:] + [simple_repeats[-1]]
+        indices = list(zip(simple_repeats, seconds))
+        indices = add_head_tail(metapath, indices)
 
     elif category in ('BAAB', 'BABA', 'other', 'interior_complete_group'):
         nodes = set(metanodes)
@@ -674,6 +688,8 @@ def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0,
     Computes the degree-weighted path count for overlapping metanode
     repeats of the form B-A-B-A. Supports random inserts.
     Segment must start with B and end with A. AXBYAZB
+    Also supports four-node repeats of a single node, including random,
+    non-repeated inserts. For example, ABBBXBC, AAAA.
     """
     segments = get_segments(graph.metagraph, metapath)
     seg_axb = None
@@ -702,6 +718,8 @@ def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0,
         (axb.multiply(bya.T)).multiply(azb)
     # Apply the corrections
     dwpc_matrix = axb @ bya @ azb - correction_a - correction_b + correction_c
+    if seg_axb.source == seg_azb.target:
+        dwpc_matrix = remove_diag(dwpc_matrix)
     # Account for possible head and tail segments outside the BABA group
     if seg_cda is not None:
         row_names, cols, cda = dwpc(graph, seg_cda, damping=damping,

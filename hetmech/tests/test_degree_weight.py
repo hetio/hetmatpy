@@ -394,7 +394,7 @@ def test__dwpc_general_case(length):
 
 @pytest.mark.parametrize('metapath,solution', [
     ('GiG', 'short_repeat'),
-    ('GiGiGiG', 'long_repeat'),
+    ('GiGiGiG', 'four_repeat'),
     ('G' + 10 * 'iG', 'long_repeat'),
     ('GiGiGcGcG', 'long_repeat'),  # iicc
     ('GiGcGcGiG', 'long_repeat'),  # icci
@@ -446,11 +446,11 @@ def test_categorize(metapath, solution):
     ('DlAeGaDaG', '[DlAeG, GaD, DaG]'),  # BCABA
     ('GaDlAeGaD', '[GaD, DlAeG, GaD]'),  # BACBA
     ('GiGiG', '[GiGiG]'),  # short_repeat
-    ('GiGiGiG', '[GiGiGiG]'),  # long_repeat
+    ('GiGiGiG', '[GiG, GiG, GiG]'),  # four_repeat
     ('CrCbGiGiGaDrDlA', '[CrC, CbG, GiGiG, GaD, DrD, DlA]'),
     ('CrCrCbGiGeAlDrD', '[CrCrC, CbG, GiG, GeAlD, DrD]'),
     ('SEcCrCrCbGiGeAlDrDpS', '[SEcC, CrCrC, CbG, GiG, GeAlD, DrD, DpS]'),
-    ('SEcCrCrCrC', '[SEcC, CrCrCrC]'),
+    ('SEcCrCrCrC', '[SEcC, CrC, CrC, CrC]'),
     ('GiGaDaG', '[GiGaDaG]'),
     ('CrCbGiGbC', '[CrC, CbG, GiG, GbC]'),  # OTHER
     ('GbCpDrDaG', '[GbCpD, DrD, DaG]'),
@@ -535,7 +535,14 @@ def test_get_segments(metapath, solution):
                [0, 0, 0.25, 0, 0, 0, 0],
                [0, 0, 0, 0, 0, 0, 0],
                [0.1767767, 0.25, 0, 0.25, 0, 0, 0]]),
-    ('GiGiGiG', None),
+    ('GiGiGiG', [[0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0.125, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0],
+                 [0, 0., 0, 0, 0.125, 0, 0],
+                 [0, 0.125, 0, 0.125, 0, 0, 0.125],
+                 [0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0.125, 0, 0]]),
+    ('GiGiGiGiG', None),
     ('GaDaGaD', [[0.08838835, 0],  # BABA
                  [0.08838835, 0],
                  [0, 0.125],
