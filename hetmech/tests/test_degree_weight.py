@@ -4,6 +4,7 @@ import pytest
 from scipy import sparse
 
 from hetmech.degree_weight import (
+    _dwpc_approx,
     _dwpc_baab,
     _dwpc_baba,
     _dwpc_general_case,
@@ -542,7 +543,6 @@ def test_get_segments(metapath, solution):
                  [0, 0.125, 0, 0.125, 0, 0, 0.125],
                  [0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0.125, 0, 0]]),
-    ('GiGiGiGiG', None),
     ('GaDaGaD', [[0.08838835, 0],  # BABA
                  [0.08838835, 0],
                  [0, 0.125],
@@ -636,3 +636,26 @@ def test_dtype(metapath, dtype, dwwc_method):
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
     rows, cols, dwpc_matrix = dwpc(graph, metapath, dtype=dtype, dwwc_method=dwwc_method)
     assert dwpc_matrix.dtype == dtype
+
+
+@pytest.mark.parametrize('metapath,relative', [
+    ('DrDaGiG', 'equal'),
+    ('DaGiGaD', 'equal'),
+    ('DaGaDrDaGaD', 'not_equal'),
+    ('CrCpDrD', 'equal')
+])
+def test_dwpc_approx(metapath, relative):
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
+        'test/data/random-subgraph.json.xz',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metapath = graph.metagraph.metapath_from_abbrev(metapath)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath)
+    rows, cols, dwpc_approx = _dwpc_approx(graph, metapath)
+    rows, cols, dwwc_matrix = dwwc(graph, metapath)
+    if relative == 'equal':
+        assert abs((dwpc_approx - dwpc_matrix)).max() == pytest.approx(0, abs=1e-7)
+    else:
+        assert numpy.sum((dwpc_approx - dwpc_matrix)) >= 0
+    assert abs((dwwc_matrix - dwpc_approx)).max() >= 0
