@@ -1,5 +1,6 @@
 /hetnet/adjacency/data-big
 /data/hetionet-v1.0.hetmat/permutations/*.bak
+/data/hetionet-v1.0.hetmat/permutations/*/degree-grouped-path-counts
 
 ### Python ###
 __pycache__/

@@ -320,6 +320,7 @@ class HetMat:
         Setting file_format=None returns the path without any extension suffix.
         Supported metrics are 'dwpc' and 'dwwc'.
         """
+        damping = float(damping)
         path = self.path_counts_directory.joinpath(f'{metric}-{damping}/{metapath}')
         if file_format is not None:
             path = path.with_name(f'{path.name}.{file_format}')
