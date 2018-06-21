@@ -17,6 +17,7 @@ from hetmech.degree_weight import (
     dwwc_chain,
     get_segments,
 )
+from hetmech.tests.hetnets import get_graph
 
 
 @pytest.mark.parametrize('dwwc_method', [
@@ -30,11 +31,7 @@ def test_disease_gene_example_dwwc(dwwc_method):
     Test the PC & DWWC computations in Figure 2D of Himmelstein & Baranzini
     (2015) PLOS Comp Bio. https://doi.org/10.1371/journal.pcbi.1004259.g002
     """
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('disease-gene-example')
     metagraph = graph.metagraph
 
     # Compute GiGaD path count and DWWC matrices
@@ -116,11 +113,7 @@ def get_nodes(metapath):
 ])
 def test_no_and_short_repeat(metapath, expected, path_type):
     exp_row, exp_col = get_nodes(metapath)
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('disease-gene-example')
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
     func_dict = {0: dwwc, 1: _dwpc_short_repeat}
 
@@ -194,11 +187,7 @@ def test_no_and_short_repeat(metapath, expected, path_type):
      (103, 104))
 ])
 def test_disjoint_dwpc(metapath, exp_row, exp_col, exp_data, shape):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
-        'test/data/random-subgraph.json.xz',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('random-subgraph')
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
     row, col, dwpc_matrix = dwpc(graph, metapath)
@@ -224,11 +213,7 @@ def test_disjoint_dwpc(metapath, exp_row, exp_col, exp_data, shape):
 ])
 def test__dwpc_baab(metapath, expected):
     exp_row, exp_col = get_nodes(metapath)
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('disease-gene-example')
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
     row, col, dwpc_matrix = _dwpc_baab(graph, metapath, damping=0.5,
@@ -322,11 +307,7 @@ def get_baba_matrices(metapath):
                                     'GaDlTeGaD', 'GeTlDaGaD', 'GaDaGeTlD',
                                     'TlDaGaDaG'))
 def test__dwpc_baba(m_path):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('disease-gene-example')
     metagraph = graph.metagraph
     metapath = metagraph.metapath_from_abbrev(m_path)
 
@@ -376,11 +357,7 @@ def test__dwpc_general_case(length):
     Test the functionality of dwpc_same_metanode to find DWPC
     within a metapath (segment) of metanode and metaedge repeats.
     """
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('disease-gene-example')
     metagraph = graph.metagraph
     m_path = 'GiG' + length * 'iG'
     metapath = metagraph.metapath_from_abbrev(m_path)
@@ -597,11 +574,7 @@ def test_dwpc(metapath, expected, dense_threshold):
     if expected is not None:
         expected = numpy.array(expected, dtype=numpy.float64)
 
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('disease-gene-example')
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
     if expected is None:
         with pytest.raises(Exception):
@@ -628,11 +601,7 @@ def test_dwpc(metapath, expected, dense_threshold):
     dwwc_chain,
 ])
 def test_dtype(metapath, dtype, dwwc_method):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('disease-gene-example')
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
     rows, cols, dwpc_matrix = dwpc(graph, metapath, dtype=dtype, dwwc_method=dwwc_method)
     assert dwpc_matrix.dtype == dtype
@@ -645,11 +614,7 @@ def test_dtype(metapath, dtype, dwwc_method):
     ('CrCpDrD', 'equal')
 ])
 def test_dwpc_approx(metapath, relative):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
-        'test/data/random-subgraph.json.xz',
-    )
-    graph = hetio.readwrite.read_graph(url)
+    graph = get_graph('random-subgraph')
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
     rows, cols, dwpc_matrix = dwpc(graph, metapath)
     rows, cols, dwpc_approx = _dwpc_approx(graph, metapath)

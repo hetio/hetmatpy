@@ -1,31 +1,9 @@
 import hetio.pathtools
-import hetio.readwrite
 import numpy
 import pytest
 
 from hetmech.degree_weight import dwpc
-
-
-def get_bupropion_subgraph():
-    """
-    Read the bupropion and nicotine dependence Hetionet v1.0 subgraph.
-    """
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
-        'test/data/bupropion-CbGpPWpGaD-subgraph.json.xz',
-    )
-    return hetio.readwrite.read_graph(url)
-
-
-def get_random_subgraph():
-    """
-    Read the bupropion and nicotine dependence Hetionet v1.0 subgraph.
-    """
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '30c6dbb18a17c05d71cb909cf57af7372e4d4908',
-        'test/data/random-subgraph.json.xz',
-    )
-    return hetio.readwrite.read_graph(url)
+from hetmech.tests.hetnets import get_graph
 
 
 def test_CbGpPWpGaD_traversal():
@@ -34,7 +12,7 @@ def test_CbGpPWpGaD_traversal():
     metapath between bupropion and nicotine dependence. Expected values from
     the network traversal methods at https://git.io/vHBh2.
     """
-    graph = get_bupropion_subgraph()
+    graph = get_graph('bupropion-subgraph')
     compound = 'DB01156'  # Bupropion
     disease = 'DOID:0050742'  # nicotine dependence
     metapath = graph.metagraph.metapath_from_abbrev('CbGpPWpGaD')
@@ -53,7 +31,7 @@ def test_CbGiGiGaD_traversal():
     intended to correspond to the values from the entire Hetionet v1.0. Hence,
     the expected values are generated using hetio.pathtools.
     """
-    graph = get_bupropion_subgraph()
+    graph = get_graph('bupropion-subgraph')
     compound = 'DB01156'  # Bupropion
     disease = 'DOID:0050742'  # nicotine dependence
     metapath = graph.metagraph.metapath_from_abbrev('CbGiGiGaD')
@@ -76,27 +54,31 @@ def test_CbGiGiGaD_traversal():
 
 
 @pytest.mark.parametrize('metapath', [
-                                      'CbGaD',
-                                      'CbGbCtD',
-                                      'CrCtD',
-                                      'CtDrD',
-                                      'CuGr>GuD',
-                                      'CuG<rGuD',
-                                      'CcSEcCtDpSpD',
-                                     ])
-def test_path_traversal(metapath):
+    'CbGaD',
+    'CbGbCtD',
+    'CrCtD',
+    'CtDrD',
+    'CuGr>GuD',
+    'CuG<rGuD',
+    'CcSEcCtDpSpD',
+])
+@pytest.mark.parametrize('hetmat', [True, False])
+def test_path_traversal(metapath, hetmat, tmpdir):
     """
     Test PC (path count) and DWPC (degree-weighted path count) computation
     on the random subgraph of Hetionet v1.0. Evaluates max path count
     compound-disease pair where errors are most likely to appear.
     """
     # Read graph
-    graph = get_random_subgraph()
+    graph = get_graph('random-subgraph')
+    graph_or_hetmat = graph
+    if hetmat:
+        graph_or_hetmat = get_graph('random-subgraph', hetmat=hetmat, directory=tmpdir)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
     # Matrix computations
-    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
-    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
+    rows, cols, pc_matrix = dwpc(graph_or_hetmat, metapath, damping=0)
+    rows, cols, dwpc_matrix = dwpc(graph_or_hetmat, metapath, damping=0.4)
 
     # Find compound-disease pair with the max path count
     i, j = numpy.unravel_index(pc_matrix.argmax(), pc_matrix.shape)
