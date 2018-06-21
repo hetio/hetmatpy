@@ -1,10 +1,8 @@
 import collections
 import copy
 import functools
-import inspect
 import itertools
 import logging
-import time
 
 import numpy
 from scipy import sparse
@@ -13,6 +11,7 @@ from hetio.matrix import (
 )
 
 import hetmech.hetmat
+from hetmech.hetmat.caching import path_count_cache
 from hetmech.matrix import (
     copy_array,
     metaedge_to_adjacency_matrix,
@@ -35,44 +34,6 @@ def _category_to_function(category, dwwc_method):
         'other': _dwpc_general_case,
     }
     return function_dictionary[category]
-
-
-def path_count_cache(metric):
-    """
-    Decorator to apply caching to the DWWC and DWPC functions.
-    """
-    def decorator(user_function):
-        signature = inspect.signature(user_function)
-
-        @functools.wraps(user_function)
-        def wrapper(*args, **kwargs):
-            bound_args = signature.bind(*args, **kwargs)
-            bound_args.apply_defaults()
-            arguments = bound_args.arguments
-            graph = arguments['graph']
-            metapath = graph.metagraph.get_metapath(arguments['metapath'])
-            arguments['metapath'] = metapath
-            damping = arguments['damping']
-            cached_result = None
-            start = time.perf_counter()
-            supports_cache = isinstance(graph, hetmech.hetmat.HetMat) and graph.path_counts_cache
-            if supports_cache:
-                cache_key = {'metapath': metapath, 'metric': metric, 'damping': damping}
-                cached_result = graph.path_counts_cache.get(**cache_key)
-                if cached_result:
-                    row_names, col_names, matrix = cached_result
-                    matrix = sparsify_or_densify(matrix, arguments['dense_threshold'])
-                    matrix = matrix.astype(arguments['dtype'])
-            if cached_result is None:
-                if arguments['dwwc_method'] is None:
-                    arguments['dwwc_method'] = default_dwwc_method
-                row_names, col_names, matrix = user_function(**arguments)
-            if supports_cache:
-                runtime = time.perf_counter() - start
-                graph.path_counts_cache.set(**cache_key, matrix=matrix, runtime=runtime)
-            return row_names, col_names, matrix
-        return wrapper
-    return decorator
 
 
 @path_count_cache(metric='dwpc')
