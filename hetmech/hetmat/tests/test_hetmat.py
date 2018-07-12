@@ -5,10 +5,10 @@ import hetmech.matrix
 from hetmech.tests.hetnets import get_graph
 
 
-def test_disease_gene_example_converstion_to_hetmet(tmpdir):
+def test_disease_gene_example_conversion_to_hetmat(tmpdir):
     """
-    Test the PC & DWWC computations in Figure 2D of Himmelstein & Baranzini
-    (2015) PLOS Comp Bio. https://doi.org/10.1371/journal.pcbi.1004259.g002
+    Test converting the hetmat from Figure 2C of https://doi.org/crz8 into a
+    hetmat.
     """
     graph = get_graph('disease-gene-example')
     hetmat = hetmech.hetmat.hetmat_from_graph(graph, tmpdir)
