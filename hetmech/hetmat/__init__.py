@@ -1,5 +1,6 @@
 import functools
 import itertools
+import logging
 import pathlib
 import shutil
 
@@ -122,7 +123,7 @@ def save_matrix(matrix, path):
         scipy.sparse.save_npz(path, matrix, compressed=True)
 
 
-def read_first_matrix(specs):
+def read_first_matrix(specs, delete_failures=False):
     """
     Attempt to read each path provided by specs, until one exists. If none of
     the specs point to an existing path, raise a FileNotFoundError.
@@ -142,13 +143,29 @@ def read_first_matrix(specs):
             continue
         transpose = spec.get('transpose', False)
         file_format = spec.get('file_format', 'infer')
-        matrix = read_matrix(path, file_format=file_format)
+        try:
+            matrix = read_matrix(path, file_format=file_format)
+        except Exception as error:
+            logging.warning(f'Error reading matrix at {path}:\n{error}')
+            if delete_failures:
+                path.unlink()
+                logging.warning(f'Deleting file at {path}')
+                continue
         if transpose:
             matrix = matrix.transpose()
         return matrix
     raise FileNotFoundError(
         f'No matrix files found at the specified paths:\n' +
         '\n'.join(paths))
+
+
+compression_extension = {
+    'gzip': '.gz',
+    'bz2': '.bz2',
+    'zip': '.zip',
+    'xz': '.xz',
+    None: '',
+}
 
 
 class HetMat:
@@ -322,6 +339,26 @@ class HetMat:
         path = self.path_counts_directory.joinpath(f'{metric}-{damping}/{metapath}')
         if file_format is not None:
             path = path.with_name(f'{path.name}.{file_format}')
+        return path
+
+    def get_degree_group_path(self, metapath, metric, damping):
+        damping = float(damping)
+        path = self.directory.joinpath(
+            'degree-grouped-path-counts', f'{metric}-{damping}/{metapath}.tsv')
+        return path
+
+    def get_summary_degree_group_path(self, metapath, metric, damping, compression=None):
+        damping = float(damping)
+        compr = compression_extension[compression]
+        path = self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}',
+                                       'degree-grouped-permutations', f'{metapath}.tsv{compr}')
+        return path
+
+    def get_metapath_summary_path(self, metapath, metric, damping, compression=None):
+        damping = float(damping)
+        compr = compression_extension[compression]
+        path = self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}',
+                                       'adjusted-dwpcs', f'{metapath}.tsv{compr}')
         return path
 
     @functools.lru_cache()
