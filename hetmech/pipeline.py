@@ -7,54 +7,33 @@ import hetmech.degree_weight
 import hetmech.hetmat
 
 
-def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_intermediates=True):
-    """
-    Compute summary file of combined degree-grouped permutations (DGP). Aggregates across permutations,
-    deleting intermediates if delete_intermediates=True. Saves resulting files as compressed .tsv files
-    using compression method given by compression. Does not recompute previously saved files.
-    """
-    for mp in (metapath.inverse, metapath):
-        combined_path = hetmat.get_summary_degree_group_path(metapath, 'dwpc', damping, compression=compression)
-        if combined_path.exists():
-            return
-
-    _, _, matrix = hetmat.read_path_counts(metapath, 'dwpc', damping)
-    matrix_mean = matrix.mean()
-
-    for name, permat in hetmat.permutations.items():
-        path = permat.get_degree_group_path(metapath, 'dwpc', damping)
-        if not path.exists():
-            degree_grouped_df = hetmech.degree_group.single_permutation_degree_group(
-                permat, metapath, dwpc_mean=matrix_mean, damping=damping)
-            path.parent.mkdir(parents=True, exist_ok=True)
-            degree_grouped_df.to_csv(path, sep='\t')
-
-    degree_stats_df = hetmech.degree_group.summarize_degree_grouped_permutations(
-        hetmat, metapath, damping=damping, delete_intermediates=delete_intermediates)
-    combined_path.parent.mkdir(parents=True, exist_ok=True)
-    degree_stats_df.to_csv(combined_path, sep='\t', compression=compression)
-
-
-def combine_dwpc_dgp(graph, metapath, damping):
+def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1.0):
     """
     Combine DWPC information with degree-grouped permutation summary metrics.
     Includes gamma-hurdle significance estimates.
     """
-    stats_path = graph.get_summary_degree_group_path(metapath, 'dwpc', damping)
-    degree_stats_df = pandas.read_table(stats_path, compression='gzip')
-
-    dwpc_row_generator = hetmech.degree_group.dwpc_to_degrees(graph, metapath)
-    dwpc_df = pandas.DataFrame(dwpc_row_generator)
-    df = (
-        dwpc_df
-        .merge(degree_stats_df, on=['source_degree', 'target_degree'])
-        .drop(columns=['source_degree', 'target_degree'])
-    )
-    df['mean_nz'] = df['sum'] / df['nnz']
-    df['sd_nz'] = ((df['sum_of_squares'] - df['sum'] ** 2 / df['nnz']) / (df['nnz'] - 1)) ** 0.5
-    df['beta'] = df['mean_nz'] / df['sd_nz'] ** 2
-    df['alpha'] = df['mean_nz'] * df['beta']
-    df['p_value'] = (
-        df['nnz'] / df['n'] * (1 - scipy.special.gammainc(df['alpha'], df['beta'] * df['dwpc']))
-    ).where(cond=df['dwpc'] > 0, other=1)
-    return df
+    stats_path = graph.get_running_degree_group_path(metapath, 'dwpc', damping, extension='.tsv.gz')
+    dgp_df = pandas.read_table(stats_path)
+    dgp_df['mean_nz'] = dgp_df['sum'] / dgp_df['nnz']
+    dgp_df['sd_nz'] = ((dgp_df['sum_of_squares'] - dgp_df['sum'] ** 2 / dgp_df['nnz']) / (dgp_df['nnz'] - 1)) ** 0.5
+    dgp_df['beta'] = dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2
+    dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
+    degrees_to_dgp = dgp_df.set_index(['source_degree', 'target_degree']).to_dict(orient='index')
+    dwpc_row_generator = hetmech.degree_group.dwpc_to_degrees(
+        graph, metapath, damping=damping, ignore_zeros=ignore_zeros)
+    for row in dwpc_row_generator:
+        degrees = row['source_degree'], row['target_degree']
+        dgp = degrees_to_dgp[degrees]
+        row.update(dgp)
+        if row['path_count'] == 0:
+            row['p_value'] = 1.0
+        else:
+            row['p_value'] = None if row['sum'] == 0 else (
+                row['nnz'] / row['n'] *
+                (1 - scipy.special.gammainc(row['alpha'], row['beta'] * row['dwpc']))
+            )
+        if row['p_value'] is not None and row['p_value'] > max_p_value:
+            continue
+        for key in ['sum', 'sum_of_squares', 'beta', 'alpha']:
+            del row[key]
+        yield row

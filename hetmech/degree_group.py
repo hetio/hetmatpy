@@ -1,3 +1,4 @@
+import collections
 import itertools
 
 import numpy
@@ -64,12 +65,6 @@ def generate_degree_group_stats(source_degree_to_ind, target_degree_to_ind, matr
             yield row
 
 
-def compute_summary_metrics(df):
-    df['mean_nz'] = df['sum'] / df['nnz']
-    df['sd_nz'] = ((df['sum_of_squares'] - df['sum'] ** 2 / df['nnz']) / (df['nnz'] - 1)) ** 0.5
-    return df
-
-
 def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False):
     """
     Yield a description of each cell in a DWPC matrix adding source and target
@@ -100,23 +95,21 @@ def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False):
         path_count = path_count.toarray()
 
     row_inds, col_inds = range(len(row_names)), range(len(col_names))
-    for row in itertools.product(row_inds, col_inds):
-        row_ind, col_ind = row
+    for row_ind, col_ind in itertools.product(row_inds, col_inds):
         dwpc_value = dwpc_matrix[row_ind, col_ind]
         if ignore_zeros and dwpc_value == 0:
             continue
         row = {
             'source_id': row_names[row_ind],
+            'target_id': col_names[col_ind],
             'source_name': source_node_names[row_ind],
             'target_name': target_node_names[col_ind],
-            'target_id': col_names[col_ind],
             'source_degree': source_degrees[row_ind],
             'target_degree': target_degrees[col_ind],
+            'path_count': path_count[row_ind, col_ind],
             'dwpc': dwpc_value,
-            'path-count': path_count[row_ind, col_ind],
         }
-        yield row
-        continue
+        yield collections.OrderedDict(row)
 
 
 def single_permutation_degree_group(permuted_hetmat, metapath, dwpc_mean, damping):
@@ -131,29 +124,6 @@ def single_permutation_degree_group(permuted_hetmat, metapath, dwpc_mean, dampin
     degree_grouped_df = (
         pandas.DataFrame(row_generator)
         .set_index(['source_degree', 'target_degree'])
+        .assign(n_perms=1)
     )
     return degree_grouped_df
-
-
-def summarize_degree_grouped_permutations(graph, metapath, damping, delete_intermediates=False):
-    """
-    Combine degree-grouped permutation information from all permutations into
-    a single file per metapath.
-    """
-    degree_stats_df = None
-    for permat in graph.permutations.values():
-        path = permat.get_degree_group_path(metapath, 'dwpc', damping)
-        df = (
-            pandas.read_table(path)
-            .set_index(['source_degree', 'target_degree'])
-            .assign(n_perms=1)
-        )
-        if delete_intermediates:
-            path.unlink()
-
-        if degree_stats_df is None:
-            degree_stats_df = df
-        else:
-            degree_stats_df += df
-    degree_stats_df = hetmech.degree_group.compute_summary_metrics(degree_stats_df)
-    return degree_stats_df

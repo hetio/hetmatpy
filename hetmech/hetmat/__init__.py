@@ -341,17 +341,15 @@ class HetMat:
             path = path.with_name(f'{path.name}.{file_format}')
         return path
 
-    def get_degree_group_path(self, metapath, metric, damping):
+    def get_running_degree_group_path(self, metapath, metric, damping, extension='.tsv.gz'):
+        """
+        Get path for degree-grouped permutatation running metrics.
+        Must specify extension.
+        """
         damping = float(damping)
         path = self.directory.joinpath(
-            'degree-grouped-path-counts', f'{metric}-{damping}/{metapath}.tsv')
-        return path
-
-    def get_summary_degree_group_path(self, metapath, metric, damping, compression=None):
-        damping = float(damping)
-        compr = compression_extension[compression]
-        path = self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}',
-                                       'degree-grouped-permutations', f'{metapath}.tsv{compr}')
+            'adjusted-path-counts', f'{metric}-{damping}',
+            'degree-grouped-permutations', f'{metapath}{extension}')
         return path
 
     def get_metapath_summary_path(self, metapath, metric, damping, compression=None):
