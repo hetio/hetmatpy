@@ -1,3 +1,5 @@
+import itertools
+
 import pandas
 import scipy.special
 import scipy.stats
@@ -37,3 +39,33 @@ def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1
         for key in ['sum', 'sum_of_squares', 'beta', 'alpha']:
             del row[key]
         yield row
+
+
+def grouper(iterable, group_size):
+    """
+    Group an iterable into chunks of group_size.
+    Derived from https://stackoverflow.com/a/8998040/4651668
+    """
+    iterable = iter(iterable)
+    while True:
+        chunk = itertools.islice(iterable, group_size)
+        try:
+            head = next(chunk),
+        except StopIteration:
+            break
+        yield itertools.chain(head, chunk)
+
+
+def grouped_tsv_writer(row_generator, path, group_size=20_000, sep='\t', index=False, **kwargs):
+    """
+    Write an iterable of dictionaries to a TSV, where each dictionary is a row.
+    Uses pandas (extra keyword arguments are passed to DataFrame.to_csv) to
+    write the TSV, enabling using pandas to write a generated rows that are too
+    plentiful to fit in memory.
+    """
+    chunks = grouper(row_generator, group_size=group_size)
+    for i, chunk in enumerate(chunks):
+        df = pandas.DataFrame.from_records(chunk)
+        kwargs['header'] = not bool(i)
+        kwargs['mode'] = 'a' if i else 'w'
+        df.to_csv(path, sep=sep, index=index, **kwargs)
