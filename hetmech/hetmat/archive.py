@@ -1,3 +1,4 @@
+import collections
 import pathlib
 import re
 import urllib.request
@@ -103,9 +104,8 @@ def get_archive_info_df(zip_paths):
         with zipfile.ZipFile(path) as zip_file:
             infolist = zip_file.infolist()
         for info in infolist:
-            row = {
-                'archive': path.name,
-            }
+            row = collections.OrderedDict()
+            row['archive'] = path.name
             for field in fields:
                 row[field] = getattr(info, field)
             rows.append(row)
