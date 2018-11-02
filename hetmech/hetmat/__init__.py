@@ -1,4 +1,5 @@
 import functools
+import gc
 import itertools
 import logging
 import pathlib
@@ -430,3 +431,19 @@ class HetMat:
         col_ids = self.get_node_identifiers(metapath.target())
         matrix = read_first_matrix(specs)
         return row_ids, col_ids, matrix
+
+    def clear_caches(self):
+        """
+        Clear cached assets of this HetMat and force garbage collection.
+        """
+        # See workaround for methods with @property and @lru_cache decoration
+        # https://stackoverflow.com/a/45283290/4651668
+        for lru_cached_function in [
+            type(self).permutations.fget,
+            type(self).metagraph.fget,
+            self.get_node_identifiers,
+            self.count_nodes,
+        ]:
+            lru_cached_function.cache_clear()
+        self.path_counts_cache = None
+        gc.collect()
