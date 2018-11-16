@@ -1,6 +1,6 @@
-# hetmat: a Python 3 package for matrix operations of hetnets
+# hetmatpy: a Python 3 package for matrix operations of hetnets
 
-[![Build Status](https://travis-ci.org/hetio/hetmat.svg?branch=master)](https://travis-ci.org/hetio/hetmat)
+[![Build Status](https://travis-ci.org/hetio/hetmatpy.svg?branch=master)](https://travis-ci.org/hetio/hetmatpy)
 
 Hetmech aims to identify the relevant network connections between a set of query nodes.
 The method is designed to operate on hetnets (networks with multiple node or relationship types).
