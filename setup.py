@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name='hetmechpy',
+    name='hetmatpy',
     description='A search engine for hetnets',
     long_description='Matrix implementations of path-count-based measures',
     url='https://github.com/hetio/hetmatpy',
