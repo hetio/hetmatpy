@@ -11,7 +11,7 @@ setuptools.setup(
     install_requires=[
         'hetio>=0.2.9',
         'numpy',
-        'pandas'
+        'pandas',
         'scipy',
     ],
 )
