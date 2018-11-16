@@ -2,8 +2,8 @@ import hetio.pathtools
 import numpy
 import pytest
 
-from hetmech.degree_weight import dwpc
-from hetmech.tests.hetnets import get_graph
+from hetmatpy.degree_weight import dwpc
+from hetmatpy.tests.hetnets import get_graph
 
 
 def test_CbGpPWpGaD_traversal():

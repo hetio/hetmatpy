@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/hetio/hetmatpy.svg?branch=master)](https://travis-ci.com/hetio/hetmatpy)
 
-Hetmech aims to identify the relevant network connections between a set of query nodes.
+This codebase enables identifying the relevant network connections between a set of query nodes.
 The method is designed to operate on hetnets (networks with multiple node or relationship types).
 
 This project is still under development. Use with caution.

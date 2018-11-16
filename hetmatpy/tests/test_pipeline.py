@@ -1,4 +1,4 @@
-from hetmech.pipeline import (
+from hetmatpy.pipeline import (
     grouper,
 )
 

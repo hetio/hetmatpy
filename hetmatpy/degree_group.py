@@ -5,8 +5,8 @@ import numpy
 import pandas
 import scipy.sparse
 
-from hetmech.matrix import metaedge_to_adjacency_matrix
-import hetmech.degree_weight
+from hetmatpy.matrix import metaedge_to_adjacency_matrix
+import hetmatpy.degree_weight
 
 
 def degrees_to_degree_to_ind(degrees):
@@ -117,9 +117,9 @@ def single_permutation_degree_group(permuted_hetmat, metapath, dwpc_mean, dampin
     Compute degree-grouped permutations for a single permuted_hetmat,
     for one metapath.
     """
-    _, _, matrix = hetmech.degree_weight.dwpc(permuted_hetmat, metapath, damping=damping, dense_threshold=0.7)
-    source_deg_to_ind, target_deg_to_ind = hetmech.degree_group.metapath_to_degree_dicts(permuted_hetmat, metapath)
-    row_generator = hetmech.degree_group.generate_degree_group_stats(
+    _, _, matrix = hetmatpy.degree_weight.dwpc(permuted_hetmat, metapath, damping=damping, dense_threshold=0.7)
+    source_deg_to_ind, target_deg_to_ind = hetmatpy.degree_group.metapath_to_degree_dicts(permuted_hetmat, metapath)
+    row_generator = hetmatpy.degree_group.generate_degree_group_stats(
         source_deg_to_ind, target_deg_to_ind, matrix, scale=True, scaler=dwpc_mean)
     degree_grouped_df = (
         pandas.DataFrame(row_generator)

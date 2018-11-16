@@ -9,13 +9,13 @@ import numpy
 import scipy.sparse
 from hetio.matrix import sparsify_or_densify
 
-import hetmech.hetmat
+import hetmatpy.hetmat
 
 
 def path_count_cache(metric):
     """
     Decorator to apply caching to the DWWC and DWPC functions from
-    hetmech.degree_weight.
+    hetmatpy.degree_weight.
     """
     def decorator(user_function):
         signature = inspect.signature(user_function)
@@ -31,7 +31,7 @@ def path_count_cache(metric):
             damping = arguments['damping']
             cached_result = None
             start = time.perf_counter()
-            supports_cache = isinstance(graph, hetmech.hetmat.HetMat) and graph.path_counts_cache
+            supports_cache = isinstance(graph, hetmatpy.hetmat.HetMat) and graph.path_counts_cache
             if supports_cache:
                 cache_key = {'metapath': metapath, 'metric': metric, 'damping': damping}
                 cached_result = graph.path_counts_cache.get(**cache_key)
@@ -42,7 +42,7 @@ def path_count_cache(metric):
             if cached_result is None:
                 if arguments['dwwc_method'] is None:
                     # import default_dwwc_method here to avoid circular dependencies
-                    from hetmech.degree_weight import default_dwwc_method
+                    from hetmatpy.degree_weight import default_dwwc_method
                     arguments['dwwc_method'] = default_dwwc_method
                 row_names, col_names, matrix = user_function(**arguments)
             if supports_cache:
