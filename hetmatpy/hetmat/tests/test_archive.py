@@ -5,7 +5,7 @@ import zipfile
 import hetmatpy.hetmat
 import hetmatpy.hetmat.archive
 import hetmatpy.matrix
-from hetmatpy.tests.hetnets import get_graph
+from hetmatpy.testing import get_graph
 
 
 def test_disease_gene_example_hetmat_archiving(tmpdir):

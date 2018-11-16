@@ -17,7 +17,7 @@ from hetmatpy.degree_weight import (
     dwwc_chain,
     get_segments,
 )
-from hetmatpy.tests.hetnets import get_graph
+from hetmatpy.testing import get_graph
 
 
 @pytest.mark.parametrize('dwwc_method', [

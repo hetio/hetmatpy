@@ -3,7 +3,7 @@ import numpy
 import pytest
 
 from hetmatpy.degree_weight import dwpc
-from hetmatpy.tests.hetnets import get_graph
+from hetmatpy.testing import get_graph
 
 
 def test_CbGpPWpGaD_traversal():

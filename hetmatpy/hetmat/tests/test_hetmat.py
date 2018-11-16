@@ -2,7 +2,7 @@ import numpy
 
 import hetmatpy.hetmat
 import hetmatpy.matrix
-from hetmatpy.tests.hetnets import get_graph
+from hetmatpy.testing import get_graph
 
 
 def test_disease_gene_example_conversion_to_hetmat(tmpdir):

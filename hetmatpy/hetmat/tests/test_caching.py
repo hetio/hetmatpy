@@ -2,7 +2,7 @@ import pytest
 
 import hetmatpy.degree_weight
 import hetmatpy.hetmat.caching
-from hetmatpy.tests.hetnets import get_graph
+from hetmatpy.testing import get_graph
 
 
 @pytest.mark.parametrize('allocate_GB', [0, 0.1])
