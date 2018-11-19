@@ -13,8 +13,8 @@ import numpy
 import pandas
 import scipy.sparse
 
-import hetmech.degree_weight
-import hetmech.matrix
+import hetmatpy.degree_weight
+import hetmatpy.matrix
 
 
 def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_edges=True):
@@ -275,7 +275,7 @@ class HetMat:
                 rows, cols, original_matrix = start_from.metaedge_to_adjacency_matrix(
                     metaedge, dense_threshold=1)
                 is_directed = metaedge.direction != 'both'
-                permuted_matrix, stats = hetmech.matrix.permute_matrix(
+                permuted_matrix, stats = hetmatpy.matrix.permute_matrix(
                     original_matrix, directed=is_directed, multiplier=multiplier,
                     seed=seed)
                 path = new_hetmat.get_edges_path(metaedge, file_format=None)
@@ -407,7 +407,7 @@ class HetMat:
         Read matrix with values of a path-count-based metric. Attempts to
         locate any files with the matrix (or with trivial transformations).
         """
-        category = hetmech.degree_weight.categorize(metapath)
+        category = hetmatpy.degree_weight.categorize(metapath)
         metrics = [metric]
         if metric == 'dwpc' and category == 'no_repeats':
             metrics.append('dwwc')

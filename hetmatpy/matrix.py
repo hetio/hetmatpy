@@ -5,16 +5,16 @@ import hetio.hetnet
 import hetio.matrix
 import hetio.permute
 
-import hetmech.hetmat
+import hetmatpy.hetmat
 
 
 def metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs):
     """
     Return an adjacency matrix tuple like (rows, cols, matrix) for a specified
     metapath. This function is a compatibility wrapper allowing
-    graph_or_hetmat to be either a hetio.hetnet.Graph or hetmech.hetmat.HetMat.
+    graph_or_hetmat to be either a hetio.hetnet.Graph or hetmatpy.hetmat.HetMat.
     """
-    if isinstance(graph_or_hetmat, hetmech.hetmat.HetMat):
+    if isinstance(graph_or_hetmat, hetmatpy.hetmat.HetMat):
         return graph_or_hetmat.metaedge_to_adjacency_matrix(*args, **kwargs)
     if isinstance(graph_or_hetmat, hetio.hetnet.Graph):
         return hetio.matrix.metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs)
@@ -26,7 +26,7 @@ def get_node_identifiers(graph_or_hetmat, metanode):
     Return node identifiers for a given metanode.
     """
     metanode = graph_or_hetmat.metagraph.get_metanode(metanode)
-    if isinstance(graph_or_hetmat, hetmech.hetmat.HetMat):
+    if isinstance(graph_or_hetmat, hetmatpy.hetmat.HetMat):
         return graph_or_hetmat.get_node_identifiers(metanode)
     if isinstance(graph_or_hetmat, hetio.hetnet.Graph):
         return hetio.matrix.get_node_identifiers(graph_or_hetmat, metanode)

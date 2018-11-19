@@ -2,7 +2,7 @@ import json
 
 import hetio.readwrite
 
-import hetmech.hetmat
+import hetmatpy.hetmat
 
 format_github_url = 'https://github.com/{repo_slug}/raw/{commit}/{path}'.format
 
@@ -54,5 +54,5 @@ def get_graph(name, hetmat=False, directory=None):
     if not hetmat:
         return graph
     assert directory is not None
-    hetmat = hetmech.hetmat.hetmat_from_graph(graph, directory)
+    hetmat = hetmatpy.hetmat.hetmat_from_graph(graph, directory)
     return hetmat

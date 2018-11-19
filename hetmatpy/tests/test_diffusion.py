@@ -1,12 +1,12 @@
 import numpy
 import pytest
 
-from hetmech.diffusion import diffusion_step
+from hetmatpy.diffusion import diffusion_step
 
 
 class TestDualNormalize:
     """
-    Test hetmech.diffusion.dual_normalize()
+    Test hetmatpy.diffusion.dual_normalize()
     """
 
     def get_clean_matrix(self, dtype='float64'):

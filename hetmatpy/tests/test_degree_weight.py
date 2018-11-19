@@ -3,7 +3,7 @@ import numpy
 import pytest
 from scipy import sparse
 
-from hetmech.degree_weight import (
+from hetmatpy.degree_weight import (
     _dwpc_approx,
     _dwpc_baab,
     _dwpc_baba,
@@ -17,7 +17,7 @@ from hetmech.degree_weight import (
     dwwc_chain,
     get_segments,
 )
-from hetmech.tests.hetnets import get_graph
+from hetmatpy.testing import get_graph
 
 
 @pytest.mark.parametrize('dwwc_method', [

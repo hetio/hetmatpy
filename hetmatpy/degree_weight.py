@@ -10,9 +10,9 @@ from hetio.matrix import (
     sparsify_or_densify,
 )
 
-import hetmech.hetmat
-from hetmech.hetmat.caching import path_count_cache
-import hetmech.matrix
+import hetmatpy.hetmat
+from hetmatpy.hetmat.caching import path_count_cache
+import hetmatpy.matrix
 
 
 def _category_to_function(category, dwwc_method):
@@ -128,7 +128,7 @@ def dwwc_sequential(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy
     dwwc_matrix = None
     row_names = None
     for metaedge in metapath:
-        rows, cols, adj_mat = hetmech.matrix.metaedge_to_adjacency_matrix(
+        rows, cols, adj_mat = hetmatpy.matrix.metaedge_to_adjacency_matrix(
             graph, metaedge, dense_threshold=dense_threshold, dtype=dtype)
         adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
         if dwwc_matrix is None:
@@ -144,7 +144,7 @@ def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.
     """
     Recursive DWWC implementation to take better advantage of caching.
     """
-    rows, cols, adj_mat = hetmech.matrix.metaedge_to_adjacency_matrix(
+    rows, cols, adj_mat = hetmatpy.matrix.metaedge_to_adjacency_matrix(
         graph, metapath[0], dense_threshold=dense_threshold, dtype=dtype)
     adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
     if len(metapath) > 1:
@@ -165,7 +165,7 @@ def _multi_dot(metapath, order, i, j, graph, damping, dense_threshold, dtype):
     under a 3-Clause BSD License (https://git.io/vhCDC).
     """
     if i == j:
-        _, _, adj_mat = hetmech.matrix.metaedge_to_adjacency_matrix(
+        _, _, adj_mat = hetmatpy.matrix.metaedge_to_adjacency_matrix(
             graph, metapath[i], dense_threshold=dense_threshold, dtype=dtype)
         adj_mat = _degree_weight(adj_mat, damping=damping, dtype=dtype)
         return adj_mat
@@ -199,8 +199,8 @@ def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.floa
     """
     metapath = graph.metagraph.get_metapath(metapath)
     array_dims = [graph.count_nodes(mn) for mn in metapath.get_nodes()]
-    row_ids = hetmech.matrix.get_node_identifiers(graph, metapath.source())
-    columns_ids = hetmech.matrix.get_node_identifiers(graph, metapath.target())
+    row_ids = hetmatpy.matrix.get_node_identifiers(graph, metapath.source())
+    columns_ids = hetmatpy.matrix.get_node_identifiers(graph, metapath.target())
     ordering = _dimensions_to_ordering(array_dims)
     dwwc_matrix = _multi_dot(metapath, ordering, 0, len(metapath) - 1, graph, damping, dense_threshold, dtype)
     dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
@@ -516,11 +516,11 @@ def remove_diag(mat, dtype=numpy.float64):
 
 def _degree_weight(matrix, damping, copy=True, dtype=numpy.float64):
     """Normalize an adjacency matrix by the in and out degree."""
-    matrix = hetmech.matrix.copy_array(matrix, copy, dtype=dtype)
+    matrix = hetmatpy.matrix.copy_array(matrix, copy, dtype=dtype)
     row_sums = numpy.array(matrix.sum(axis=1), dtype=dtype).flatten()
     column_sums = numpy.array(matrix.sum(axis=0), dtype=dtype).flatten()
-    matrix = hetmech.matrix.normalize(matrix, row_sums, 'rows', damping)
-    matrix = hetmech.matrix.normalize(matrix, column_sums, 'columns', damping)
+    matrix = hetmatpy.matrix.normalize(matrix, row_sums, 'rows', damping)
+    matrix = hetmatpy.matrix.normalize(matrix, column_sums, 'columns', damping)
     return matrix
 
 
@@ -757,7 +757,7 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0,
                         v == repeated_metanode]
 
     for metaedge in repeat_segment[:index_of_repeats[1]]:
-        rows, cols, adj = hetmech.matrix.metaedge_to_adjacency_matrix(
+        rows, cols, adj = hetmatpy.matrix.metaedge_to_adjacency_matrix(
             graph, metaedge, dtype=dtype,
             dense_threshold=dense_threshold)
         adj = _degree_weight(adj, damping, dtype=dtype)
@@ -772,7 +772,7 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0,
     # Extra correction for random metanodes in the repeat segment
     if len(index_of_repeats) == 3:
         for metaedge in repeat_segment[index_of_repeats[1]:]:
-            rows, cols, adj = hetmech.matrix.metaedge_to_adjacency_matrix(
+            rows, cols, adj = hetmatpy.matrix.metaedge_to_adjacency_matrix(
                 graph, metaedge, dtype=dtype,
                 dense_threshold=dense_threshold)
             adj = _degree_weight(adj, damping, dtype=dtype)
@@ -828,7 +828,7 @@ def _node_to_children(graph, metapath, node, metapath_index, damping=0,
     if history is None:
         history = {
             i.target: numpy.ones(
-                len(hetmech.matrix.metaedge_to_adjacency_matrix(graph, i)[1]
+                len(hetmatpy.matrix.metaedge_to_adjacency_matrix(graph, i)[1]
                     ), dtype=dtype)
             for i in metapath if i.target in repeated
         }
@@ -836,7 +836,7 @@ def _node_to_children(graph, metapath, node, metapath_index, damping=0,
     if metaedge.source in history:
         history[metaedge.source] -= numpy.array(node != 0, dtype=dtype)
 
-    rows, cols, adj = hetmech.matrix.metaedge_to_adjacency_matrix(graph, metaedge, dtype=dtype)
+    rows, cols, adj = hetmatpy.matrix.metaedge_to_adjacency_matrix(graph, metaedge, dtype=dtype)
     adj = _degree_weight(adj, damping, dtype=dtype)
     vector = node @ adj
 
@@ -865,8 +865,8 @@ def _dwpc_general_case(graph, metapath, damping=0, dtype=numpy.float64):
                                   metapath=metapath, damping=damping,
                                   dtype=dtype)
 
-    start_nodes, cols, adj = hetmech.matrix.metaedge_to_adjacency_matrix(graph, metapath[0])
-    rows, fin_nodes, adj = hetmech.matrix.metaedge_to_adjacency_matrix(graph, metapath[-1])
+    start_nodes, cols, adj = hetmatpy.matrix.metaedge_to_adjacency_matrix(graph, metapath[0])
+    rows, fin_nodes, adj = hetmatpy.matrix.metaedge_to_adjacency_matrix(graph, metapath[-1])
     number_start = len(start_nodes)
     number_end = len(fin_nodes)
 

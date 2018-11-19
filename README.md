@@ -1,24 +1,21 @@
-# hetmech: extracting mechanisms from hetnets
+# hetmatpy: a Python 3 package for matrix operations of hetnets
 
-[![Build Status](https://travis-ci.org/greenelab/hetmech.svg?branch=master)](https://travis-ci.org/greenelab/hetmech)
+[![Build Status](https://travis-ci.com/hetio/hetmatpy.svg?branch=master)](https://travis-ci.com/hetio/hetmatpy)
 
-Hetmech aims to identify the relevant network connections between a set of query nodes.
+This codebase enables identifying the relevant network connections between a set of query nodes.
 The method is designed to operate on hetnets (networks with multiple node or relationship types).
 
 This project is still under development. Use with caution.
 
 ## Environment
 
-This repository uses [conda](http://conda.pydata.org/docs/) to manage its environment as specified in [`environment.yml`](environment.yml).
-Install the environment with:
+Install via pip from GitHub using:
 
-```sh
-conda env create --file=environment.yml
+```
+pip install git+https://github.com/hetio/hetmatpy
 ```
 
-Then use `conda activate hetmech` and `conda deactivate` to activate or deactivate the environment.
-
-For local development, run the following with the hetmech environment activated:
+For local development, run the following inside the development environment:
 
 `pip install --editable .`
 

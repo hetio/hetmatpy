@@ -4,9 +4,9 @@ import pandas
 import scipy.special
 import scipy.stats
 
-import hetmech.degree_group
-import hetmech.degree_weight
-import hetmech.hetmat
+import hetmatpy.degree_group
+import hetmatpy.degree_weight
+import hetmatpy.hetmat
 
 
 def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1.0):
@@ -21,7 +21,7 @@ def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1
     dgp_df['beta'] = dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2
     dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
     degrees_to_dgp = dgp_df.set_index(['source_degree', 'target_degree']).to_dict(orient='index')
-    dwpc_row_generator = hetmech.degree_group.dwpc_to_degrees(
+    dwpc_row_generator = hetmatpy.degree_group.dwpc_to_degrees(
         graph, metapath, damping=damping, ignore_zeros=ignore_zeros)
     for row in dwpc_row_generator:
         degrees = row['source_degree'], row['target_degree']
