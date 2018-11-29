@@ -19,7 +19,11 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
         raise ValueError('add_gamma_hurdle_to_dgp_df: dgp_df must be a pandas.DataFrame')
     missing = {'nnz', 'sum', 'sum_of_squares'} - set(dgp_df.columns)
     if missing:
-        raise ValueError('add_gamma_hurdle_to_dgp_df: dgp_df missing the following required columns: ' + ', '.join(missing))
+        raise ValueError(
+            'add_gamma_hurdle_to_dgp_df: '
+            'dgp_df missing the following required columns: ' +
+            ', '.join(missing)
+        )
     # Compute gamma-hurdle parameters
     dgp_df['mean_nz'] = dgp_df['sum'] / dgp_df['nnz']
     dgp_df['sd_nz'] = ((dgp_df['sum_of_squares'] - dgp_df['sum'] ** 2 / dgp_df['nnz']) / (dgp_df['nnz'] - 1)) ** 0.5
