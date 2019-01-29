@@ -114,14 +114,16 @@ def get_archive_info_df(zip_paths):
     return info_df
 
 
-def load_archive(archive_path, destination_dir):
+def load_archive(archive_path, destination_dir, source_paths=None):
     """
     Extract the paths from an archive into the specified hetmat directory.
+    If source_paths=None, all zipped files are extracted. Pass source_paths
+    a list of specific paths within the zipfile to extract only those members.
     """
     is_url = isinstance(archive_path, str) and re.match('^(http|ftp)s?://', archive_path)
     if is_url:
         archive_path, _ = urllib.request.urlretrieve(archive_path)
     with zipfile.ZipFile(archive_path, mode='r') as zip_file:
-        zip_file.extractall(destination_dir)
+        zip_file.extractall(destination_dir, members=source_paths)
     if is_url:
         urllib.request.urlcleanup()
