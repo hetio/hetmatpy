@@ -47,7 +47,7 @@ def test_disease_gene_example_hetmat_archiving(tmpdir):
     extract_only = [
         'edges/GiG.sparse.npz',
         'metagraph.json',
-        'nodes/Disease.tsv',   
+        'nodes/Disease.tsv',
     ]
     hetmatpy.hetmat.archive.load_archive(archive_path, hetmat_2_dir, source_paths=extract_only)
     match, mismatch, errors = filecmp.cmpfiles(hetmat_0_dir, hetmat_2_dir, common=expected, shallow=False)
