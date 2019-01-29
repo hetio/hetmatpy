@@ -38,7 +38,7 @@ def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1
     Includes gamma-hurdle significance estimates.
     """
     stats_path = graph.get_running_degree_group_path(metapath, 'dwpc', damping, extension='.tsv.gz')
-    dgp_df = pandas.read_table(stats_path)
+    dgp_df = pandas.read_csv(stats_path, sep='\t')
     dgp_df = add_gamma_hurdle_to_dgp_df(dgp_df)
     degrees_to_dgp = dgp_df.set_index(['source_degree', 'target_degree']).to_dict(orient='index')
     dwpc_row_generator = hetmatpy.degree_group.dwpc_to_degrees(

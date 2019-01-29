@@ -78,11 +78,11 @@ def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False):
     del source_adj_mat, target_adj_mat
 
     source_path = graph.get_nodes_path(metapath.source(), file_format='tsv')
-    source_node_df = pandas.read_table(source_path)
+    source_node_df = pandas.read_csv(source_path, sep='\t')
     source_node_names = list(source_node_df['name'])
 
     target_path = graph.get_nodes_path(metapath.target(), file_format='tsv')
-    target_node_df = pandas.read_table(target_path)
+    target_node_df = pandas.read_csv(target_path, sep='\t')
     target_node_names = list(target_node_df['name'])
 
     row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', damping)
