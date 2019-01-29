@@ -366,7 +366,7 @@ class HetMat:
         Returns a list of node identifiers for a metapath
         """
         path = self.get_nodes_path(metanode, file_format='tsv')
-        node_df = pandas.read_table(path)
+        node_df = pandas.read_csv(path, sep='\t')
         return list(node_df['identifier'])
 
     @functools.lru_cache()
