@@ -40,3 +40,17 @@ def test_disease_gene_example_hetmat_archiving(tmpdir):
     assert match == expected
     assert not mismatch
     assert not errors
+
+    # Test round-tripped hetmat has same files when specifying a
+    # subset of zip members in load_archive with source_paths.
+    hetmat_2_dir = tmpdir.joinpath('disease-gene-example-2.hetmat')
+    extract_only = [
+        'edges/GiG.sparse.npz',
+        'metagraph.json',
+        'nodes/Disease.tsv',   
+    ]
+    hetmatpy.hetmat.archive.load_archive(archive_path, hetmat_2_dir, source_paths=extract_only)
+    match, mismatch, errors = filecmp.cmpfiles(hetmat_0_dir, hetmat_2_dir, common=expected, shallow=False)
+    assert match == extract_only
+    assert not mismatch
+    assert 'nodes/Tissue.tsv' in errors
