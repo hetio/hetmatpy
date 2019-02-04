@@ -52,7 +52,7 @@ def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1
         else:
             row['p_value'] = None if row['sum'] == 0 else (
                 row['nnz'] / row['n'] *
-                (1 - scipy.special.gammainc(row['alpha'], row['beta'] * row['dwpc']))
+                (scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc']))
             )
         if row['p_value'] is not None and row['p_value'] > max_p_value:
             continue
