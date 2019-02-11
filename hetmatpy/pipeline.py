@@ -9,6 +9,20 @@ import hetmatpy.degree_weight
 import hetmatpy.hetmat
 
 
+def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
+    """
+    Calculate the standard deviation and validate the incoming data
+    """
+    if number_nonzero == 1:
+        return 0
+    # If all the values in the row are the same we'll manually return zero,
+    # because not doing so can lead to some issues with float imprecision
+    elif sum_of_squares - unsquared_sum ** 2 < 1e-5:
+        return 0
+    else:
+        return ((sum_of_squares - unsquared_sum ** 2 / number_nonzero) / (number_nonzero - 1)) ** 0.5
+
+
 def add_gamma_hurdle_to_dgp_df(dgp_df):
     """
     Edit a degree-grouped permutation dataframe to include gamma-hurdle
@@ -26,7 +40,8 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
         )
     # Compute gamma-hurdle parameters
     dgp_df['mean_nz'] = dgp_df['sum'] / dgp_df['nnz']
-    dgp_df['sd_nz'] = ((dgp_df['sum_of_squares'] - dgp_df['sum'] ** 2 / dgp_df['nnz']) / (dgp_df['nnz'] - 1)) ** 0.5
+    dgp_df['sd_nz'] = calculate_sd(dgp_df['sum_of_squares'], dgp_df['sum'], dgp_df['nnz'])
+    # dgp_df['sd_nz'] = ((dgp_df['sum_of_squares'] - dgp_df['sum'] ** 2 / dgp_df['nnz']) / (dgp_df['nnz'] - 1)) ** 0.5
     dgp_df['beta'] = dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2
     dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
     return dgp_df
