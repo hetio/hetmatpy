@@ -42,8 +42,16 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
     dgp_df['mean_nz'] = dgp_df['sum'] / dgp_df['nnz']
     dgp_df['sd_nz'] = calculate_sd(dgp_df['sum_of_squares'], dgp_df['sum'], dgp_df['nnz'])
     # dgp_df['sd_nz'] = ((dgp_df['sum_of_squares'] - dgp_df['sum'] ** 2 / dgp_df['nnz']) / (dgp_df['nnz'] - 1)) ** 0.5
-    dgp_df['beta'] = dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2
-    dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
+
+    # If the standard deviation is zero, we'll go ahead and set beta and alpha to -1.
+    # This has the benefit of both not dividing by zero and ensuring that the gamma
+    # function breaks if it is still called somehow
+    if dgp_df['sd_nz'] == 0:
+        dgp_df['beta'] = -1
+        dgp_df['alpha'] = -1
+    else:
+        dgp_df['beta'] = dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2
+        dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
     return dgp_df
 
 
@@ -64,6 +72,11 @@ def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1
         row.update(dgp)
         if row['path_count'] == 0:
             row['p_value'] = 1.0
+        elif row['sd_nz'] == 0:
+            if row['dwpc'] <= dgp_df['mean_nz']:
+                row['p_value'] = dgp_df['nnz'] / dgp_df['n_dwpcs']
+            else:
+                row['p_value'] = 0
         else:
             row['p_value'] = None if row['sum'] == 0 else (
                 row['nnz'] / row['n'] *
