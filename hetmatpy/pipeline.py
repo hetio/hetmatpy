@@ -41,7 +41,6 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
     # Compute gamma-hurdle parameters
     dgp_df['mean_nz'] = dgp_df['sum'] / dgp_df['nnz']
     dgp_df['sd_nz'] = calculate_sd(dgp_df['sum_of_squares'], dgp_df['sum'], dgp_df['nnz'])
-    # dgp_df['sd_nz'] = ((dgp_df['sum_of_squares'] - dgp_df['sum'] ** 2 / dgp_df['nnz']) / (dgp_df['nnz'] - 1)) ** 0.5
 
     # If the standard deviation is zero, we'll go ahead and set beta and alpha to -1.
     # This has the benefit of both not dividing by zero and ensuring that the gamma
