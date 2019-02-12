@@ -62,7 +62,7 @@ def calculate_p_value(row, dgp_df):
         return None
     elif row['path_count'] == 0:
         return 1.0
-    # If the standard deviation is zero, calculate the p_value empiricly
+    # If the standard deviation is zero, calculate the p_value empirically
     elif row['sd_nz'] == 0:
         if row['dwpc'] <= dgp_df['mean_nz']:
             return dgp_df['nnz'] / dgp_df['n_dwpcs']
