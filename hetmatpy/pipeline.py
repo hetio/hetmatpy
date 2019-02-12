@@ -17,7 +17,7 @@ def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
         return 0
     # If all the values in the row are the same we'll manually return zero,
     # because not doing so can lead to some issues with float imprecision
-    elif sum_of_squares - unsquared_sum ** 2 < 1e-5:
+    elif abs(sum_of_squares - unsquared_sum ** 2 / number_nonzero) < 1e-5:
         return 0
     else:
         return ((sum_of_squares - unsquared_sum ** 2 / number_nonzero) / (number_nonzero - 1)) ** 0.5
@@ -54,6 +54,24 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
     return dgp_df
 
 
+def calculate_p_value(row, dgp_df):
+    """
+    Calculate the p_value for a given metapath if possible
+    """
+    if row['sum'] == 0:
+        return None
+    elif row['path_count'] == 0:
+        return 1.0
+    # If the standard deviation is zero, calculate the p_value empiricly
+    elif row['sd_nz'] == 0:
+        if row['dwpc'] <= dgp_df['mean_nz']:
+            return dgp_df['nnz'] / dgp_df['n_dwpcs']
+        else:
+            return 0
+    else:
+        return row['nnz'] / row['n'] * (scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc']))
+
+
 def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1.0):
     """
     Combine DWPC information with degree-grouped permutation summary metrics.
@@ -69,18 +87,7 @@ def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1
         degrees = row['source_degree'], row['target_degree']
         dgp = degrees_to_dgp[degrees]
         row.update(dgp)
-        if row['path_count'] == 0:
-            row['p_value'] = 1.0
-        elif row['sd_nz'] == 0:
-            if row['dwpc'] <= dgp_df['mean_nz']:
-                row['p_value'] = dgp_df['nnz'] / dgp_df['n_dwpcs']
-            else:
-                row['p_value'] = 0
-        else:
-            row['p_value'] = None if row['sum'] == 0 else (
-                row['nnz'] / row['n'] *
-                (scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc']))
-            )
+        row['p_value'] = calculate_p_value(row, dgp_df)
         if row['p_value'] is not None and row['p_value'] > max_p_value:
             continue
         for key in ['sum', 'sum_of_squares', 'beta', 'alpha']:
