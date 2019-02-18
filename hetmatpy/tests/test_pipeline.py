@@ -61,7 +61,7 @@ def test_grouper_length_1():
     # Test that the standard deviation of 5, 4, and 3 is 1
     (50, 12, 3, 1)])
 def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_output):
-    assert(calculate_sd(sum_of_squares, unsquared_sum, number_nonzero) == expected_output)
+    assert calculate_sd(sum_of_squares, unsquared_sum, number_nonzero) == expected_output
 
 
 # row = path_count, sd_nz, dwpc, nnz, n, alpha, beta
@@ -76,8 +76,11 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
     # zero standard deviation with dwpc higher than mean
     ({'path_count': 5, 'sd_nz': 0, 'dwpc': 4, 'nnz': 1, 'n': 4, 'alpha': 1, 'beta': 2, 'sum': 1},
      {'mean_nz': 3, 'nnz': 3, 'n_dwpcs': 8}, 0),
-    # zero row sum
-    ({'path_count': 5, 'sd_nz': 0, 'dwpc': 2, 'nnz': 1, 'n': 4, 'alpha': 1, 'beta': 2, 'sum': 0},
-     {'mean_nz': 3, 'nnz': 3, 'n_dwpcs': 8}, None)])
+    # Normal gamma hurdle case
+    ({'path_count': 5, 'sd_nz': 1, 'dwpc': 2.5, 'nnz': 1, 'n': 10, 'alpha': 1, 'beta': 1, 'sum': 1},
+     {'mean_nz': 3, 'nnz': 3, 'n_dwpcs': 8}, .008208),
+    # number nonzero is itself zero
+    ({'path_count': 5, 'sd_nz': 0, 'dwpc': 2, 'nnz': 0, 'n': 4, 'alpha': 1, 'beta': 2, 'sum': 0},
+     {'mean_nz': 3, 'nnz': 3, 'n_dwpcs': 8}, 0)])
 def test_calculate_p_value(row, dgp_df, expected_output):
-    assert(calculate_p_value(row, dgp_df) == expected_output)
+    assert calculate_p_value(row, dgp_df) == pytest.approx(expected_output, rel=1e-4)
