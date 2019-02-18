@@ -8,6 +8,8 @@ import hetmatpy.degree_group
 import hetmatpy.degree_weight
 import hetmatpy.hetmat
 
+FLOAT_ERROR_TOLERANCE = 1e-5
+
 
 def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
     """
@@ -17,7 +19,7 @@ def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
         return 0
     # If all the values in the row are the same we'll manually return zero,
     # because not doing so can lead to some issues with float imprecision
-    elif abs(sum_of_squares - unsquared_sum ** 2 / number_nonzero) < 1e-5:
+    elif abs(sum_of_squares - unsquared_sum ** 2 / number_nonzero) < FLOAT_ERROR_TOLERANCE:
         return 0
     else:
         return ((sum_of_squares - unsquared_sum ** 2 / number_nonzero) / (number_nonzero - 1)) ** 0.5
