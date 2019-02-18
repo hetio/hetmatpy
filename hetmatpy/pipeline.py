@@ -55,22 +55,36 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
     return dgp_df
 
 
-def calculate_p_value(row, dgp_df):
+def calculate_gamma_hurdle_p_value(row):
     """
-    Calculate the p_value for a given metapath
+    Use the gamma hurdle model to calculate the p_value for a metapath
+    """
+    return row['nnz'] / row['n'] * (scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc']))
+
+
+def calculate_empirical_p_value(row, dgp_df):
+    """
+    Calculate p_value in cases where the gamma hurdle model won't work
     """
     if row['nnz'] == 0:
         return 0
     elif row['path_count'] == 0:
         return 1.0
-    # If the standard deviation is zero, calculate the p_value empirically
     elif row['sd_nz'] == 0:
         if row['dwpc'] <= dgp_df['mean_nz']:
             return dgp_df['nnz'] / dgp_df['n_dwpcs']
         else:
             return 0
+
+
+def calculate_p_value(row, dgp_df):
+    """
+    Calculate the p_value for a given metapath
+    """
+    if row['nnz'] == 0 or row['path_count'] == 0 or row['sd_nz'] == 0:
+        return calculate_empirical_p_value(row, dgp_df)
     else:
-        return row['nnz'] / row['n'] * (scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc']))
+        return calculate_gamma_hurdle_p_value(row)
 
 
 def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1.0):
