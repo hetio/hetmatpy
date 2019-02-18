@@ -57,10 +57,10 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
 
 def calculate_p_value(row, dgp_df):
     """
-    Calculate the p_value for a given metapath if possible
+    Calculate the p_value for a given metapath
     """
-    if row['sum'] == 0:
-        return None
+    if row['nnz'] == 0:
+        return 0
     elif row['path_count'] == 0:
         return 1.0
     # If the standard deviation is zero, calculate the p_value empirically
