@@ -1,5 +1,6 @@
 import itertools
 
+import numpy
 import pandas
 import scipy.special
 import scipy.stats
@@ -47,16 +48,12 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
         )
     # Compute gamma-hurdle parameters
     dgp_df['mean_nz'] = dgp_df['sum'] / dgp_df['nnz']
-    dgp_df['sd_nz'] = calculate_sd(dgp_df['sum_of_squares'], dgp_df['sum'], dgp_df['nnz'])
 
-    # If the standard deviation is zero, we'll go ahead and set beta and alpha to None
-    # so that the gamma function breaks if it is called
-    if dgp_df['sd_nz'] == 0 or dgp_df['sd_nz'] is None:
-        dgp_df['beta'] = None
-        dgp_df['alpha'] = None
-    else:
-        dgp_df['beta'] = dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2
-        dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
+    dgp_df['sd_nz'] = dgp_df[['sum_of_squares', 'sum', 'nnz']].apply(lambda row: calculate_sd(*row), raw=True, axis=1)
+
+    dgp_df['beta'] = (dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2).replace(numpy.inf, numpy.nan)
+    dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
+
     return dgp_df
 
 
