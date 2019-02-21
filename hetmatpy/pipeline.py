@@ -16,13 +16,18 @@ def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
     Calculate the standard deviation and validate the incoming data
     """
     if number_nonzero == 1:
-        return 0
+        return None
+
+    squared_deviations = sum_of_squares - unsquared_sum ** 2 / number_nonzero
+
     # If all the values in the row are the same we'll manually return zero,
     # because not doing so can lead to some issues with float imprecision
-    elif abs(sum_of_squares - unsquared_sum ** 2 / number_nonzero) < FLOAT_ERROR_TOLERANCE:
+    # The true value of the squared deviation will always be >= zero,
+    # but float error may bring it below zero
+    if abs(squared_deviations) < FLOAT_ERROR_TOLERANCE:
         return 0
     else:
-        return ((sum_of_squares - unsquared_sum ** 2 / number_nonzero) / (number_nonzero - 1)) ** 0.5
+        return (squared_deviations / (number_nonzero - 1)) ** 0.5
 
 
 def add_gamma_hurdle_to_dgp_df(dgp_df):
@@ -46,7 +51,7 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
 
     # If the standard deviation is zero, we'll go ahead and set beta and alpha to None
     # so that the gamma function breaks if it is called
-    if dgp_df['sd_nz'] == 0:
+    if dgp_df['sd_nz'] == 0 or dgp_df['sd_nz'] is None:
         dgp_df['beta'] = None
         dgp_df['alpha'] = None
     else:
@@ -66,13 +71,26 @@ def calculate_empirical_p_value(row, dgp_df):
     """
     Calculate p_value in cases where the gamma hurdle model won't work
     """
-    if row['nnz'] == 0:
-        return 0
-    elif row['path_count'] == 0:
+    # If no metapaths with these degrees are found in the true network, return
+    # a p_value of one
+    if row['path_count'] == 0:
         return 1.0
+    # If no metapaths with this source, target degree pair are found in the
+    # permuted networks, but a metapath is observed in the true network,
+    # assign a p_value of 0
+    elif row['nnz'] == 0:
+        return 0
+    # If you observed metapaths in the permuted network, but they all have the
+    # same dwpc:
     elif row['sd_nz'] == 0:
+        # If the metapath you found in the true network has a smaller dwpc than
+        # those in the permuted network, the p_value is the number of metapaths
+        # with the same profile in the permuted networks that have a nonzero
+        # dwpc divided by the total number of metapaths with that profile
         if row['dwpc'] <= dgp_df['mean_nz']:
             return dgp_df['nnz'] / dgp_df['n_dwpcs']
+        # If the metapath you found in the true network has a larger dwpc than
+        # those in the premuted network, then the p_value should be zero
         else:
             return 0
 
