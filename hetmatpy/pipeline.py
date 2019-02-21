@@ -67,40 +67,36 @@ def calculate_gamma_hurdle_p_value(row):
     return row['nnz'] / row['n'] * (scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc']))
 
 
-def calculate_empirical_p_value(row, dgp_df):
+def calculate_empirical_p_value(row):
     """
     Calculate p_value in cases where the gamma hurdle model won't work
     """
-    # If no metapaths with these degrees are found in the true network, return
-    # a p_value of one
     if row['path_count'] == 0:
+        # No paths exist between the given source and target nodes
         return 1.0
-    # If no metapaths with this source, target degree pair are found in the
-    # permuted networks, but a metapath is observed in the true network,
-    # assign a p_value of 0
-    elif row['nnz'] == 0:
-        return 0
-    # If you observed metapaths in the permuted network, but they all have the
-    # same dwpc:
-    elif row['sd_nz'] == 0:
-        # If the metapath you found in the true network has a smaller dwpc than
-        # those in the permuted network, the p_value is the number of metapaths
-        # with the same profile in the permuted networks that have a nonzero
-        # dwpc divided by the total number of metapaths with that profile
-        if row['dwpc'] <= dgp_df['mean_nz']:
-            return dgp_df['nnz'] / dgp_df['n_dwpcs']
-        # If the metapath you found in the true network has a larger dwpc than
-        # those in the premuted network, then the p_value should be zero
-        else:
-            return 0
+    if row['nnz'] == 0:
+        # No nonzero DWPCs are found in the permuted network, but paths are
+        # observed in the true network
+        return 0.0
+    if row['sd_nz'] == 0:
+        # The DWPCs in the permuted network are identical
+        if row['dwpc'] <= row['mean_nz']:
+            # The DWPC you found in the true network is smaller than or equal
+            # to those in the permuted network
+            return row['nnz'] / row['n_dwpcs']
+
+        # The DWPC you found in the true network is larger than those in the
+        # permuted network
+        return 0.0
+    raise NotImplementedError
 
 
-def calculate_p_value(row, dgp_df):
+def calculate_p_value(row):
     """
     Calculate the p_value for a given metapath
     """
     if row['nnz'] == 0 or row['path_count'] == 0 or row['sd_nz'] == 0:
-        return calculate_empirical_p_value(row, dgp_df)
+        return calculate_empirical_p_value(row)
     else:
         return calculate_gamma_hurdle_p_value(row)
 
@@ -120,7 +116,7 @@ def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False, max_p_value=1
         degrees = row['source_degree'], row['target_degree']
         dgp = degrees_to_dgp[degrees]
         row.update(dgp)
-        row['p_value'] = calculate_p_value(row, dgp_df)
+        row['p_value'] = calculate_p_value(row)
         if row['p_value'] is not None and row['p_value'] > max_p_value:
             continue
         for key in ['sum', 'sum_of_squares', 'beta', 'alpha']:
