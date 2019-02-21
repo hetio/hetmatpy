@@ -71,9 +71,11 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
     # Zero path count
     ({'path_count': 0, 'sd_nz': 2, 'dwpc': 4, 'nnz': 1, 'n': 4, 'alpha': 1, 'beta': 2, 'sum': 1}, 1),
     # zero standard deviation with dwpc lower than mean
-    ({'path_count': 5, 'sd_nz': 0, 'dwpc': 2, 'mean_nz': 3, 'nnz': 3, 'n_dwpcs': 8, 'n': 4, 'alpha': 1, 'beta': 2, 'sum': 1}, .375),
+    ({'path_count': 5, 'sd_nz': 0, 'dwpc': 2, 'mean_nz': 3, 'nnz': 3, 'n_dwpcs': 8,
+      'n': 4, 'alpha': 1, 'beta': 2, 'sum': 1}, .375),
     # zero standard deviation with dwpc higher than mean
-    ({'path_count': 5, 'sd_nz': 0, 'dwpc': 4, 'mean_nz': 3, 'nnz': 1, 'n': 4, 'alpha': 1, 'beta': 2, 'sum': 1}, 0),
+    ({'path_count': 5, 'sd_nz': 0, 'dwpc': 4, 'mean_nz': 3, 'nnz': 1, 'n': 4,
+      'alpha': 1, 'beta': 2, 'sum': 1}, 0),
     # Normal gamma hurdle case
     ({'path_count': 5, 'sd_nz': 1, 'dwpc': 2.5, 'nnz': 1, 'n': 10, 'alpha': 1, 'beta': 1, 'sum': 1}, .008208),
     # number nonzero is itself zero
