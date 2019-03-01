@@ -26,7 +26,7 @@ def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
     # The true value of the squared deviation will always be >= zero,
     # but float error may bring it below zero
     if abs(squared_deviations) < FLOAT_ERROR_TOLERANCE:
-        return 0
+        return 0.0
     else:
         return (squared_deviations / (number_nonzero - 1)) ** 0.5
 
@@ -64,11 +64,22 @@ def calculate_gamma_hurdle_p_value(row):
     return row['nnz'] / row['n'] * (scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc']))
 
 
+def path_does_not_exist(row):
+    """
+    Check whether any paths exist between the source and target. We know there
+    isn't a path if the row has a zero path count, or has a zero dwpc if the path
+    count isn't present in the row
+    """
+    if 'path_count' in row:
+        return row['path_count'] == 0
+    return row['dwpc'] == 0
+
+
 def calculate_empirical_p_value(row):
     """
     Calculate p_value in cases where the gamma hurdle model won't work
     """
-    if row['path_count'] == 0:
+    if path_does_not_exist(row):
         # No paths exist between the given source and target nodes
         return 1.0
     if row['nnz'] == 0:
@@ -92,7 +103,7 @@ def calculate_p_value(row):
     """
     Calculate the p_value for a given metapath
     """
-    if row['nnz'] == 0 or row['path_count'] == 0 or row['sd_nz'] == 0:
+    if row['nnz'] == 0 or path_does_not_exist(row) or row['sd_nz'] == 0:
         return calculate_empirical_p_value(row)
     else:
         return calculate_gamma_hurdle_p_value(row)
