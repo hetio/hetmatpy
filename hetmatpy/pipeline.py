@@ -16,7 +16,7 @@ def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
     """
     Calculate the standard deviation and validate the incoming data
     """
-    if number_nonzero == 1:
+    if number_nonzero < 2:
         return None
 
     squared_deviations = sum_of_squares - unsquared_sum ** 2 / number_nonzero
