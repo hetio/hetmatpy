@@ -73,7 +73,7 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
 
 
 @pytest.mark.parametrize('row, expected_output', [
-    # Zero path count
+    # zero path count
     ({'path_count': 0,
       'sd_nz': 2.0,
       'dwpc': 4.0,
@@ -105,7 +105,7 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
       'beta': 2.0,
       'sum': 1.0
       }, 0.0),
-    # Normal gamma hurdle case
+    # normal gamma hurdle case
     ({'path_count': 5,
       'sd_nz': 1.0,
       'dwpc': 2.5,
@@ -125,6 +125,21 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
       'beta': 2.0,
       'sum': 0.0
       }, 0.0),
+    # dwpc slightly larger than mean_nz, but within float error tolerance
+    ({'source_id': 'DB00193',
+      'target_id': 'DOID:0050425',
+      'source_name': 'Tramadol',
+      'target_name': 'restless legs syndrome',
+      'source_degree': 1,
+      'target_degree': 10,
+      'path_count': 1,
+      'dwpc': 7.323728709931218,
+      'n': 81600,
+      'nnz': 2086,
+      'n_perms': 200,
+      'mean_nz': 7.323728709931212,
+      'sd_nz': 0.0
+      }, 0.02556372549),
 ])
 def test_calculate_p_value(row, expected_output):
     assert calculate_p_value(row) == pytest.approx(expected_output, rel=1e-4)
