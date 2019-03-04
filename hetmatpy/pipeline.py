@@ -12,6 +12,14 @@ import hetmatpy.hetmat
 FLOAT_ERROR_TOLERANCE = 1e-5
 
 
+def sd_is_positive(sd):
+    """
+    Tests whether the standard deviation is greater than zero or if it is
+    zero/NaN/None
+    """
+    return sd > 0 and sd is not None and sd != numpy.nan
+
+
 def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
     """
     Calculate the standard deviation and validate the incoming data
@@ -86,7 +94,7 @@ def calculate_empirical_p_value(row):
         # No nonzero DWPCs are found in the permuted network, but paths are
         # observed in the true network
         return 0.0
-    if row['sd_nz'] == 0:
+    if not sd_is_positive(row['sd_nz']):
         # The DWPCs in the permuted network are identical
         if row['dwpc'] <= row['mean_nz'] + FLOAT_ERROR_TOLERANCE:
             # The DWPC you found in the true network is smaller than or equal
@@ -103,7 +111,7 @@ def calculate_p_value(row):
     """
     Calculate the p_value for a given metapath
     """
-    if row['nnz'] == 0 or path_does_not_exist(row) or row['sd_nz'] == 0:
+    if row['nnz'] == 0 or path_does_not_exist(row) or not sd_is_positive(row['sd_nz']):
         return calculate_empirical_p_value(row)
     else:
         return calculate_gamma_hurdle_p_value(row)
