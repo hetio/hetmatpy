@@ -61,14 +61,12 @@ def test_grouper_length_1():
     (32.0, 8.0, 2, 0.0),
     # Sum of squares and unsquared sum are very close to the case above, so return zero
     (32.0, 8.0 + 1e-6, 2, 0.0),
-    # Only one nonzero observation, so return zero
+    # Only one nonzero observation, so return None
     (5.0, 5.0, 1, None),
     # Test that the standard deviation of 5, 4, and 3 is 1
     (50.0, 12.0, 3, 1.0),
     # Test no nonzero values
     (0.0, 0.0, 0, None),
-    # Test a single nonzero value
-    (0.25, 0.5, 1, None),
 ])
 def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_output):
     assert calculate_sd(sum_of_squares, unsquared_sum, number_nonzero) == expected_output
@@ -91,8 +89,7 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
       'dwpc': 2.0,
       'mean_nz': 3.0,
       'nnz': 3,
-      'n_dwpcs': 8,
-      'n': 4,
+      'n': 8,
       'alpha': 1.0,
       'beta': 2.0,
       'sum': 1.0
