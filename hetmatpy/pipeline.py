@@ -91,7 +91,7 @@ def calculate_empirical_p_value(row):
         if row['dwpc'] <= row['mean_nz']:
             # The DWPC you found in the true network is smaller than or equal
             # to those in the permuted network
-            return row['nnz'] / row['n_dwpcs']
+            return row['nnz'] / row['n']
 
         # The DWPC you found in the true network is larger than those in the
         # permuted network
