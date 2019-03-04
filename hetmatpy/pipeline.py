@@ -17,7 +17,7 @@ def sd_is_positive(sd):
     Tests whether the standard deviation is greater than zero or if it is
     zero/NaN/None
     """
-    return sd > 0 and sd is not None and sd != numpy.nan
+    return not pandas.isna(sd) and sd > 0
 
 
 def calculate_sd(sum_of_squares, unsquared_sum, number_nonzero):
