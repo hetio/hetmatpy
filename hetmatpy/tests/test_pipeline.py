@@ -138,8 +138,8 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
       'nnz': 2086,
       'n_perms': 200,
       'mean_nz': 7.323728709931212,
-      'sd_nz': 0.0,
-      'p_value': 0.0}, 0.02556372549),
+      'sd_nz': 0.0
+      }, 0.02556372549),
 ])
 def test_calculate_p_value(row, expected_output):
     assert calculate_p_value(row) == pytest.approx(expected_output, rel=1e-4)
