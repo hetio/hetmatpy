@@ -140,6 +140,17 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
       'mean_nz': 7.323728709931212,
       'sd_nz': 0.0
       }, 0.02556372549),
+    # standard deviation is None
+    ({'path_count': 5,
+      'sd_nz': None,
+      'dwpc': 1.5,
+      'nnz': 10,
+      'n': 100,
+      'alpha': 1.0,
+      'beta': 1.0,
+      'sum': 1.0,
+      'mean_nz': 2
+      }, .1),
 ])
 def test_calculate_p_value(row, expected_output):
     assert calculate_p_value(row) == pytest.approx(expected_output, rel=1e-4)
