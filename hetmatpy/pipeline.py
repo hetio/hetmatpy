@@ -88,7 +88,7 @@ def calculate_empirical_p_value(row):
         return 0.0
     if row['sd_nz'] == 0:
         # The DWPCs in the permuted network are identical
-        if row['dwpc'] <= row['mean_nz']:
+        if row['dwpc'] <= row['mean_nz'] + FLOAT_ERROR_TOLERANCE:
             # The DWPC you found in the true network is smaller than or equal
             # to those in the permuted network
             return row['nnz'] / row['n']
