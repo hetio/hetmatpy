@@ -65,10 +65,17 @@ def generate_degree_group_stats(source_degree_to_ind, target_degree_to_ind, matr
             yield row
 
 
-def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False):
+def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False, ignore_redundant=True):
     """
     Yield a description of each cell in a DWPC matrix adding source and target
     node degree info as well as the corresponding path count.
+
+    Parameters
+    ----------
+    ignore_redundant: bool
+        When metapath is symmetric, only return a single orientation of a node pair.
+        For example, yield source-target but not also target-source, which should have
+        the same DWPC.
     """
     metapath = graph.metagraph.get_metapath(metapath)
     _, _, source_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[0], dense_threshold=0.7)
@@ -94,8 +101,11 @@ def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False):
     if scipy.sparse.issparse(path_count):
         path_count = path_count.toarray()
 
-    row_inds, col_inds = range(len(row_names)), range(len(col_names))
-    for row_ind, col_ind in itertools.product(row_inds, col_inds):
+    if ignore_redundant and metapath.is_symmetric():
+        pairs = itertools.combinations_with_replacement(range(len(row_names)))
+    else:
+        pairs = itertools.product(range(len(row_names)), range(len(col_names)))
+    for row_ind, col_ind in pairs:
         dwpc_value = dwpc_matrix[row_ind, col_ind]
         if ignore_zeros and dwpc_value == 0:
             continue

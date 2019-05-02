@@ -9,7 +9,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires='>=3.6',
     install_requires=[
-        'hetio>=0.2.9',
+        'hetio>=0.2.10',
         'numpy',
         'pandas',
         'scipy',
