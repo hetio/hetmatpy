@@ -102,7 +102,7 @@ def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False, ignore_red
         path_count = path_count.toarray()
 
     if ignore_redundant and metapath.is_symmetric():
-        pairs = itertools.combinations_with_replacement(range(len(row_names)))
+        pairs = itertools.combinations_with_replacement(range(len(row_names)), 2)
     else:
         pairs = itertools.product(range(len(row_names)), range(len(col_names)))
     for row_ind, col_ind in pairs:
