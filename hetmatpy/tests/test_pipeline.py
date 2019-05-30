@@ -74,93 +74,101 @@ def test_calculate_sd(sum_of_squares, unsquared_sum, number_nonzero, expected_ou
 
 @pytest.mark.parametrize('row, expected_output', [
     # zero path count
-    ({'path_count': 0,
-      'sd_nz': 2.0,
-      'dwpc': 4.0,
-      'nnz': 1,
-      'n': 4,
-      'alpha': 1.0,
-      'beta': 2.0,
-      'sum': 1.0
-      }, 1.0),
+    ({
+        'path_count': 0,
+        'sd_nz': 2.0,
+        'dwpc': 4.0,
+        'nnz': 1,
+        'n': 4,
+        'alpha': 1.0,
+        'beta': 2.0,
+        'sum': 1.0,
+    }, 1.0),
     # zero standard deviation with dwpc lower than mean
-    ({'path_count': 5,
-      'sd_nz': 0.0,
-      'dwpc': 2.0,
-      'mean_nz': 3.0,
-      'nnz': 3,
-      'n': 8,
-      'alpha': 1.0,
-      'beta': 2.0,
-      'sum': 1.0
-      }, .375),
+    ({
+        'path_count': 5,
+        'sd_nz': 0.0,
+        'dwpc': 2.0,
+        'mean_nz': 3.0,
+        'nnz': 3,
+        'n': 8,
+        'alpha': 1.0,
+        'beta': 2.0,
+        'sum': 1.0,
+    }, .375),
     # zero standard deviation with dwpc higher than mean
-    ({'path_count': 5,
-      'sd_nz': 0.0,
-      'dwpc': 4.0,
-      'mean_nz': 3.0,
-      'nnz': 1,
-      'n': 4,
-      'alpha': 1.0,
-      'beta': 2.0,
-      'sum': 1.0
-      }, 0.0),
+    ({
+        'path_count': 5,
+        'sd_nz': 0.0,
+        'dwpc': 4.0,
+        'mean_nz': 3.0,
+        'nnz': 1,
+        'n': 4,
+        'alpha': 1.0,
+        'beta': 2.0,
+        'sum': 1.0,
+    }, 0.0),
     # normal gamma hurdle case
-    ({'path_count': 5,
-      'sd_nz': 1.0,
-      'dwpc': 2.5,
-      'nnz': 1,
-      'n': 10,
-      'alpha': 1.0,
-      'beta': 1.0,
-      'sum': 1.0
-      }, .008208),
+    ({
+        'path_count': 5,
+        'sd_nz': 1.0,
+        'dwpc': 2.5,
+        'nnz': 1,
+        'n': 10,
+        'alpha': 1.0,
+        'beta': 1.0,
+        'sum': 1.0,
+    }, .008208),
     # number nonzero is itself zero
-    ({'path_count': 5,
-      'sd_nz': 0.0,
-      'dwpc': 2.0,
-      'nnz': 0,
-      'n': 4,
-      'alpha': 1.0,
-      'beta': 2.0,
-      'sum': 0.0
-      }, 0.0),
+    ({
+        'path_count': 5,
+        'sd_nz': 0.0,
+        'dwpc': 2.0,
+        'nnz': 0,
+        'n': 4,
+        'alpha': 1.0,
+        'beta': 2.0,
+        'sum': 0.0,
+    }, 0.0),
     # dwpc slightly larger than mean_nz, but within float error tolerance
-    ({'source_id': 'DB00193',
-      'target_id': 'DOID:0050425',
-      'source_name': 'Tramadol',
-      'target_name': 'restless legs syndrome',
-      'source_degree': 1,
-      'target_degree': 10,
-      'path_count': 1,
-      'dwpc': 7.323728709931218,
-      'n': 81600,
-      'nnz': 2086,
-      'n_perms': 200,
-      'mean_nz': 7.323728709931212,
-      'sd_nz': 0.0
-      }, 0.02556372549),
+    ({
+        'source_id': 'DB00193',
+        'target_id': 'DOID:0050425',
+        'source_name': 'Tramadol',
+        'target_name': 'restless legs syndrome',
+        'source_degree': 1,
+        'target_degree': 10,
+        'path_count': 1,
+        'dwpc': 7.323728709931218,
+        'n': 81600,
+        'nnz': 2086,
+        'n_perms': 200,
+        'mean_nz': 7.323728709931212,
+        'sd_nz': 0.0,
+    }, 0.02556372549),
     # standard deviation is None
-    ({'path_count': 5,
-      'sd_nz': None,
-      'dwpc': 1.5,
-      'nnz': 10,
-      'n': 100,
-      'alpha': 1.0,
-      'beta': 1.0,
-      'sum': 1.0,
-      'mean_nz': 2
-      }, .1),
+    ({
+        'path_count': 5,
+        'sd_nz': None,
+        'dwpc': 1.5,
+        'nnz': 10,
+        'n': 100,
+        'alpha': 1.0,
+        'beta': 1.0,
+        'sum': 1.0,
+        'mean_nz': 2,
+    }, .1),
 ])
 def test_calculate_p_value(row, expected_output):
     assert calculate_p_value(row) == pytest.approx(expected_output, rel=1e-4)
 
 
 def test_add_gamma_hurdle():
-    df_dict = {'nnz': [1, 3, 3],
-               'sum': [4.0, 4.0, 3.0],
-               'sum_of_squares': [4.0, 6.0, 3.0 + 1e-15],
-               }
+    df_dict = {
+        'nnz': [1, 3, 3],
+        'sum': [4.0, 4.0, 3.0],
+        'sum_of_squares': [4.0, 6.0, 3.0 + 1e-15],
+    }
     dgp_df = pandas.DataFrame(df_dict)
     dgp_df = add_gamma_hurdle_to_dgp_df(dgp_df)
 
