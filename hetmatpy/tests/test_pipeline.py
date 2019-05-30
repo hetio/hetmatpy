@@ -3,10 +3,11 @@ import pandas
 import pytest
 
 from hetmatpy.pipeline import (
-    grouper,
-    calculate_sd,
-    calculate_p_value,
     add_gamma_hurdle_to_dgp_df,
+    calculate_gamma_hurdle_p_value,
+    calculate_p_value,
+    calculate_sd,
+    grouper,
     path_does_not_exist,
 )
 
@@ -210,3 +211,21 @@ def test_add_gamma_hurdle():
 ])
 def test_path_does_not_exist(row, expected_output):
     assert path_does_not_exist(row) == expected_output
+
+
+def test_calculate_gamma_hurdle_p_value_missing_beta_alpha():
+    """
+    Testing data from https://search.het.io/?source=1502&target=41593&metapaths=BPpGbCcSE
+    """
+    row = {
+        'n': 202_969_400,
+        'nnz': 1_447_786,
+        'mean_nz': 3.03334213264993,
+        'sd_nz': 0.986636206544574,
+        'path_count': 3,
+        'dwpc': 2.48807892922932,
+    }
+    p_value = calculate_gamma_hurdle_p_value(row)
+    assert 0.0048801093094888 == pytest.approx(p_value)
+    assert row['beta'] == 1 # should fail
+    assert row['alpha'] == 1 # should fail
