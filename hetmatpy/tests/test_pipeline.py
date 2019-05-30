@@ -226,6 +226,6 @@ def test_calculate_gamma_hurdle_p_value_missing_beta_alpha():
         'dwpc': 2.48807892922932,
     }
     p_value = calculate_gamma_hurdle_p_value(row)
-    assert 0.0048801093094888 == pytest.approx(p_value)
-    assert row['beta'] == 1 # should fail
-    assert row['alpha'] == 1 # should fail
+    assert pytest.approx(p_value) == 0.0048801093094888
+    assert pytest.approx(row['beta']) == 3.1160706804802087
+    assert pytest.approx(row['alpha']) == 1 # should fail
