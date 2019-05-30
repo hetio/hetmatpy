@@ -56,9 +56,7 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
         )
     # Compute gamma-hurdle parameters
     dgp_df['mean_nz'] = dgp_df['sum'] / dgp_df['nnz']
-
     dgp_df['sd_nz'] = dgp_df[['sum_of_squares', 'sum', 'nnz']].apply(lambda row: calculate_sd(*row), raw=True, axis=1)
-
     dgp_df['beta'] = (dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2).replace(numpy.inf, numpy.nan)
     dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
 
@@ -67,9 +65,17 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
 
 def calculate_gamma_hurdle_p_value(row):
     """
-    Use the gamma hurdle model to calculate the p_value for a metapath
+    Use the gamma hurdle model to calculate the p_value for a metapath.
+    If beta and alpha gamma-hurdle parameters are missing, calculate them
+    and add them to row.
     """
-    return row['nnz'] / row['n'] * (scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc']))
+    if 'beta' not in row:
+        row['beta'] = row['mean_nz'] / row['sd_nz'] ** 2
+    if numpy.isinf(row['beta']):
+        row['beta'] = numpy.nan
+    if 'alpha' not in row:
+        row['alpha'] = row['mean_nz'] * row['beta']
+    return row['nnz'] / row['n'] * scipy.special.gammaincc(row['alpha'], row['beta'] * row['dwpc'])
 
 
 def path_does_not_exist(row):
