@@ -6,7 +6,7 @@ from hetmatpy.matrix import metaedge_to_adjacency_matrix
 
 def graph_to_xarray(graph):
     """
-    Convert a hetio.hetnet.Graph to an xarray.Dataset
+    Convert a hetnetpy.hetnet.Graph to an xarray.Dataset
     """
     data_vars = dict()
     for metaedge in graph.metagraph.get_edges(exclude_inverts=True):

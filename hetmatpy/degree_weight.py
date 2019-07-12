@@ -6,7 +6,7 @@ import logging
 
 import numpy
 from scipy import sparse
-from hetio.matrix import (
+from hetnetpy.matrix import (
     sparsify_or_densify,
 )
 
@@ -42,8 +42,8 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, approx_ok=False,
 
     Parameters
     ----------
-    graph : hetio.hetnet.Graph
-    metapath : hetio.hetnet.MetaPath
+    graph : hetnetpy.hetnet.Graph
+    metapath : hetnetpy.hetnet.MetaPath
     damping : float
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold above which a sparse matrix will be
@@ -90,8 +90,8 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64, d
 
     Parameters
     ----------
-    graph : hetio.hetnet.Graph
-    metapath : hetio.hetnet.MetaPath
+    graph : hetnetpy.hetnet.Graph
+    metapath : hetnetpy.hetnet.MetaPath
     damping : float
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold at which a sparse matrix will be
@@ -117,8 +117,8 @@ def dwwc_sequential(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy
 
     Parameters
     ----------
-    graph : hetio.hetnet.Graph
-    metapath : hetio.hetnet.MetaPath
+    graph : hetnetpy.hetnet.Graph
+    metapath : hetnetpy.hetnet.MetaPath
     damping : float
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold at which a sparse matrix will be
@@ -214,7 +214,7 @@ def categorize(metapath):
 
     Parameters
     ----------
-    metapath : hetio.hetnet.MetaPath
+    metapath : hetnetpy.hetnet.MetaPath
 
     Returns
     -------
@@ -318,8 +318,8 @@ def get_segments(metagraph, metapath):
 
     Parameters
     ----------
-    metagraph : hetio.hetnet.MetaGraph
-    metapath : hetio.hetnet.Metapath
+    metagraph : hetnetpy.hetnet.MetaGraph
+    metapath : hetnetpy.hetnet.Metapath
 
     Returns
     -------
@@ -445,8 +445,8 @@ def get_all_segments(metagraph, metapath):
 
     Parameters
     ----------
-    metagraph : hetio.hetnet.MetaGraph
-    metapath : hetio.hetnet.MetaPath
+    metagraph : hetnetpy.hetnet.MetaGraph
+    metapath : hetnetpy.hetnet.MetaPath
 
     Returns
     -------
@@ -479,9 +479,9 @@ def order_segments(metagraph, metapaths, store_inverses=False):
 
     Parameters
     ----------
-    metagraph : hetio.hetnet.MetaGraph
+    metagraph : hetnetpy.hetnet.MetaGraph
     metapaths : list
-        list of hetio.hetnet.MetaPath objects
+        list of hetnetpy.hetnet.MetaPath objects
     store_inverses : bool
         Whether or not to include both forward and backward directions of segments.
         For example, if False: [CbG, GbC] -> [CbG, CbG], else no change.
@@ -616,8 +616,8 @@ def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0,
 
     Parameters
     ----------
-    graph : hetio.hetnet.Graph
-    metapath : hetio.hetnet.MetaPath
+    graph : hetnetpy.hetnet.Graph
+    metapath : hetnetpy.hetnet.MetaPath
     damping : float
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold above which a sparse matrix will be
@@ -806,8 +806,8 @@ def _node_to_children(graph, metapath, node, metapath_index, damping=0,
 
     Parameters
     ----------
-    graph : hetio.hetnet.Graph
-    metapath : hetio.hetnet.MetaPath
+    graph : hetnetpy.hetnet.Graph
+    metapath : hetnetpy.hetnet.MetaPath
     node : numpy.ndarray
     metapath_index : int
     damping : float
@@ -856,8 +856,8 @@ def _dwpc_general_case(graph, metapath, damping=0, dtype=numpy.float64):
 
     Parameters
     ----------
-    graph : hetio.hetnet.Graph
-    metapath : hetio.hetnet.MetaPath
+    graph : hetnetpy.hetnet.Graph
+    metapath : hetnetpy.hetnet.MetaPath
     damping : float
     dtype : dtype object
     """

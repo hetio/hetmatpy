@@ -1,4 +1,4 @@
-import hetio.pathtools
+import hetnetpy.pathtools
 import numpy
 import pytest
 
@@ -29,20 +29,20 @@ def test_CbGiGiGaD_traversal():
     Test path counts and degree-weighted path counts for the CbGiGiGaD
     metapath between bupropion and nicotine dependence. These values are not
     intended to correspond to the values from the entire Hetionet v1.0. Hence,
-    the expected values are generated using hetio.pathtools.
+    the expected values are generated using hetnetpy.pathtools.
     """
     graph = get_graph('bupropion-subgraph')
     compound = 'DB01156'  # Bupropion
     disease = 'DOID:0050742'  # nicotine dependence
     metapath = graph.metagraph.metapath_from_abbrev('CbGiGiGaD')
-    paths = hetio.pathtools.paths_between(
+    paths = hetnetpy.pathtools.paths_between(
         graph,
         source=('Compound', compound),
         target=('Disease', disease),
         metapath=metapath,
         duplicates=False,
     )
-    hetio_dwpc = hetio.pathtools.DWPC(paths, damping_exponent=0.4)
+    hetnetpy_dwpc = hetnetpy.pathtools.DWPC(paths, damping_exponent=0.4)
 
     rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
     rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
@@ -50,7 +50,7 @@ def test_CbGiGiGaD_traversal():
     j = cols.index(disease)
 
     assert pc_matrix[i, j] == len(paths)
-    assert dwpc_matrix[i, j] == pytest.approx(hetio_dwpc)
+    assert dwpc_matrix[i, j] == pytest.approx(hetnetpy_dwpc)
 
 
 @pytest.mark.parametrize('metapath', [
@@ -85,16 +85,16 @@ def test_path_traversal(metapath, hetmat, tmpdir):
     compound = rows[i]
     disease = cols[j]
 
-    # hetio.pathtools computations
-    paths = hetio.pathtools.paths_between(
+    # hetnetpy.pathtools computations
+    paths = hetnetpy.pathtools.paths_between(
         graph,
         source=('Compound', compound),
         target=('Disease', disease),
         metapath=metapath,
         duplicates=False,
     )
-    hetio_dwpc = hetio.pathtools.DWPC(paths, damping_exponent=0.4)
+    hetnetpy_dwpc = hetnetpy.pathtools.DWPC(paths, damping_exponent=0.4)
 
-    # Check matrix values match hetio.pathtools
+    # Check matrix values match hetnetpy.pathtools
     assert pc_matrix[i, j] == len(paths)
-    assert dwpc_matrix[i, j] == pytest.approx(hetio_dwpc)
+    assert dwpc_matrix[i, j] == pytest.approx(hetnetpy_dwpc)

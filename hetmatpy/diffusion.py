@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 import numpy
-from hetio.matrix import (
+from hetnetpy.matrix import (
     get_node_to_position,
 )
 
@@ -64,9 +64,9 @@ def diffuse(
 
     Parameters
     ==========
-    graph : hetio.hetnet.Graph
+    graph : hetnetpy.hetnet.Graph
         graph to extract adjacency matrices along
-    metapath : hetio.hetnet.MetaPath
+    metapath : hetnetpy.hetnet.MetaPath
         metapath to diffuse along
     source_node_weights : dict
         dictionary of node to weight. Nodes not in dict are zero-weighted
