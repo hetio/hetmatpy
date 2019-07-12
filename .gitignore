@@ -2,14 +2,28 @@
 /data/hetionet-v1.0.hetmat/permutations/*.bak
 /data/hetionet-v1.0.hetmat/permutations/*/degree-grouped-path-counts
 
-### Python ###
+# Python
 __pycache__/
+*.egg-info/
+.ipynb_checkpoints
 .cache
 .pytest_cache/
-*.egg-info/
 
-### Jupyter Notebook ###
-.ipynb_checkpoints
+# System specific files
 
-### IDEA ###
+## Linux
+*~
+.Trash-*
+
+## macOS
+.DS_Store
+._*
+.Trashes
+
+## Windows
+Thumbs.db
+[Dd]esktop.ini
+
+## Text Editors
+.vscode
 **.idea/
