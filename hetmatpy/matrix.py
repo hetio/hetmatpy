@@ -1,9 +1,9 @@
 import numpy
 import scipy.sparse
 
-import hetio.hetnet
-import hetio.matrix
-import hetio.permute
+import hetnetpy.hetnet
+import hetnetpy.matrix
+import hetnetpy.permute
 
 import hetmatpy.hetmat
 
@@ -12,12 +12,12 @@ def metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs):
     """
     Return an adjacency matrix tuple like (rows, cols, matrix) for a specified
     metapath. This function is a compatibility wrapper allowing
-    graph_or_hetmat to be either a hetio.hetnet.Graph or hetmatpy.hetmat.HetMat.
+    graph_or_hetmat to be either a hetnetpy.hetnet.Graph or hetmatpy.hetmat.HetMat.
     """
     if isinstance(graph_or_hetmat, hetmatpy.hetmat.HetMat):
         return graph_or_hetmat.metaedge_to_adjacency_matrix(*args, **kwargs)
-    if isinstance(graph_or_hetmat, hetio.hetnet.Graph):
-        return hetio.matrix.metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs)
+    if isinstance(graph_or_hetmat, hetnetpy.hetnet.Graph):
+        return hetnetpy.matrix.metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs)
     raise TypeError(f'graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}')
 
 
@@ -28,8 +28,8 @@ def get_node_identifiers(graph_or_hetmat, metanode):
     metanode = graph_or_hetmat.metagraph.get_metanode(metanode)
     if isinstance(graph_or_hetmat, hetmatpy.hetmat.HetMat):
         return graph_or_hetmat.get_node_identifiers(metanode)
-    if isinstance(graph_or_hetmat, hetio.hetnet.Graph):
-        return hetio.matrix.get_node_identifiers(graph_or_hetmat, metanode)
+    if isinstance(graph_or_hetmat, hetnetpy.hetnet.Graph):
+        return hetnetpy.matrix.get_node_identifiers(graph_or_hetmat, metanode)
     raise TypeError(f'graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}')
 
 
@@ -105,7 +105,7 @@ def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
         OrderedDicts of information on the permutations performed.
     """
     edge_list = list(zip(*adjacency_matrix.nonzero()))
-    permuted_edges, stats = hetio.permute.permute_pair_list(
+    permuted_edges, stats = hetnetpy.permute.permute_pair_list(
         edge_list, directed=directed, multiplier=multiplier,
         excluded_pair_set=excluded_pair_set, seed=seed)
 

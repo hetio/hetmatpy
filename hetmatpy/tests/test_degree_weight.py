@@ -1,4 +1,4 @@
-import hetio.readwrite
+import hetnetpy.readwrite
 import numpy
 import pytest
 from scipy import sparse
@@ -403,11 +403,11 @@ def test__dwpc_general_case(length):
     ('CbGiGiGbC', 'BAAB'),
     ('CbGbCbGbC', 'other')])  # ABABA
 def test_categorize(metapath, solution):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+    url = 'https://github.com/hetio/hetnetpy/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
         'test/data/hetionet-v1.0-metagraph.json',
     )
-    metagraph = hetio.readwrite.read_metagraph(url)
+    metagraph = hetnetpy.readwrite.read_metagraph(url)
     metapath = metagraph.metapath_from_abbrev(metapath)
     assert categorize(metapath) == solution
 
@@ -444,11 +444,11 @@ def test_categorize(metapath, solution):
     ('DlAeGiGaDlA', '[DlA, AeGiGaD, DlA]')
 ])
 def test_get_segments(metapath, solution):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+    url = 'https://github.com/hetio/hetnetpy/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
         'test/data/hetionet-v1.0-metagraph.json',
     )
-    metagraph = hetio.readwrite.read_metagraph(url)
+    metagraph = hetnetpy.readwrite.read_metagraph(url)
     metapath = metagraph.metapath_from_abbrev(metapath)
     output = str(get_segments(metagraph, metapath))
     assert output == solution

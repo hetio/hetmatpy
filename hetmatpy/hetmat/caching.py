@@ -7,7 +7,7 @@ import time
 
 import numpy
 import scipy.sparse
-from hetio.matrix import sparsify_or_densify
+from hetnetpy.matrix import sparsify_or_densify
 
 import hetmatpy.hetmat
 

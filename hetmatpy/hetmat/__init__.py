@@ -5,10 +5,10 @@ import logging
 import pathlib
 import shutil
 
-import hetio.hetnet
-import hetio.matrix
-import hetio.permute
-import hetio.readwrite
+import hetnetpy.hetnet
+import hetnetpy.matrix
+import hetnetpy.permute
+import hetnetpy.readwrite
 import numpy
 import pandas
 import scipy.sparse
@@ -19,9 +19,9 @@ import hetmatpy.matrix
 
 def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_edges=True):
     """
-    Create a hetmat.HetMat from a hetio.hetnet.Graph.
+    Create a hetmat.HetMat from a hetnetpy.hetnet.Graph.
     """
-    assert isinstance(graph, hetio.hetnet.Graph)
+    assert isinstance(graph, hetnetpy.hetnet.Graph)
     hetmat = HetMat(path, initialize=True)
     hetmat.metagraph = graph.metagraph
 
@@ -30,7 +30,7 @@ def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_ed
     for metanode in metanodes:
         path = hetmat.get_nodes_path(metanode)
         rows = list()
-        node_to_position = hetio.matrix.get_node_to_position(graph, metanode)
+        node_to_position = hetnetpy.matrix.get_node_to_position(graph, metanode)
         for node, position in node_to_position.items():
             rows.append((position, node.identifier, node.name))
         node_df = pandas.DataFrame(rows, columns=['position', 'identifier', 'name'])
@@ -40,7 +40,7 @@ def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_ed
     # Save metaedges
     metaedges = list(graph.metagraph.get_edges(exclude_inverts=True))
     for metaedge in metaedges:
-        rows, cols, matrix = hetio.matrix.metaedge_to_adjacency_matrix(graph, metaedge, dense_threshold=1)
+        rows, cols, matrix = hetnetpy.matrix.metaedge_to_adjacency_matrix(graph, metaedge, dense_threshold=1)
         path = hetmat.get_edges_path(metaedge, file_format=None)
         save_matrix(matrix, path)
     return hetmat
@@ -300,14 +300,14 @@ class HetMat:
         method has issues, consider using cached_property from
         https://github.com/pydanny/cached-property.
         """
-        return hetio.readwrite.read_metagraph(self.metagraph_path)
+        return hetnetpy.readwrite.read_metagraph(self.metagraph_path)
 
     @metagraph.setter
     def metagraph(self, metagraph):
         """
         Set the metagraph property by writing the metagraph to disk.
         """
-        hetio.readwrite.write_metagraph(metagraph, self.metagraph_path)
+        hetnetpy.readwrite.write_metagraph(metagraph, self.metagraph_path)
 
     def get_nodes_path(self, metanode, file_format='tsv'):
         """
@@ -393,7 +393,7 @@ class HetMat:
             specs.append(spec)
         matrix = read_first_matrix(specs)
         if dense_threshold is not None:
-            matrix = hetio.matrix.sparsify_or_densify(matrix, dense_threshold=dense_threshold)
+            matrix = hetnetpy.matrix.sparsify_or_densify(matrix, dense_threshold=dense_threshold)
         if dtype is not None:
             matrix = matrix.astype(dtype)
         row_ids = self.get_node_identifiers(metaedge.source)
