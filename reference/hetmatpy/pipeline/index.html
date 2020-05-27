@@ -1,0 +1,1499 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Pipeline - hetmatpy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#4caf50">
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="green" data-md-color-accent="lightgreen">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#module-hetmatpypipeline" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../../.." title="hetmatpy" aria-label="hetmatpy" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              hetmatpy
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Pipeline
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/hetio/hetmatpy/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    hetmatpy
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../../.." title="hetmatpy" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    hetmatpy
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/hetio/hetmatpy/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    hetmatpy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../LICENSE/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1" checked>
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Hetmatpy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        Hetmatpy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../degree_group/" title="Degree Group" class="md-nav__link">
+      Degree Group
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../degree_weight/" title="Degree Weight" class="md-nav__link">
+      Degree Weight
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../diffusion/" title="Diffusion" class="md-nav__link">
+      Diffusion
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../matrix/" title="Matrix" class="md-nav__link">
+      Matrix
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Pipeline
+      </label>
+    
+    <a href="./" title="Pipeline" class="md-nav__link md-nav__link--active">
+      Pipeline
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_gamma_hurdle_to_dgp_df" class="md-nav__link">
+    add_gamma_hurdle_to_dgp_df
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_empirical_p_value" class="md-nav__link">
+    calculate_empirical_p_value
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_gamma_hurdle_p_value" class="md-nav__link">
+    calculate_gamma_hurdle_p_value
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_p_value" class="md-nav__link">
+    calculate_p_value
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_sd" class="md-nav__link">
+    calculate_sd
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combine_dwpc_dgp" class="md-nav__link">
+    combine_dwpc_dgp
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouped_tsv_writer" class="md-nav__link">
+    grouped_tsv_writer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouper" class="md-nav__link">
+    grouper
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path_does_not_exist" class="md-nav__link">
+    path_does_not_exist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sd_is_positive" class="md-nav__link">
+    sd_is_positive
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../testing/" title="Testing" class="md-nav__link">
+      Testing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../xarray/" title="Xarray" class="md-nav__link">
+      Xarray
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-9" type="checkbox" id="nav-3-1-9">
+    
+    <label class="md-nav__link" for="nav-3-1-9">
+      Hetmat
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-3-1-9">
+        Hetmat
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hetmat/archive/" title="Archive" class="md-nav__link">
+      Archive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hetmat/caching/" title="Caching" class="md-nav__link">
+      Caching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hetmat/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_gamma_hurdle_to_dgp_df" class="md-nav__link">
+    add_gamma_hurdle_to_dgp_df
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_empirical_p_value" class="md-nav__link">
+    calculate_empirical_p_value
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_gamma_hurdle_p_value" class="md-nav__link">
+    calculate_gamma_hurdle_p_value
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_p_value" class="md-nav__link">
+    calculate_p_value
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_sd" class="md-nav__link">
+    calculate_sd
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combine_dwpc_dgp" class="md-nav__link">
+    combine_dwpc_dgp
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouped_tsv_writer" class="md-nav__link">
+    grouped_tsv_writer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouper" class="md-nav__link">
+    grouper
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path_does_not_exist" class="md-nav__link">
+    path_does_not_exist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sd_is_positive" class="md-nav__link">
+    sd_is_positive
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/hetio/hetmatpy/edit/master/reference/hetmatpy/pipeline.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="module-hetmatpypipeline">Module hetmatpy.pipeline</h1>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="kn">import</span> <span class="nn">scipy.special</span>
+
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+
+<span class="kn">import</span> <span class="nn">hetmatpy.degree_group</span>
+
+<span class="kn">import</span> <span class="nn">hetmatpy.degree_weight</span>
+
+<span class="kn">import</span> <span class="nn">hetmatpy.hetmat</span>
+
+<span class="n">FLOAT_ERROR_TOLERANCE</span> <span class="o">=</span> <span class="mf">1e-5</span>
+
+<span class="k">def</span> <span class="nf">sd_is_positive</span><span class="p">(</span><span class="n">sd</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Tests whether the standard deviation is greater than zero or if it is</span>
+
+<span class="sd">    zero/NaN/None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sd</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">calculate_sd</span><span class="p">(</span><span class="n">sum_of_squares</span><span class="p">,</span> <span class="n">unsquared_sum</span><span class="p">,</span> <span class="n">number_nonzero</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Calculate the standard deviation and validate the incoming data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">number_nonzero</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">squared_deviations</span> <span class="o">=</span> <span class="n">sum_of_squares</span> <span class="o">-</span> <span class="n">unsquared_sum</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">number_nonzero</span>
+
+    <span class="c1"># If all the values in the row are the same we&#39;ll manually return zero,</span>
+
+    <span class="c1"># because not doing so can lead to some issues with float imprecision</span>
+
+    <span class="c1"># The true value of the squared deviation will always be &gt;= zero,</span>
+
+    <span class="c1"># but float error may bring it below zero</span>
+
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">squared_deviations</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">FLOAT_ERROR_TOLERANCE</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">squared_deviations</span> <span class="o">/</span> <span class="p">(</span><span class="n">number_nonzero</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span>
+
+<span class="k">def</span> <span class="nf">add_gamma_hurdle_to_dgp_df</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Edit a degree-grouped permutation dataframe to include gamma-hurdle</span>
+
+<span class="sd">    distribution parameters.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Validate dgp_df</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;add_gamma_hurdle_to_dgp_df: dgp_df must be a pandas.DataFrame&#39;</span><span class="p">)</span>
+
+    <span class="n">missing</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nnz&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;sum_of_squares&#39;</span><span class="p">}</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">dgp_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+
+            <span class="s1">&#39;add_gamma_hurdle_to_dgp_df: &#39;</span>
+
+            <span class="s1">&#39;dgp_df missing the following required columns: &#39;</span> <span class="o">+</span>
+
+            <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span>
+
+        <span class="p">)</span>
+
+    <span class="c1"># Compute gamma-hurdle parameters</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[[</span><span class="s1">&#39;sum_of_squares&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;nnz&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">calculate_sd</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">),</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="kp">inf</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">nan</span><span class="p">)</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">dgp_df</span>
+
+<span class="k">def</span> <span class="nf">calculate_gamma_hurdle_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Use the gamma hurdle model to calculate the p_value for a metapath.</span>
+
+<span class="sd">    If beta and alpha gamma-hurdle parameters are missing, calculate them</span>
+
+<span class="sd">    and add them to row.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;beta&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+
+        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">isinf</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]):</span>
+
+        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">nan</span>
+
+    <span class="k">if</span> <span class="s1">&#39;alpha&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+
+        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaincc</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">path_does_not_exist</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Check whether any paths exist between the source and target. We know there</span>
+
+<span class="sd">    isn&#39;t a path if the row has a zero path count, or has a zero dwpc if the path</span>
+
+<span class="sd">    count isn&#39;t present in the row</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;path_count&#39;</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;path_count&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">calculate_empirical_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Calculate p_value in cases where the gamma hurdle model won&#39;t work</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">path_does_not_exist</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+
+        <span class="c1"># No paths exist between the given source and target nodes</span>
+
+        <span class="k">return</span> <span class="mf">1.0</span>
+
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+        <span class="c1"># No nonzero DWPCs are found in the permuted network, but paths are</span>
+
+        <span class="c1"># observed in the true network</span>
+
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]):</span>
+
+        <span class="c1"># The DWPCs in the permuted network are identical</span>
+
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">FLOAT_ERROR_TOLERANCE</span><span class="p">:</span>
+
+            <span class="c1"># The DWPC you found in the true network is smaller than or equal</span>
+
+            <span class="c1"># to those in the permuted network</span>
+
+            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span>
+
+        <span class="c1"># The DWPC you found in the true network is larger than those in the</span>
+
+        <span class="c1"># permuted network</span>
+
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="k">def</span> <span class="nf">calculate_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Calculate the p_value for a given metapath</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">path_does_not_exist</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]):</span>
+
+        <span class="k">return</span> <span class="n">calculate_empirical_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">calculate_gamma_hurdle_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">combine_dwpc_dgp</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">ignore_zeros</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_p_value</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Combine DWPC information with degree-grouped permutation summary metrics.</span>
+
+<span class="sd">    Includes gamma-hurdle significance estimates.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">stats_path</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_running_degree_group_path</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span> <span class="s1">&#39;dwpc&#39;</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv.gz&#39;</span><span class="p">)</span>
+
+    <span class="n">dgp_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">stats_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">dgp_df</span> <span class="o">=</span> <span class="n">add_gamma_hurdle_to_dgp_df</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">)</span>
+
+    <span class="n">degrees_to_dgp</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;source_degree&#39;</span><span class="p">,</span> <span class="s1">&#39;target_degree&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+
+    <span class="n">dwpc_row_generator</span> <span class="o">=</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">degree_group</span><span class="o">.</span><span class="n">dwpc_to_degrees</span><span class="p">(</span>
+
+        <span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span> <span class="n">ignore_zeros</span><span class="o">=</span><span class="n">ignore_zeros</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dwpc_row_generator</span><span class="p">:</span>
+
+        <span class="n">degrees</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;source_degree&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;target_degree&#39;</span><span class="p">]</span>
+
+        <span class="n">dgp</span> <span class="o">=</span> <span class="n">degrees_to_dgp</span><span class="p">[</span><span class="n">degrees</span><span class="p">]</span>
+
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dgp</span><span class="p">)</span>
+
+        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;p_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;p_value&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;p_value&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_p_value</span><span class="p">:</span>
+
+            <span class="k">continue</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;sum_of_squares&#39;</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">]:</span>
+
+            <span class="k">del</span> <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="k">yield</span> <span class="n">row</span>
+
+<span class="k">def</span> <span class="nf">grouper</span><span class="p">(</span><span class="kp">iterable</span><span class="p">,</span> <span class="n">group_size</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Group an iterable into chunks of group_size.</span>
+
+<span class="sd">    Derived from https://stackoverflow.com/a/8998040/4651668</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kp">iterable</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="kp">iterable</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="kp">iterable</span><span class="p">,</span> <span class="n">group_size</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">head</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">chunk</span><span class="p">),</span>
+
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+
+            <span class="k">break</span>
+
+        <span class="k">yield</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grouped_tsv_writer</span><span class="p">(</span><span class="n">row_generator</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">group_size</span><span class="o">=</span><span class="mi">20_000</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Write an iterable of dictionaries to a TSV, where each dictionary is a row.</span>
+
+<span class="sd">    Uses pandas (extra keyword arguments are passed to DataFrame.to_csv) to</span>
+
+<span class="sd">    write the TSV, enabling using pandas to write a generated rows that are too</span>
+
+<span class="sd">    plentiful to fit in memory.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">grouper</span><span class="p">(</span><span class="n">row_generator</span><span class="p">,</span> <span class="n">group_size</span><span class="o">=</span><span class="n">group_size</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;header&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="k">else</span> <span class="s1">&#39;w&#39;</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+
+</details>
+<h2 id="variables">Variables</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">FLOAT_ERROR_TOLERANCE</span>
+</code></pre></div>
+
+
+<h2 id="functions">Functions</h2>
+<h3 id="add_gamma_hurdle_to_dgp_df">add_gamma_hurdle_to_dgp_df</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">add_gamma_hurdle_to_dgp_df</span><span class="p">(</span>
+    <span class="n">dgp_df</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Edit a degree-grouped permutation dataframe to include gamma-hurdle
+distribution parameters.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">add_gamma_hurdle_to_dgp_df</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Edit a degree-grouped permutation dataframe to include gamma-hurdle</span>
+
+<span class="ss">    distribution parameters.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="o">#</span> <span class="n">Validate</span> <span class="n">dgp_df</span>
+
+    <span class="k">if</span> <span class="k">not</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">,</span> <span class="n">pandas</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">):</span>
+
+        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span><span class="s1">&#39;add_gamma_hurdle_to_dgp_df: dgp_df must be a pandas.DataFrame&#39;</span><span class="p">)</span>
+
+    <span class="n">missing</span> <span class="o">=</span> <span class="err">{</span><span class="s1">&#39;nnz&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;sum_of_squares&#39;</span><span class="err">}</span> <span class="o">-</span> <span class="k">set</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">.</span><span class="n">columns</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+
+        <span class="n">raise</span> <span class="n">ValueError</span><span class="p">(</span>
+
+            <span class="s1">&#39;add_gamma_hurdle_to_dgp_df: &#39;</span>
+
+            <span class="s1">&#39;dgp_df missing the following required columns: &#39;</span> <span class="o">+</span>
+
+            <span class="s1">&#39;, &#39;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span>
+
+        <span class="p">)</span>
+
+    <span class="o">#</span> <span class="n">Compute</span> <span class="n">gamma</span><span class="o">-</span><span class="n">hurdle</span> <span class="k">parameters</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[[</span><span class="s1">&#39;sum_of_squares&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;nnz&#39;</span><span class="p">]].</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span> <span class="k">row</span><span class="p">:</span> <span class="n">calculate_sd</span><span class="p">(</span><span class="o">*</span><span class="k">row</span><span class="p">),</span> <span class="n">raw</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">).</span><span class="k">replace</span><span class="p">(</span><span class="n">numpy</span><span class="p">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">numpy</span><span class="p">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">dgp_df</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="calculate_empirical_p_value">calculate_empirical_p_value</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_empirical_p_value</span><span class="p">(</span>
+    <span class="n">row</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Calculate p_value in cases where the gamma hurdle model won't work</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">calculate_empirical_p_value</span><span class="p">(</span><span class="k">row</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Calculate p_value in cases where the gamma hurdle model won&#39;t work</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">path_does_not_exist</span><span class="p">(</span><span class="k">row</span><span class="p">):</span>
+
+        <span class="o">#</span> <span class="k">No</span> <span class="n">paths</span> <span class="n">exist</span> <span class="k">between</span> <span class="n">the</span> <span class="n">given</span> <span class="k">source</span> <span class="k">and</span> <span class="n">target</span> <span class="n">nodes</span>
+
+        <span class="k">return</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>
+
+    <span class="k">if</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+        <span class="o">#</span> <span class="k">No</span> <span class="n">nonzero</span> <span class="n">DWPCs</span> <span class="k">are</span> <span class="k">found</span> <span class="k">in</span> <span class="n">the</span> <span class="n">permuted</span> <span class="n">network</span><span class="p">,</span> <span class="n">but</span> <span class="n">paths</span> <span class="k">are</span>
+
+        <span class="o">#</span> <span class="n">observed</span> <span class="k">in</span> <span class="n">the</span> <span class="k">true</span> <span class="n">network</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span>
+
+    <span class="k">if</span> <span class="k">not</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="k">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]):</span>
+
+        <span class="o">#</span> <span class="n">The</span> <span class="n">DWPCs</span> <span class="k">in</span> <span class="n">the</span> <span class="n">permuted</span> <span class="n">network</span> <span class="k">are</span> <span class="n">identical</span>
+
+        <span class="k">if</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">FLOAT_ERROR_TOLERANCE</span><span class="p">:</span>
+
+            <span class="o">#</span> <span class="n">The</span> <span class="n">DWPC</span> <span class="n">you</span> <span class="k">found</span> <span class="k">in</span> <span class="n">the</span> <span class="k">true</span> <span class="n">network</span> <span class="k">is</span> <span class="n">smaller</span> <span class="k">than</span> <span class="k">or</span> <span class="n">equal</span>
+
+            <span class="o">#</span> <span class="k">to</span> <span class="n">those</span> <span class="k">in</span> <span class="n">the</span> <span class="n">permuted</span> <span class="n">network</span>
+
+            <span class="k">return</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span>
+
+        <span class="o">#</span> <span class="n">The</span> <span class="n">DWPC</span> <span class="n">you</span> <span class="k">found</span> <span class="k">in</span> <span class="n">the</span> <span class="k">true</span> <span class="n">network</span> <span class="k">is</span> <span class="n">larger</span> <span class="k">than</span> <span class="n">those</span> <span class="k">in</span> <span class="n">the</span>
+
+        <span class="o">#</span> <span class="n">permuted</span> <span class="n">network</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span>
+
+    <span class="n">raise</span> <span class="n">NotImplementedError</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="calculate_gamma_hurdle_p_value">calculate_gamma_hurdle_p_value</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_gamma_hurdle_p_value</span><span class="p">(</span>
+    <span class="n">row</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Use the gamma hurdle model to calculate the p_value for a metapath.
+If beta and alpha gamma-hurdle parameters are missing, calculate them
+and add them to row.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">calculate_gamma_hurdle_p_value</span><span class="p">(</span><span class="k">row</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Use the gamma hurdle model to calculate the p_value for a metapath.</span>
+
+<span class="ss">    If beta and alpha gamma-hurdle parameters are missing, calculate them</span>
+
+<span class="ss">    and add them to row.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;beta&#39;</span> <span class="k">not</span> <span class="k">in</span> <span class="k">row</span><span class="p">:</span>
+
+        <span class="k">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">if</span> <span class="n">numpy</span><span class="p">.</span><span class="n">isinf</span><span class="p">(</span><span class="k">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]):</span>
+
+        <span class="k">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">nan</span>
+
+    <span class="k">if</span> <span class="s1">&#39;alpha&#39;</span> <span class="k">not</span> <span class="k">in</span> <span class="k">row</span><span class="p">:</span>
+
+        <span class="k">row</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">scipy</span><span class="p">.</span><span class="n">special</span><span class="p">.</span><span class="n">gammaincc</span><span class="p">(</span><span class="k">row</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">],</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="calculate_p_value">calculate_p_value</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_p_value</span><span class="p">(</span>
+    <span class="n">row</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Calculate the p_value for a given metapath</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">calculate_p_value</span><span class="p">(</span><span class="k">row</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Calculate the p_value for a given metapath</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">or</span> <span class="n">path_does_not_exist</span><span class="p">(</span><span class="k">row</span><span class="p">)</span> <span class="k">or</span> <span class="k">not</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="k">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]):</span>
+
+        <span class="k">return</span> <span class="n">calculate_empirical_p_value</span><span class="p">(</span><span class="k">row</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">calculate_gamma_hurdle_p_value</span><span class="p">(</span><span class="k">row</span><span class="p">)</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="calculate_sd">calculate_sd</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_sd</span><span class="p">(</span>
+    <span class="n">sum_of_squares</span><span class="p">,</span>
+    <span class="n">unsquared_sum</span><span class="p">,</span>
+    <span class="n">number_nonzero</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Calculate the standard deviation and validate the incoming data</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">calculate_sd</span><span class="p">(</span><span class="n">sum_of_squares</span><span class="p">,</span> <span class="n">unsquared_sum</span><span class="p">,</span> <span class="n">number_nonzero</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Calculate the standard deviation and validate the incoming data</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">number_nonzero</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="k">None</span>
+
+    <span class="n">squared_deviations</span> <span class="o">=</span> <span class="n">sum_of_squares</span> <span class="o">-</span> <span class="n">unsquared_sum</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">number_nonzero</span>
+
+    <span class="o">#</span> <span class="k">If</span> <span class="k">all</span> <span class="n">the</span> <span class="k">values</span> <span class="k">in</span> <span class="n">the</span> <span class="k">row</span> <span class="k">are</span> <span class="n">the</span> <span class="n">same</span> <span class="n">we</span><span class="err">&#39;</span><span class="n">ll</span> <span class="n">manually</span> <span class="k">return</span> <span class="n">zero</span><span class="p">,</span>
+
+    <span class="o">#</span> <span class="n">because</span> <span class="k">not</span> <span class="n">doing</span> <span class="n">so</span> <span class="n">can</span> <span class="n">lead</span> <span class="k">to</span> <span class="k">some</span> <span class="n">issues</span> <span class="k">with</span> <span class="nb">float</span> <span class="n">imprecision</span>
+
+    <span class="o">#</span> <span class="n">The</span> <span class="k">true</span> <span class="n">value</span> <span class="k">of</span> <span class="n">the</span> <span class="n">squared</span> <span class="n">deviation</span> <span class="n">will</span> <span class="n">always</span> <span class="n">be</span> <span class="o">&gt;=</span> <span class="n">zero</span><span class="p">,</span>
+
+    <span class="o">#</span> <span class="n">but</span> <span class="nb">float</span> <span class="n">error</span> <span class="n">may</span> <span class="n">bring</span> <span class="n">it</span> <span class="n">below</span> <span class="n">zero</span>
+
+    <span class="k">if</span> <span class="k">abs</span><span class="p">(</span><span class="n">squared_deviations</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">FLOAT_ERROR_TOLERANCE</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">squared_deviations</span> <span class="o">/</span> <span class="p">(</span><span class="n">number_nonzero</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">**</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="combine_dwpc_dgp">combine_dwpc_dgp</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">combine_dwpc_dgp</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">,</span>
+    <span class="n">metapath</span><span class="p">,</span>
+    <span class="n">damping</span><span class="p">,</span>
+    <span class="n">ignore_zeros</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">max_p_value</span><span class="o">=</span><span class="mf">1.0</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Combine DWPC information with degree-grouped permutation summary metrics.
+Includes gamma-hurdle significance estimates.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">combine_dwpc_dgp</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">ignore_zeros</span><span class="o">=</span><span class="k">False</span><span class="p">,</span><span class="w"> </span><span class="n">max_p_value</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Combine DWPC information with degree-grouped permutation summary metrics.</span>
+
+<span class="ss">    Includes gamma-hurdle significance estimates.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">stats_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">get_running_degree_group_path</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dwpc&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv.gz&#39;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">dgp_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">stats_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\t&#39;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">dgp_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_gamma_hurdle_to_dgp_df</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">degrees_to_dgp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dgp_df</span><span class="p">.</span><span class="n">set_index</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;source_degree&#39;, &#39;target_degree&#39;</span><span class="o">]</span><span class="p">).</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">dwpc_row_generator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">degree_group</span><span class="p">.</span><span class="n">dwpc_to_degrees</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">ignore_zeros</span><span class="o">=</span><span class="n">ignore_zeros</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">dwpc_row_generator</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="nf">degrees</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;source_degree&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;target_degree&#39;</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">dgp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">degrees_to_dgp</span><span class="o">[</span><span class="n">degrees</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">row</span><span class="p">.</span><span class="k">update</span><span class="p">(</span><span class="n">dgp</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;p_value&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculate_p_value</span><span class="p">(</span><span class="k">row</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;p_value&#39;</span><span class="o">]</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;p_value&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nl">max_p_value</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">continue</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="o">[</span><span class="n">&#39;sum&#39;, &#39;sum_of_squares&#39;, &#39;beta&#39;, &#39;alpha&#39;</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">del</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">yield</span><span class="w"> </span><span class="k">row</span><span class="w"></span>
+</code></pre></div>
+
+
+</details>
+<h3 id="grouped_tsv_writer">grouped_tsv_writer</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">grouped_tsv_writer</span><span class="p">(</span>
+    <span class="n">row_generator</span><span class="p">,</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">group_size</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Write an iterable of dictionaries to a TSV, where each dictionary is a row.
+Uses pandas (extra keyword arguments are passed to DataFrame.to_csv) to
+write the TSV, enabling using pandas to write a generated rows that are too
+plentiful to fit in memory.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">grouped_tsv_writer</span><span class="p">(</span><span class="n">row_generator</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">group_size</span><span class="o">=</span><span class="mi">20</span><span class="n">_000</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\t&#39;</span><span class="p">,</span> <span class="k">index</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Write an iterable of dictionaries to a TSV, where each dictionary is a row.</span>
+
+<span class="ss">    Uses pandas (extra keyword arguments are passed to DataFrame.to_csv) to</span>
+
+<span class="ss">    write the TSV, enabling using pandas to write a generated rows that are too</span>
+
+<span class="ss">    plentiful to fit in memory.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">grouper</span><span class="p">(</span><span class="n">row_generator</span><span class="p">,</span> <span class="n">group_size</span><span class="o">=</span><span class="n">group_size</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">chunk</span> <span class="k">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;header&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">not</span> <span class="n">bool</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="k">else</span> <span class="s1">&#39;w&#39;</span>
+
+        <span class="n">df</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="k">index</span><span class="o">=</span><span class="k">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="grouper">grouper</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">grouper</span><span class="p">(</span>
+    <span class="n">iterable</span><span class="p">,</span>
+    <span class="n">group_size</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Group an iterable into chunks of group_size.
+Derived from https://stackoverflow.com/a/8998040/4651668</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">grouper</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">group_size</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Group an iterable into chunks of group_size.</span>
+
+<span class="ss">    Derived from https://stackoverflow.com/a/8998040/4651668</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="n">iterable</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+
+    <span class="n">while</span> <span class="k">True</span><span class="p">:</span>
+
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">itertools</span><span class="p">.</span><span class="n">islice</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">group_size</span><span class="p">)</span>
+
+        <span class="n">try</span><span class="p">:</span>
+
+            <span class="n">head</span> <span class="o">=</span> <span class="k">next</span><span class="p">(</span><span class="n">chunk</span><span class="p">),</span>
+
+        <span class="k">except</span> <span class="n">StopIteration</span><span class="p">:</span>
+
+            <span class="n">break</span>
+
+        <span class="n">yield</span> <span class="n">itertools</span><span class="p">.</span><span class="k">chain</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="path_does_not_exist">path_does_not_exist</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">path_does_not_exist</span><span class="p">(</span>
+    <span class="n">row</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Check whether any paths exist between the source and target. We know there
+isn't a path if the row has a zero path count, or has a zero dwpc if the path
+count isn't present in the row</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">path_does_not_exist</span><span class="p">(</span><span class="k">row</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Check whether any paths exist between the source and target. We know there</span>
+
+<span class="ss">    isn&#39;t a path if the row has a zero path count, or has a zero dwpc if the path</span>
+
+<span class="ss">    count isn&#39;t present in the row</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;path_count&#39;</span> <span class="k">in</span> <span class="k">row</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;path_count&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="k">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="sd_is_positive">sd_is_positive</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">sd_is_positive</span><span class="p">(</span>
+    <span class="n">sd</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Tests whether the standard deviation is greater than zero or if it is
+zero/NaN/None</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="n">sd</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Tests whether the standard deviation is greater than zero or if it is</span>
+
+<span class="ss">    zero/NaN/None</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">pandas</span><span class="p">.</span><span class="n">notna</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span> <span class="k">and</span> <span class="n">sd</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</code></pre></div>
+
+
+</details>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../matrix/" title="Matrix" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Matrix
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../testing/" title="Testing" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Testing
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Powered by
+        <a href="http://timothycrosley.github.io/portray">portray.</a>
+        You too can
+        <a href="http://timothycrosley.github.io/portray">
+          portray</a>
+        your Python project well using automatic documentation.
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1.2",url:{base:"../../.."}})</script>
+      
+    
+  </body>
+</html>

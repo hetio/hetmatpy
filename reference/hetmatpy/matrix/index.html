@@ -1,0 +1,1192 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Matrix - hetmatpy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#4caf50">
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="green" data-md-color-accent="lightgreen">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#module-hetmatpymatrix" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../../.." title="hetmatpy" aria-label="hetmatpy" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              hetmatpy
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Matrix
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/hetio/hetmatpy/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    hetmatpy
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../../.." title="hetmatpy" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    hetmatpy
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/hetio/hetmatpy/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    hetmatpy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../LICENSE/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1" checked>
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Hetmatpy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        Hetmatpy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../degree_group/" title="Degree Group" class="md-nav__link">
+      Degree Group
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../degree_weight/" title="Degree Weight" class="md-nav__link">
+      Degree Weight
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../diffusion/" title="Diffusion" class="md-nav__link">
+      Diffusion
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Matrix
+      </label>
+    
+    <a href="./" title="Matrix" class="md-nav__link md-nav__link--active">
+      Matrix
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#copy_array" class="md-nav__link">
+    copy_array
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_node_identifiers" class="md-nav__link">
+    get_node_identifiers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metaedge_to_adjacency_matrix" class="md-nav__link">
+    metaedge_to_adjacency_matrix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normalize" class="md-nav__link">
+    normalize
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../pipeline/" title="Pipeline" class="md-nav__link">
+      Pipeline
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../testing/" title="Testing" class="md-nav__link">
+      Testing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../xarray/" title="Xarray" class="md-nav__link">
+      Xarray
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-9" type="checkbox" id="nav-3-1-9">
+    
+    <label class="md-nav__link" for="nav-3-1-9">
+      Hetmat
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-3-1-9">
+        Hetmat
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hetmat/archive/" title="Archive" class="md-nav__link">
+      Archive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hetmat/caching/" title="Caching" class="md-nav__link">
+      Caching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hetmat/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#copy_array" class="md-nav__link">
+    copy_array
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_node_identifiers" class="md-nav__link">
+    get_node_identifiers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metaedge_to_adjacency_matrix" class="md-nav__link">
+    metaedge_to_adjacency_matrix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normalize" class="md-nav__link">
+    normalize
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/hetio/hetmatpy/edit/master/reference/hetmatpy/matrix.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="module-hetmatpymatrix">Module hetmatpy.matrix</h1>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">scipy.sparse</span>
+
+<span class="kn">import</span> <span class="nn">hetnetpy.hetnet</span>
+
+<span class="kn">import</span> <span class="nn">hetnetpy.matrix</span>
+
+<span class="kn">import</span> <span class="nn">hetnetpy.permute</span>
+
+<span class="kn">import</span> <span class="nn">hetmatpy.hetmat</span>
+
+<span class="k">def</span> <span class="nf">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Return an adjacency matrix tuple like (rows, cols, matrix) for a specified</span>
+
+<span class="sd">    metapath. This function is a compatibility wrapper allowing</span>
+
+<span class="sd">    graph_or_hetmat to be either a hetnetpy.hetnet.Graph or hetmatpy.hetmat.HetMat.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">hetmat</span><span class="o">.</span><span class="n">HetMat</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">graph_or_hetmat</span><span class="o">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="n">hetnet</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;graph_or_hetmat is an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_node_identifiers</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">metanode</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Return node identifiers for a given metanode.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">metanode</span> <span class="o">=</span> <span class="n">graph_or_hetmat</span><span class="o">.</span><span class="n">metagraph</span><span class="o">.</span><span class="n">get_metanode</span><span class="p">(</span><span class="n">metanode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">hetmat</span><span class="o">.</span><span class="n">HetMat</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">graph_or_hetmat</span><span class="o">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metanode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="n">hetnet</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">metanode</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;graph_or_hetmat is an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">damping_exponent</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Normalize a 2D numpy.ndarray.</span>
+
+<span class="sd">    Parameters</span>
+
+<span class="sd">    ==========</span>
+
+<span class="sd">    matrix : numpy.ndarray or scipy.sparse</span>
+
+<span class="sd">    vector : numpy.ndarray</span>
+
+<span class="sd">        Vector used for row or column normalization of matrix.</span>
+
+<span class="sd">    axis : str</span>
+
+<span class="sd">        &#39;rows&#39; or &#39;columns&#39; for which axis to normalize</span>
+
+<span class="sd">    damping_exponent : float</span>
+
+<span class="sd">        exponent to use in scaling a node&#39;s row or column</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="k">assert</span> <span class="n">vector</span><span class="o">.</span><span class="kp">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">damping_exponent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="kp">matrix</span>
+
+    <span class="k">with</span> <span class="n">numpy</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="kp">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+
+        <span class="n">vector</span> <span class="o">**=</span> <span class="o">-</span><span class="n">damping_exponent</span>
+
+    <span class="n">vector</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="kp">isinf</span><span class="p">(</span><span class="n">vector</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">vector</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;rows&#39;</span><span class="p">:</span>
+
+        <span class="c1"># equivalent to `vector @ matrix` but returns scipy.sparse.csc not scipy.sparse.csr  # noqa: E501</span>
+
+        <span class="kp">matrix</span> <span class="o">=</span> <span class="p">(</span><span class="kp">matrix</span><span class="o">.</span><span class="kp">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">vector</span><span class="p">)</span><span class="o">.</span><span class="kp">transpose</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="kp">matrix</span> <span class="o">=</span> <span class="kp">matrix</span> <span class="o">@</span> <span class="n">vector</span>
+
+    <span class="k">return</span> <span class="kp">matrix</span>
+
+<span class="k">def</span> <span class="nf">copy_array</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="kp">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="kp">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Returns a newly allocated array if copy is True&quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="k">assert</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">dtype</span> <span class="o">!=</span> <span class="s1">&#39;O&#39;</span>  <span class="c1"># Ensures no empty row</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="kp">matrix</span><span class="p">):</span>
+
+        <span class="k">assert</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">isfinite</span><span class="p">(</span><span class="kp">matrix</span><span class="p">)</span><span class="o">.</span><span class="kp">all</span><span class="p">()</span>  <span class="c1"># Checks NaN and Inf</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="kp">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Checks that there is a value in the matrix</span>
+
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;Array may have empty rows&quot;</span><span class="p">)</span>
+
+    <span class="n">mat_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="kp">matrix</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mat_type</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+        <span class="n">mat_type</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">array</span>
+
+    <span class="kp">matrix</span> <span class="o">=</span> <span class="n">mat_type</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="kp">dtype</span><span class="o">=</span><span class="kp">dtype</span><span class="p">,</span> <span class="kp">copy</span><span class="o">=</span><span class="kp">copy</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kp">matrix</span>
+
+<span class="k">def</span> <span class="nf">permute_matrix</span><span class="p">(</span><span class="n">adjacency_matrix</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+
+                   <span class="n">excluded_pair_set</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span> <span class="kp">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Perform a degree-preserving permutation on a given adjacency matrix. Assumes</span>
+
+<span class="sd">    boolean matrix, and is incompatible with weighted edges.</span>
+
+<span class="sd">    Parameters</span>
+
+<span class="sd">    ----------</span>
+
+<span class="sd">    adjacency_matrix : numpy.ndarray or scipy.sparse</span>
+
+<span class="sd">    directed : bool</span>
+
+<span class="sd">    multiplier : float</span>
+
+<span class="sd">        Number of times to try edge swaps as a fraction of the number of edges.</span>
+
+<span class="sd">        Default is ten times the number of tries as edges.</span>
+
+<span class="sd">    excluded_pair_set : set</span>
+
+<span class="sd">        Pairs of nodes to exclude from the permutation</span>
+
+<span class="sd">    seed : int</span>
+
+<span class="sd">    Returns</span>
+
+<span class="sd">    -------</span>
+
+<span class="sd">    numpy.ndarray or scipy.sparse, list</span>
+
+<span class="sd">        Permuted adjacency matrix of the same type as was passed. List of</span>
+
+<span class="sd">        OrderedDicts of information on the permutations performed.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">edge_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">adjacency_matrix</span><span class="o">.</span><span class="kp">nonzero</span><span class="p">()))</span>
+
+    <span class="n">permuted_edges</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="n">permute</span><span class="o">.</span><span class="n">permute_pair_list</span><span class="p">(</span>
+
+        <span class="n">edge_list</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="n">directed</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span>
+
+        <span class="n">excluded_pair_set</span><span class="o">=</span><span class="n">excluded_pair_set</span><span class="p">,</span> <span class="kp">seed</span><span class="o">=</span><span class="kp">seed</span><span class="p">)</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">array</span><span class="p">(</span><span class="n">permuted_edges</span><span class="p">)</span>
+
+    <span class="kp">ones</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">),</span> <span class="kp">dtype</span><span class="o">=</span><span class="n">adjacency_matrix</span><span class="o">.</span><span class="kp">dtype</span><span class="p">)</span>
+
+    <span class="n">permuted_adjacency</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">((</span><span class="kp">ones</span><span class="p">,</span> <span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])),</span>
+
+                                                 <span class="kp">shape</span><span class="o">=</span><span class="n">adjacency_matrix</span><span class="o">.</span><span class="kp">shape</span><span class="p">)</span>
+
+    <span class="c1"># Keep the same sparse type as adjacency_matrix</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">adjacency_matrix</span><span class="p">):</span>
+
+        <span class="n">permuted_adjacency</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">adjacency_matrix</span><span class="p">)(</span><span class="n">permuted_adjacency</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">permuted_adjacency</span> <span class="o">=</span> <span class="n">permuted_adjacency</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
+    <span class="c1"># Ensure node degrees have been preserved</span>
+
+    <span class="k">assert</span> <span class="p">(</span><span class="n">permuted_adjacency</span><span class="o">.</span><span class="kp">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">adjacency_matrix</span><span class="o">.</span><span class="kp">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="kp">all</span><span class="p">()</span>
+
+    <span class="k">assert</span> <span class="p">(</span><span class="n">permuted_adjacency</span><span class="o">.</span><span class="kp">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">adjacency_matrix</span><span class="o">.</span><span class="kp">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="kp">all</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">permuted_adjacency</span><span class="p">,</span> <span class="n">stats</span>
+</code></pre></div>
+
+
+</details>
+<h2 id="functions">Functions</h2>
+<h3 id="copy_array">copy_array</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">copy_array</span><span class="p">(</span>
+    <span class="n">matrix</span><span class="p">,</span>
+    <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">numpy</span><span class="o">.</span><span class="n">float64</span><span class="s1">&#39;&gt;</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Returns a newly allocated array if copy is True</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">copy_array</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="k">copy</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="p">.</span><span class="n">float64</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;Returns a newly allocated array if copy is True&quot;&quot;&quot;</span>
+
+    <span class="n">assert</span> <span class="n">matrix</span><span class="p">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="n">assert</span> <span class="n">matrix</span><span class="p">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s1">&#39;O&#39;</span>  <span class="o">#</span> <span class="n">Ensures</span> <span class="k">no</span> <span class="n">empty</span> <span class="k">row</span>
+
+    <span class="k">if</span> <span class="k">not</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+
+        <span class="n">assert</span> <span class="n">numpy</span><span class="p">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">matrix</span><span class="p">).</span><span class="k">all</span><span class="p">()</span>  <span class="o">#</span> <span class="n">Checks</span> <span class="n">NaN</span> <span class="k">and</span> <span class="n">Inf</span>
+
+    <span class="n">try</span><span class="p">:</span>
+
+        <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="o">#</span> <span class="n">Checks</span> <span class="n">that</span> <span class="n">there</span> <span class="k">is</span> <span class="n">a</span> <span class="n">value</span> <span class="k">in</span> <span class="n">the</span> <span class="n">matrix</span>
+
+    <span class="k">except</span> <span class="n">IndexError</span><span class="p">:</span>
+
+        <span class="n">raise</span> <span class="n">AssertionError</span><span class="p">(</span><span class="ss">&quot;Array may have empty rows&quot;</span><span class="p">)</span>
+
+    <span class="n">mat_type</span> <span class="o">=</span> <span class="k">type</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mat_type</span> <span class="o">==</span> <span class="n">numpy</span><span class="p">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+        <span class="n">mat_type</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="nb">array</span>
+
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">mat_type</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="k">copy</span><span class="o">=</span><span class="k">copy</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">matrix</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="get_node_identifiers">get_node_identifiers</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_node_identifiers</span><span class="p">(</span>
+    <span class="n">graph_or_hetmat</span><span class="p">,</span>
+    <span class="n">metanode</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Return node identifiers for a given metanode.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">metanode</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Return node identifiers for a given metanode.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="n">metanode</span> <span class="o">=</span> <span class="n">graph_or_hetmat</span><span class="p">.</span><span class="n">metagraph</span><span class="p">.</span><span class="n">get_metanode</span><span class="p">(</span><span class="n">metanode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetmatpy</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">HetMat</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">graph_or_hetmat</span><span class="p">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metanode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetnetpy</span><span class="p">.</span><span class="n">hetnet</span><span class="p">.</span><span class="n">Graph</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">hetnetpy</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">metanode</span><span class="p">)</span>
+
+    <span class="n">raise</span> <span class="n">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="metaedge_to_adjacency_matrix">metaedge_to_adjacency_matrix</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">metaedge_to_adjacency_matrix</span><span class="p">(</span>
+    <span class="n">graph_or_hetmat</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Return an adjacency matrix tuple like (rows, cols, matrix) for a specified
+metapath. This function is a compatibility wrapper allowing
+graph_or_hetmat to be either a hetnetpy.hetnet.Graph or hetmatpy.hetmat.HetMat.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Return an adjacency matrix tuple like (rows, cols, matrix) for a specified</span>
+
+<span class="ss">    metapath. This function is a compatibility wrapper allowing</span>
+
+<span class="ss">    graph_or_hetmat to be either a hetnetpy.hetnet.Graph or hetmatpy.hetmat.HetMat.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetmatpy</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">HetMat</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">graph_or_hetmat</span><span class="p">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetnetpy</span><span class="p">.</span><span class="n">hetnet</span><span class="p">.</span><span class="n">Graph</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">hetnetpy</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">raise</span> <span class="n">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="normalize">normalize</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span>
+    <span class="n">matrix</span><span class="p">,</span>
+    <span class="n">vector</span><span class="p">,</span>
+    <span class="n">axis</span><span class="p">,</span>
+    <span class="n">damping_exponent</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Normalize a 2D numpy.ndarray.</p>
+<h1 id="parameters">Parameters</h1>
+<p>matrix : numpy.ndarray or scipy.sparse
+vector : numpy.ndarray
+    Vector used for row or column normalization of matrix.
+axis : str
+    'rows' or 'columns' for which axis to normalize
+damping_exponent : float
+    exponent to use in scaling a node's row or column</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">normalize</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">damping_exponent</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Normalize a 2D numpy.ndarray.</span>
+
+<span class="ss">    Parameters</span>
+
+<span class="ss">    ==========</span>
+
+<span class="ss">    matrix : numpy.ndarray or scipy.sparse</span>
+
+<span class="ss">    vector : numpy.ndarray</span>
+
+<span class="ss">        Vector used for row or column normalization of matrix.</span>
+
+<span class="ss">    axis : str</span>
+
+<span class="ss">        &#39;rows&#39; or &#39;columns&#39; for which axis to normalize</span>
+
+<span class="ss">    damping_exponent : float</span>
+
+<span class="ss">        exponent to use in scaling a node&#39;s row or column</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="n">assert</span> <span class="n">matrix</span><span class="p">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="n">assert</span> <span class="n">vector</span><span class="p">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">damping_exponent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">matrix</span>
+
+    <span class="k">with</span> <span class="n">numpy</span><span class="p">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+
+        <span class="n">vector</span> <span class="o">**=</span> <span class="o">-</span><span class="n">damping_exponent</span>
+
+    <span class="n">vector</span><span class="p">[</span><span class="n">numpy</span><span class="p">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">vector</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">vector</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">diags</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;rows&#39;</span><span class="p">:</span>
+
+        <span class="o">#</span> <span class="n">equivalent</span> <span class="k">to</span> <span class="o">`</span><span class="n">vector</span> <span class="o">@</span> <span class="n">matrix</span><span class="o">`</span> <span class="n">but</span> <span class="k">returns</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">csc</span> <span class="k">not</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">csr</span>  <span class="o">#</span> <span class="n">noqa</span><span class="p">:</span> <span class="n">E501</span>
+
+        <span class="n">matrix</span> <span class="o">=</span> <span class="p">(</span><span class="n">matrix</span><span class="p">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">vector</span><span class="p">).</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span> <span class="o">@</span> <span class="n">vector</span>
+
+    <span class="k">return</span> <span class="n">matrix</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="permute_matrix">permute_matrix</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">permute_matrix</span><span class="p">(</span>
+    <span class="n">adjacency_matrix</span><span class="p">,</span>
+    <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">excluded_pair_set</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Perform a degree-preserving permutation on a given adjacency matrix. Assumes
+boolean matrix, and is incompatible with weighted edges.</p>
+<h2 id="parameters_1">Parameters</h2>
+<p>adjacency_matrix : numpy.ndarray or scipy.sparse
+directed : bool
+multiplier : float
+    Number of times to try edge swaps as a fraction of the number of edges.
+    Default is ten times the number of tries as edges.
+excluded_pair_set : set
+    Pairs of nodes to exclude from the permutation
+seed : int</p>
+<h2 id="returns">Returns</h2>
+<p>numpy.ndarray or scipy.sparse, list
+    Permuted adjacency matrix of the same type as was passed. List of
+    OrderedDicts of information on the permutations performed.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">permute_matrix</span><span class="p">(</span><span class="n">adjacency_matrix</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+
+                   <span class="n">excluded_pair_set</span><span class="o">=</span><span class="k">set</span><span class="p">(),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Perform a degree-preserving permutation on a given adjacency matrix. Assumes</span>
+
+<span class="ss">    boolean matrix, and is incompatible with weighted edges.</span>
+
+<span class="ss">    Parameters</span>
+
+<span class="ss">    ----------</span>
+
+<span class="ss">    adjacency_matrix : numpy.ndarray or scipy.sparse</span>
+
+<span class="ss">    directed : bool</span>
+
+<span class="ss">    multiplier : float</span>
+
+<span class="ss">        Number of times to try edge swaps as a fraction of the number of edges.</span>
+
+<span class="ss">        Default is ten times the number of tries as edges.</span>
+
+<span class="ss">    excluded_pair_set : set</span>
+
+<span class="ss">        Pairs of nodes to exclude from the permutation</span>
+
+<span class="ss">    seed : int</span>
+
+<span class="ss">    Returns</span>
+
+<span class="ss">    -------</span>
+
+<span class="ss">    numpy.ndarray or scipy.sparse, list</span>
+
+<span class="ss">        Permuted adjacency matrix of the same type as was passed. List of</span>
+
+<span class="ss">        OrderedDicts of information on the permutations performed.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="n">edge_list</span> <span class="o">=</span> <span class="n">list</span><span class="p">(</span><span class="n">zip</span><span class="p">(</span><span class="o">*</span><span class="n">adjacency_matrix</span><span class="p">.</span><span class="n">nonzero</span><span class="p">()))</span>
+
+    <span class="n">permuted_edges</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">hetnetpy</span><span class="p">.</span><span class="n">permute</span><span class="p">.</span><span class="n">permute_pair_list</span><span class="p">(</span>
+
+        <span class="n">edge_list</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="n">directed</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span>
+
+        <span class="n">excluded_pair_set</span><span class="o">=</span><span class="n">excluded_pair_set</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="nb">array</span><span class="p">(</span><span class="n">permuted_edges</span><span class="p">)</span>
+
+    <span class="n">ones</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">edges</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">adjacency_matrix</span><span class="p">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">permuted_adjacency</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">csc_matrix</span><span class="p">((</span><span class="n">ones</span><span class="p">,</span> <span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])),</span>
+
+                                                 <span class="n">shape</span><span class="o">=</span><span class="n">adjacency_matrix</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="o">#</span> <span class="n">Keep</span> <span class="n">the</span> <span class="n">same</span> <span class="n">sparse</span> <span class="k">type</span> <span class="k">as</span> <span class="n">adjacency_matrix</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">adjacency_matrix</span><span class="p">):</span>
+
+        <span class="n">permuted_adjacency</span> <span class="o">=</span> <span class="k">type</span><span class="p">(</span><span class="n">adjacency_matrix</span><span class="p">)(</span><span class="n">permuted_adjacency</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">permuted_adjacency</span> <span class="o">=</span> <span class="n">permuted_adjacency</span><span class="p">.</span><span class="n">toarray</span><span class="p">()</span>
+
+    <span class="o">#</span> <span class="n">Ensure</span> <span class="n">node</span> <span class="n">degrees</span> <span class="n">have</span> <span class="n">been</span> <span class="n">preserved</span>
+
+    <span class="n">assert</span> <span class="p">(</span><span class="n">permuted_adjacency</span><span class="p">.</span><span class="k">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">adjacency_matrix</span><span class="p">.</span><span class="k">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)).</span><span class="k">all</span><span class="p">()</span>
+
+    <span class="n">assert</span> <span class="p">(</span><span class="n">permuted_adjacency</span><span class="p">.</span><span class="k">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">adjacency_matrix</span><span class="p">.</span><span class="k">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)).</span><span class="k">all</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">permuted_adjacency</span><span class="p">,</span> <span class="n">stats</span>
+</code></pre></div>
+
+
+</details>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="Index" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Index
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../pipeline/" title="Pipeline" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Pipeline
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Powered by
+        <a href="http://timothycrosley.github.io/portray">portray.</a>
+        You too can
+        <a href="http://timothycrosley.github.io/portray">
+          portray</a>
+        your Python project well using automatic documentation.
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1.2",url:{base:"../../.."}})</script>
+      
+    
+  </body>
+</html>

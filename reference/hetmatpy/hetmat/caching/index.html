@@ -1,0 +1,1852 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Caching - hetmatpy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../../../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#4caf50">
+      
+    
+    
+      <script src="../../../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="green" data-md-color-accent="lightgreen">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#module-hetmatpyhetmatcaching" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../../../.." title="hetmatpy" aria-label="hetmatpy" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              hetmatpy
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Caching
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/hetio/hetmatpy/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    hetmatpy
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../../../.." title="hetmatpy" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    hetmatpy
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/hetio/hetmatpy/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    hetmatpy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../../LICENSE/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1" checked>
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Hetmatpy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        Hetmatpy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../degree_group/" title="Degree Group" class="md-nav__link">
+      Degree Group
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../degree_weight/" title="Degree Weight" class="md-nav__link">
+      Degree Weight
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../diffusion/" title="Diffusion" class="md-nav__link">
+      Diffusion
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../matrix/" title="Matrix" class="md-nav__link">
+      Matrix
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../pipeline/" title="Pipeline" class="md-nav__link">
+      Pipeline
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../testing/" title="Testing" class="md-nav__link">
+      Testing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../xarray/" title="Xarray" class="md-nav__link">
+      Xarray
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1-9" type="checkbox" id="nav-3-1-9" checked>
+    
+    <label class="md-nav__link" for="nav-3-1-9">
+      Hetmat
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <label class="md-nav__title" for="nav-3-1-9">
+        Hetmat
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../archive/" title="Archive" class="md-nav__link">
+      Archive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Caching
+      </label>
+    
+    <a href="./" title="Caching" class="md-nav__link md-nav__link--active">
+      Caching
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_matrix_size" class="md-nav__link">
+    get_matrix_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path_count_cache" class="md-nav__link">
+    path_count_cache
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pathcountcache" class="md-nav__link">
+    PathCountCache
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#descendants" class="md-nav__link">
+    Descendants
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    get
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_stats" class="md-nav__link">
+    get_stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set" class="md-nav__link">
+    set
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pathcountprioritycache" class="md-nav__link">
+    PathCountPriorityCache
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ancestors-in-mro" class="md-nav__link">
+    Ancestors (in MRO)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_1" class="md-nav__link">
+    get
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_stats_1" class="md-nav__link">
+    get_stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_1" class="md-nav__link">
+    set
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_matrix_size" class="md-nav__link">
+    get_matrix_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path_count_cache" class="md-nav__link">
+    path_count_cache
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pathcountcache" class="md-nav__link">
+    PathCountCache
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#descendants" class="md-nav__link">
+    Descendants
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    get
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_stats" class="md-nav__link">
+    get_stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set" class="md-nav__link">
+    set
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pathcountprioritycache" class="md-nav__link">
+    PathCountPriorityCache
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ancestors-in-mro" class="md-nav__link">
+    Ancestors (in MRO)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_1" class="md-nav__link">
+    get
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_stats_1" class="md-nav__link">
+    get_stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_1" class="md-nav__link">
+    set
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/hetio/hetmatpy/edit/master/reference/hetmatpy/hetmat/caching.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="module-hetmatpyhetmatcaching">Module hetmatpy.hetmat.caching</h1>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">heapq</span>
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">import</span> <span class="nn">textwrap</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">scipy.sparse</span>
+
+<span class="kn">from</span> <span class="nn">hetnetpy.matrix</span> <span class="kn">import</span> <span class="n">sparsify_or_densify</span>
+
+<span class="kn">import</span> <span class="nn">hetmatpy.hetmat</span>
+
+<span class="k">def</span> <span class="nf">path_count_cache</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Decorator to apply caching to the DWWC and DWPC functions from</span>
+
+<span class="sd">    hetmatpy.degree_weight.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">user_function</span><span class="p">):</span>
+
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">user_function</span><span class="p">)</span>
+
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">user_function</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+            <span class="n">bound_args</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="n">bound_args</span><span class="o">.</span><span class="n">apply_defaults</span><span class="p">()</span>
+
+            <span class="n">arguments</span> <span class="o">=</span> <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span>
+
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span>
+
+            <span class="n">metapath</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">metagraph</span><span class="o">.</span><span class="n">get_metapath</span><span class="p">(</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;metapath&#39;</span><span class="p">])</span>
+
+            <span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;metapath&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metapath</span>
+
+            <span class="n">damping</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;damping&#39;</span><span class="p">]</span>
+
+            <span class="n">cached_result</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+            <span class="n">supports_cache</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">hetmat</span><span class="o">.</span><span class="n">HetMat</span><span class="p">)</span> <span class="ow">and</span> <span class="n">graph</span><span class="o">.</span><span class="n">path_counts_cache</span>
+
+            <span class="k">if</span> <span class="n">supports_cache</span><span class="p">:</span>
+
+                <span class="n">cache_key</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;metapath&#39;</span><span class="p">:</span> <span class="n">metapath</span><span class="p">,</span> <span class="s1">&#39;metric&#39;</span><span class="p">:</span> <span class="n">metric</span><span class="p">,</span> <span class="s1">&#39;damping&#39;</span><span class="p">:</span> <span class="n">damping</span><span class="p">}</span>
+
+                <span class="n">cached_result</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">path_counts_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">cache_key</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">cached_result</span><span class="p">:</span>
+
+                    <span class="n">row_names</span><span class="p">,</span> <span class="n">col_names</span><span class="p">,</span> <span class="kp">matrix</span> <span class="o">=</span> <span class="n">cached_result</span>
+
+                    <span class="kp">matrix</span> <span class="o">=</span> <span class="n">sparsify_or_densify</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;dense_threshold&#39;</span><span class="p">])</span>
+
+                    <span class="kp">matrix</span> <span class="o">=</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">astype</span><span class="p">(</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;dtype&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">cached_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;dwwc_method&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+                    <span class="c1"># import default_dwwc_method here to avoid circular dependencies</span>
+
+                    <span class="kn">from</span> <span class="nn">hetmatpy.degree_weight</span> <span class="kn">import</span> <span class="n">default_dwwc_method</span>
+
+                    <span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;dwwc_method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_dwwc_method</span>
+
+                <span class="n">row_names</span><span class="p">,</span> <span class="n">col_names</span><span class="p">,</span> <span class="kp">matrix</span> <span class="o">=</span> <span class="n">user_function</span><span class="p">(</span><span class="o">**</span><span class="n">arguments</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">supports_cache</span><span class="p">:</span>
+
+                <span class="n">runtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+                <span class="n">graph</span><span class="o">.</span><span class="n">path_counts_cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">**</span><span class="n">cache_key</span><span class="p">,</span> <span class="kp">matrix</span><span class="o">=</span><span class="kp">matrix</span><span class="p">,</span> <span class="n">runtime</span><span class="o">=</span><span class="n">runtime</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">row_names</span><span class="p">,</span> <span class="n">col_names</span><span class="p">,</span> <span class="kp">matrix</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">return</span> <span class="n">decorator</span>
+
+<span class="k">class</span> <span class="nc">PathCountCache</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hetmat</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hetmat</span> <span class="o">=</span> <span class="n">hetmat</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hits</span> <span class="o">=</span> <span class="p">{</span>
+
+            <span class="s1">&#39;memory&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+
+            <span class="s1">&#39;disk&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+
+            <span class="s1">&#39;absent&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Return cached (row_ids, col_ids, matrix) with the specified path count</span>
+
+<span class="sd">        metric or None if the cache does not contain the matrix. Attempts</span>
+
+<span class="sd">        in-memory cache before falling back to on-disk cache.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kp">matrix</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">metapath_</span><span class="p">,</span> <span class="kp">invert</span> <span class="ow">in</span> <span class="p">(</span><span class="n">metapath</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="p">(</span><span class="n">metapath</span><span class="o">.</span><span class="n">inverse</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+
+            <span class="n">key</span> <span class="o">=</span> <span class="n">metapath_</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span>
+
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+
+                <span class="kp">matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="kp">invert</span><span class="p">:</span>
+
+                    <span class="kp">matrix</span> <span class="o">=</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">transpose</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="kp">matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">hits</span><span class="p">[</span><span class="s1">&#39;memory&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">row_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hetmat</span><span class="o">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metapath</span><span class="o">.</span><span class="kp">source</span><span class="p">())</span>
+
+            <span class="n">col_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hetmat</span><span class="o">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metapath</span><span class="o">.</span><span class="n">target</span><span class="p">())</span>
+
+            <span class="k">return</span> <span class="n">row_ids</span><span class="p">,</span> <span class="n">col_ids</span><span class="p">,</span> <span class="kp">matrix</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hetmat</span><span class="o">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">hits</span><span class="p">[</span><span class="s1">&#39;disk&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">hits</span><span class="p">[</span><span class="s1">&#39;absent&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="kp">matrix</span><span class="p">,</span> <span class="n">runtime</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Gives the cache the option of caching this matrix. This method never</span>
+
+<span class="sd">        caches anything. Override this method in a subclass to enable setting</span>
+
+<span class="sd">        the cache.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Return a str with formatted stats about cache operations</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">hits_str</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1"> = </span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+        <span class="n">stats_str</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span><span class="se">\</span>
+
+<span class="s1">            </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> containing </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> items</span>
+
+<span class="s1">              total gets: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"></span>
+
+<span class="s1">              cache hits: </span><span class="si">{</span><span class="n">hits_str</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">stats_str</span>
+
+<span class="k">class</span> <span class="nc">PathCountPriorityCache</span><span class="p">(</span><span class="n">PathCountCache</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hetmat</span><span class="p">,</span> <span class="n">allocate_GB</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">hetmat</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bytes_per_gigabyte</span> <span class="o">=</span> <span class="mi">1_000_000_000</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocate_B</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes_per_gigabyte</span> <span class="o">*</span> <span class="n">allocate_GB</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_B</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Dictionary of key to priority, where higher numbers are higher caching priority</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">priorities</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">priority_queue</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Use to generate a tie-breaker value for the queue as per</span>
+
+        <span class="c1"># https://stackoverflow.com/a/40205720/4651668</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">priority_queue_counter</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="kp">matrix</span><span class="p">,</span> <span class="n">runtime</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Gives the cache the option of caching this matrix.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+
+            <span class="k">return</span>
+
+        <span class="n">priority</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">priorities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">nbytes</span> <span class="o">=</span> <span class="n">get_matrix_size</span><span class="p">(</span><span class="kp">matrix</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">nbytes</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocate_B</span><span class="p">:</span>
+
+            <span class="k">return</span>
+
+        <span class="n">tie_breaker</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">priority_queue_counter</span><span class="p">)</span>
+
+        <span class="kp">item</span> <span class="o">=</span> <span class="n">priority</span><span class="p">,</span> <span class="n">tie_breaker</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbytes</span>
+
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_B</span> <span class="o">+</span> <span class="n">nbytes</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocate_B</span><span class="p">:</span>
+
+            <span class="n">popped</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">priority_queue</span><span class="p">)</span>
+
+            <span class="n">popped_priority</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">popped_key</span><span class="p">,</span> <span class="n">popped_nbytes</span> <span class="o">=</span> <span class="n">popped</span>
+
+            <span class="k">if</span> <span class="n">popped_priority</span> <span class="o">&gt;</span> <span class="n">priority</span><span class="p">:</span>
+
+                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">priority_queue</span><span class="p">,</span> <span class="n">popped</span><span class="p">)</span>
+
+                <span class="k">break</span>
+
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">popped_key</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_B</span> <span class="o">-=</span> <span class="n">popped_nbytes</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">priority_queue</span><span class="p">,</span> <span class="kp">item</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kp">matrix</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_B</span> <span class="o">+=</span> <span class="n">nbytes</span>
+
+    <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Return a str with formatted stats about cache operations</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">stats_str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_stats</span><span class="p">()</span>
+
+        <span class="n">stats_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_B</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes_per_gigabyte</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> GB in use of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">allocate_B</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes_per_gigabyte</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> GB allocated&quot;</span>  <span class="c1"># noqa: E501</span>
+
+        <span class="k">return</span> <span class="n">stats_str</span>
+
+<span class="k">def</span> <span class="nf">get_matrix_size</span><span class="p">(</span><span class="kp">matrix</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Estimate the size of a matrix object in bytes.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="kp">matrix</span><span class="o">.</span><span class="n">nbytes</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">isspmatrix_coo</span><span class="p">(</span><span class="kp">matrix</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="kp">matrix</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="kp">matrix</span><span class="o">.</span><span class="n">row</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="kp">matrix</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">nbytes</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">isspmatrix_csc</span><span class="p">(</span><span class="kp">matrix</span><span class="p">)</span> <span class="ow">or</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">isspmatrix_csr</span><span class="p">(</span><span class="kp">matrix</span><span class="p">)</span> <span class="ow">or</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">isspmatrix_bsr</span><span class="p">(</span><span class="kp">matrix</span><span class="p">):</span>  <span class="c1"># noqa: E501</span>
+
+        <span class="k">return</span> <span class="kp">matrix</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="kp">matrix</span><span class="o">.</span><span class="n">indptr</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">indices</span><span class="o">.</span><span class="n">nbytes</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">isparse</span><span class="p">(</span><span class="kp">matrix</span><span class="p">):</span>
+
+        <span class="c1"># Estimate size based on number of nonzeros for remaining sparse types</span>
+
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="kp">matrix</span><span class="o">.</span><span class="n">nnz</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="kp">matrix</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">nbytes</span>
+
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cannot calculate get_matrix_size for type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="kp">matrix</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+</details>
+<h2 id="functions">Functions</h2>
+<h3 id="get_matrix_size">get_matrix_size</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_matrix_size</span><span class="p">(</span>
+    <span class="n">matrix</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Estimate the size of a matrix object in bytes.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">get_matrix_size</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+
+    <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Estimate the size of a matrix object in bytes.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">numpy</span><span class="p">.</span><span class="n">ndarray</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">matrix</span><span class="p">.</span><span class="n">nbytes</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">isspmatrix_coo</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">matrix</span><span class="p">.</span><span class="n">col</span><span class="p">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="n">matrix</span><span class="p">.</span><span class="k">row</span><span class="p">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="n">matrix</span><span class="p">.</span><span class="k">data</span><span class="p">.</span><span class="n">nbytes</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">isspmatrix_csc</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="k">or</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">isspmatrix_csr</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="k">or</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">isspmatrix_bsr</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>  <span class="o">#</span> <span class="n">noqa</span><span class="p">:</span> <span class="n">E501</span>
+
+        <span class="k">return</span> <span class="n">matrix</span><span class="p">.</span><span class="k">data</span><span class="p">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="n">matrix</span><span class="p">.</span><span class="n">indptr</span><span class="p">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="n">matrix</span><span class="p">.</span><span class="n">indices</span><span class="p">.</span><span class="n">nbytes</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">isparse</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+
+        <span class="o">#</span> <span class="n">Estimate</span> <span class="k">size</span> <span class="n">based</span> <span class="k">on</span> <span class="nb">number</span> <span class="k">of</span> <span class="n">nonzeros</span> <span class="k">for</span> <span class="n">remaining</span> <span class="n">sparse</span> <span class="n">types</span>
+
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">.</span><span class="n">nnz</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">matrix</span><span class="p">.</span><span class="k">data</span><span class="p">.</span><span class="n">nbytes</span>
+
+    <span class="n">raise</span> <span class="n">NotImplementedError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;cannot calculate get_matrix_size for type {type(matrix)}&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="path_count_cache">path_count_cache</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">path_count_cache</span><span class="p">(</span>
+    <span class="n">metric</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Decorator to apply caching to the DWWC and DWPC functions from
+hetmatpy.degree_weight.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">path_count_cache</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">    Decorator to apply caching to the DWWC and DWPC functions from</span>
+
+<span class="ss">    hetmatpy.degree_weight.</span>
+
+<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">decorator</span><span class="p">(</span><span class="n">user_function</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inspect</span><span class="p">.</span><span class="n">signature</span><span class="p">(</span><span class="n">user_function</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="nv">@functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">user_function</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">def</span><span class="w"> </span><span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">bound_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">signature</span><span class="p">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">bound_args</span><span class="p">.</span><span class="n">apply_defaults</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">arguments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bound_args</span><span class="p">.</span><span class="n">arguments</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arguments</span><span class="o">[</span><span class="n">&#39;graph&#39;</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">metapath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">metagraph</span><span class="p">.</span><span class="n">get_metapath</span><span class="p">(</span><span class="n">arguments</span><span class="o">[</span><span class="n">&#39;metapath&#39;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">arguments</span><span class="o">[</span><span class="n">&#39;metapath&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metapath</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">damping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arguments</span><span class="o">[</span><span class="n">&#39;damping&#39;</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">cached_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">supports_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">HetMat</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">path_counts_cache</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nl">supports_cache</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">cache_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="s1">&#39;metapath&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;metric&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;damping&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">damping</span><span class="err">}</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">cached_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">path_counts_cache</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="o">**</span><span class="n">cache_key</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="nl">cached_result</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">row_names</span><span class="p">,</span><span class="w"> </span><span class="n">col_names</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cached_result</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sparsify_or_densify</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">arguments</span><span class="o">[</span><span class="n">&#39;dense_threshold&#39;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="n">arguments</span><span class="o">[</span><span class="n">&#39;dtype&#39;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">cached_result</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="n">arguments</span><span class="o">[</span><span class="n">&#39;dwwc_method&#39;</span><span class="o">]</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">                    </span><span class="err">#</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">default_dwwc_method</span><span class="w"> </span><span class="n">here</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">avoid</span><span class="w"> </span><span class="n">circular</span><span class="w"> </span><span class="n">dependencies</span><span class="w"></span>
+
+<span class="w">                    </span><span class="k">from</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">degree_weight</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">default_dwwc_method</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">arguments</span><span class="o">[</span><span class="n">&#39;dwwc_method&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">default_dwwc_method</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">row_names</span><span class="p">,</span><span class="w"> </span><span class="n">col_names</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">user_function</span><span class="p">(</span><span class="o">**</span><span class="n">arguments</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nl">supports_cache</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">start</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">graph</span><span class="p">.</span><span class="n">path_counts_cache</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="o">**</span><span class="n">cache_key</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">runtime</span><span class="o">=</span><span class="n">runtime</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">row_names</span><span class="p">,</span><span class="w"> </span><span class="n">col_names</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">wrapper</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">decorator</span><span class="w"></span>
+</code></pre></div>
+
+
+</details>
+<h2 id="classes">Classes</h2>
+<h3 id="pathcountcache">PathCountCache</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">PathCountCache</span><span class="p">(</span>
+    <span class="n">hetmat</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nl">PathCountCache</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">hetmat</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmat</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{}</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+
+<span class="w">            </span><span class="s1">&#39;memory&#39;</span><span class="err">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="s1">&#39;disk&#39;</span><span class="err">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="s1">&#39;absent&#39;</span><span class="err">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="err">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="k">get</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Return cached (row_ids, col_ids, matrix) with the specified path count</span>
+
+<span class="ss">        metric or None if the cache does not contain the matrix. Attempts</span>
+
+<span class="ss">        in-memory cache before falling back to on-disk cache.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">metapath_</span><span class="p">,</span><span class="w"> </span><span class="n">invert</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">inverse</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metapath_</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">cache</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">cache</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="nl">invert</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix</span><span class="p">.</span><span class="n">transpose</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;memory&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">row_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">source</span><span class="p">())</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">col_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">target</span><span class="p">())</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">row_ids</span><span class="p">,</span><span class="w"> </span><span class="n">col_ids</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;disk&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">result</span><span class="w"></span>
+
+<span class="w">        </span><span class="ow">except</span><span class="w"> </span><span class="nl">FileNotFoundError</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;absent&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="k">set</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">runtime</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Gives the cache the option of caching this matrix. This method never</span>
+
+<span class="ss">        caches anything. Override this method in a subclass to enable setting</span>
+
+<span class="ss">        the cache.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">pass</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_stats</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Return a str with formatted stats about cache operations</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">hits_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;, &#39;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{kind} = {count:,}&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">kind</span><span class="p">,</span><span class="w"> </span><span class="nf">count</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="p">.</span><span class="n">items</span><span class="p">())</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">stats_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">textwrap</span><span class="p">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;&#39;&#39;\</span>
+
+<span class="s1">            {self.__class__.__name__} containing {len(self.cache):,} items</span>
+
+<span class="s1">              total gets: {sum(self.hits.values()):,}</span>
+
+<span class="s1">              cache hits: {hits_str}&#39;&#39;&#39;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">stats_str</span><span class="w"></span>
+</code></pre></div>
+
+
+</details>
+<hr />
+<h4 id="descendants">Descendants</h4>
+<ul>
+<li>hetmatpy.hetmat.caching.PathCountPriorityCache</li>
+</ul>
+<h4 id="methods">Methods</h4>
+<h5 id="get">get</h5>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">metapath</span><span class="p">,</span>
+    <span class="n">metric</span><span class="p">,</span>
+    <span class="n">damping</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Return cached (row_ids, col_ids, matrix) with the specified path count
+metric or None if the cache does not contain the matrix. Attempts
+in-memory cache before falling back to on-disk cache.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="k">get</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Return cached (row_ids, col_ids, matrix) with the specified path count</span>
+
+<span class="ss">        metric or None if the cache does not contain the matrix. Attempts</span>
+
+<span class="ss">        in-memory cache before falling back to on-disk cache.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">metapath_</span><span class="p">,</span><span class="w"> </span><span class="n">invert</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">inverse</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metapath_</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">cache</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">cache</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="nl">invert</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix</span><span class="p">.</span><span class="n">transpose</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;memory&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">row_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">source</span><span class="p">())</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">col_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">target</span><span class="p">())</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">row_ids</span><span class="p">,</span><span class="w"> </span><span class="n">col_ids</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;disk&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">result</span><span class="w"></span>
+
+<span class="w">        </span><span class="ow">except</span><span class="w"> </span><span class="nl">FileNotFoundError</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;absent&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+</code></pre></div>
+
+
+</details>
+<h5 id="get_stats">get_stats</h5>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span>
+    <span class="bp">self</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Return a str with formatted stats about cache operations</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_stats</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+
+        <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Return a str with formatted stats about cache operations</span>
+
+<span class="ss">        &quot;&quot;&quot;</span>
+
+        <span class="n">hits_str</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{kind} = {count:,}&#39;</span> <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="k">count</span> <span class="k">in</span> <span class="k">self</span><span class="p">.</span><span class="n">hits</span><span class="p">.</span><span class="n">items</span><span class="p">())</span>
+
+        <span class="n">stats_str</span> <span class="o">=</span> <span class="n">textwrap</span><span class="p">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;&#39;&#39;\</span>
+
+<span class="s1">            {self.__class__.__name__} containing {len(self.cache):,} items</span>
+
+<span class="s1">              total gets: {sum(self.hits.values()):,}</span>
+
+<span class="s1">              cache hits: {hits_str}&#39;&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">stats_str</span>
+</code></pre></div>
+
+
+</details>
+<h5 id="set">set</h5>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">metapath</span><span class="p">,</span>
+    <span class="n">metric</span><span class="p">,</span>
+    <span class="n">damping</span><span class="p">,</span>
+    <span class="n">matrix</span><span class="p">,</span>
+    <span class="n">runtime</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Gives the cache the option of caching this matrix. This method never
+caches anything. Override this method in a subclass to enable setting
+the cache.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="k">set</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">runtime</span><span class="p">):</span>
+
+        <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Gives the cache the option of caching this matrix. This method never</span>
+
+<span class="ss">        caches anything. Override this method in a subclass to enable setting</span>
+
+<span class="ss">        the cache.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span>
+
+        <span class="n">pass</span>
+</code></pre></div>
+
+
+</details>
+<h3 id="pathcountprioritycache">PathCountPriorityCache</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">PathCountPriorityCache</span><span class="p">(</span>
+    <span class="n">hetmat</span><span class="p">,</span>
+    <span class="n">allocate_GB</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="n">PathCountPriorityCache</span><span class="p">(</span><span class="n">PathCountCache</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">hetmat</span><span class="p">,</span><span class="w"> </span><span class="n">allocate_GB</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">hetmat</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">bytes_per_gigabyte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="n">_000_000_000</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">allocate_B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">bytes_per_gigabyte</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">allocate_GB</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">current_B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="k">Dictionary</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">priority</span><span class="p">,</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">higher</span><span class="w"> </span><span class="n">numbers</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">higher</span><span class="w"> </span><span class="n">caching</span><span class="w"> </span><span class="n">priority</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">priorities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{}</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">[]</span><span class="w"></span>
+
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="k">Use</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">generate</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">tie</span><span class="o">-</span><span class="n">breaker</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">per</span><span class="w"></span>
+
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">stackoverflow</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">a</span><span class="o">/</span><span class="mi">40205720</span><span class="o">/</span><span class="mi">4651668</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itertools</span><span class="p">.</span><span class="nf">count</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="k">set</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">runtime</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Gives the cache the option of caching this matrix.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">cache</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">priorities</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">nbytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_matrix_size</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">nbytes</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">allocate_B</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">tie_breaker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">next</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue_counter</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">priority</span><span class="p">,</span><span class="w"> </span><span class="n">tie_breaker</span><span class="p">,</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">current_B</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nbytes</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">allocate_B</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">popped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">heapq</span><span class="p">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">popped_priority</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">popped_key</span><span class="p">,</span><span class="w"> </span><span class="n">popped_nbytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">popped</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">popped_priority</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nl">priority</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue</span><span class="p">,</span><span class="w"> </span><span class="n">popped</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">break</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">del</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">cache</span><span class="o">[</span><span class="n">popped_key</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">current_B</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">popped_nbytes</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">else</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">cache</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">current_B</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">nbytes</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_stats</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Return a str with formatted stats about cache operations</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">stats_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">super</span><span class="p">().</span><span class="n">get_stats</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">stats_str</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">f</span><span class="ss">&quot;\n  {self.current_B / self.bytes_per_gigabyte:.2f} GB in use of {self.allocate_B / self.bytes_per_gigabyte:.2f} GB allocated&quot;</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="nl">noqa</span><span class="p">:</span><span class="w"> </span><span class="n">E501</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">stats_str</span><span class="w"></span>
+</code></pre></div>
+
+
+</details>
+<hr />
+<h4 id="ancestors-in-mro">Ancestors (in MRO)</h4>
+<ul>
+<li>hetmatpy.hetmat.caching.PathCountCache</li>
+</ul>
+<h4 id="methods_1">Methods</h4>
+<h5 id="get_1">get</h5>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">metapath</span><span class="p">,</span>
+    <span class="n">metric</span><span class="p">,</span>
+    <span class="n">damping</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Return cached (row_ids, col_ids, matrix) with the specified path count
+metric or None if the cache does not contain the matrix. Attempts
+in-memory cache before falling back to on-disk cache.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="k">get</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Return cached (row_ids, col_ids, matrix) with the specified path count</span>
+
+<span class="ss">        metric or None if the cache does not contain the matrix. Attempts</span>
+
+<span class="ss">        in-memory cache before falling back to on-disk cache.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">metapath_</span><span class="p">,</span><span class="w"> </span><span class="n">invert</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">inverse</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metapath_</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">cache</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">cache</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="nl">invert</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix</span><span class="p">.</span><span class="n">transpose</span><span class="p">()</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;memory&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">row_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">source</span><span class="p">())</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">col_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">target</span><span class="p">())</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">row_ids</span><span class="p">,</span><span class="w"> </span><span class="n">col_ids</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">hetmat</span><span class="p">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;disk&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">result</span><span class="w"></span>
+
+<span class="w">        </span><span class="ow">except</span><span class="w"> </span><span class="nl">FileNotFoundError</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">hits</span><span class="o">[</span><span class="n">&#39;absent&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+</code></pre></div>
+
+
+</details>
+<h5 id="get_stats_1">get_stats</h5>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span>
+    <span class="bp">self</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Return a str with formatted stats about cache operations</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code>    <span class="n">def</span> <span class="n">get_stats</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+
+        <span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Return a str with formatted stats about cache operations</span>
+
+<span class="ss">        &quot;&quot;&quot;</span>
+
+        <span class="n">stats_str</span> <span class="o">=</span> <span class="n">super</span><span class="p">().</span><span class="n">get_stats</span><span class="p">()</span>
+
+        <span class="n">stats_str</span> <span class="o">+=</span> <span class="n">f</span><span class="ss">&quot;\n  {self.current_B / self.bytes_per_gigabyte:.2f} GB in use of {self.allocate_B / self.bytes_per_gigabyte:.2f} GB allocated&quot;</span>  <span class="o">#</span> <span class="n">noqa</span><span class="p">:</span> <span class="n">E501</span>
+
+        <span class="k">return</span> <span class="n">stats_str</span>
+</code></pre></div>
+
+
+</details>
+<h5 id="set_1">set</h5>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">metapath</span><span class="p">,</span>
+    <span class="n">metric</span><span class="p">,</span>
+    <span class="n">damping</span><span class="p">,</span>
+    <span class="n">matrix</span><span class="p">,</span>
+    <span class="n">runtime</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<p>Gives the cache the option of caching this matrix.</p>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="k">set</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">runtime</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+
+<span class="ss">        Gives the cache the option of caching this matrix.</span>
+
+<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">cache</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">priorities</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">nbytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_matrix_size</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">nbytes</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">allocate_B</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">tie_breaker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">next</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue_counter</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">priority</span><span class="p">,</span><span class="w"> </span><span class="n">tie_breaker</span><span class="p">,</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">current_B</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nbytes</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="nl">allocate_B</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">popped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">heapq</span><span class="p">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">popped_priority</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">popped_key</span><span class="p">,</span><span class="w"> </span><span class="n">popped_nbytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">popped</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">popped_priority</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nl">priority</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue</span><span class="p">,</span><span class="w"> </span><span class="n">popped</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">break</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">del</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">cache</span><span class="o">[</span><span class="n">popped_key</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">current_B</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">popped_nbytes</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">else</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">priority_queue</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">cache</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">self</span><span class="p">.</span><span class="n">current_B</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">nbytes</span><span class="w"></span>
+</code></pre></div>
+
+
+</details>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../archive/" title="Archive" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Archive
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../" title="Index" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Index
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Powered by
+        <a href="http://timothycrosley.github.io/portray">portray.</a>
+        You too can
+        <a href="http://timothycrosley.github.io/portray">
+          portray</a>
+        your Python project well using automatic documentation.
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1.2",url:{base:"../../../.."}})</script>
+      
+    
+  </body>
+</html>
