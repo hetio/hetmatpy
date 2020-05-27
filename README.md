@@ -1,7 +1,5 @@
 # hetmatpy: a Python 3 package for matrix operations of hetnets
 
-[![Build Status](https://travis-ci.com/hetio/hetmatpy.svg?branch=master)](https://travis-ci.com/hetio/hetmatpy)
-
 This codebase enables identifying the relevant network connections between a set of query nodes.
 The method is designed to operate on hetnets (networks with multiple node or relationship types).
 

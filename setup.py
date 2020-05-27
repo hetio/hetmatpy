@@ -14,4 +14,11 @@ setuptools.setup(
         'pandas',
         'scipy',
     ],
+    extras_require={
+        'dev': [
+            'black',
+            'flake8',
+            'pytest',
+        ]
+    }
 )
