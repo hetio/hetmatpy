@@ -1,7 +1,9 @@
-import hetnetpy.pathtools
+import platform
+
 import numpy
 import pytest
 
+import hetnetpy.pathtools
 from hetmatpy.degree_weight import dwpc
 from hetmatpy.testing import get_graph
 
@@ -70,6 +72,8 @@ def test_path_traversal(metapath, hetmat, tmpdir):
     compound-disease pair where errors are most likely to appear.
     """
     # Read graph
+    if platform.system() == "Windows":
+        pytest.xfail("path contains invalid character for Windows: >")
     graph = get_graph('random-subgraph')
     graph_or_hetmat = graph
     if hetmat:

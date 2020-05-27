@@ -156,7 +156,7 @@ def read_first_matrix(specs, delete_failures=False):
             matrix = matrix.transpose()
         return matrix
     raise FileNotFoundError(
-        f'No matrix files found at the specified paths:\n' +
+        'No matrix files found at the specified paths:\n' +
         '\n'.join(paths))
 
 

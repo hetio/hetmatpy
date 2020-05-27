@@ -1,7 +1,7 @@
 # hetmatpy: a Python 3 package for matrix operations of hetnets
 
 [![Documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&style=for-the-badge)](https://hetio.github.io/hetmatpy/)
-[![PyPI](https://img.shields.io/pypi/v/manubot.svg?logo=PyPI&style=for-the-badge)](https://pypi.org/project/hetmatpy/)
+[![PyPI](https://img.shields.io/pypi/v/hetmatpy.svg?logo=PyPI&style=for-the-badge)](https://pypi.org/project/hetmatpy/)
 [![GitHub Actions CI Tests Status](https://img.shields.io/github/workflow/status/hetio/hetmatpy/Tests?label=actions&logo=github&style=for-the-badge)](https://github.com/hetio/hetmatpy/actions)
 <!--
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge&logo=Python)](https://github.com/psf/black)

@@ -57,7 +57,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install ".[all]"
+        pip install ".[dev]"
     - name: Build docs
       run: |
         # temporary workaround for portray "Module not found" error https://git.io/JeR9C

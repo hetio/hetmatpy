@@ -178,9 +178,9 @@ def _dimensions_to_ordering(dimensions):
     n = len(dimensions) - 1
     m = numpy.zeros((n, n), dtype=numpy.double)
     ordering = numpy.empty((n, n), dtype=numpy.intp)
-    for l in range(1, n):
-        for i in range(n - l):
-            j = i + l
+    for l_ in range(1, n):
+        for i in range(n - l_):
+            j = i + l_
             m[i, j] = numpy.inf
             for k in range(i, j):
                 q = m[i, k] + m[k + 1, j] + dimensions[i] * dimensions[k + 1] * dimensions[j + 1]
