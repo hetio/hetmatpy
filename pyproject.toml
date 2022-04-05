@@ -1,3 +1,56 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+[project]
+name = "hetmatpy"
+description = "Matrix implementations for hetnets and path-count-based measures"
+readme = "README.md"
+keywords = [
+    "hetnet",
+    "hetmat",
+    "graph",
+    "heterogeneous",
+    "network",
+    "hetio",
+    "hetnetpy",
+    "dwpc",
+    "numpy",
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+requires-python = ">=3.7"
+license = {file = "LICENSE.md"}
+dynamic = ["version"]
+dependencies = [
+    "hetnetpy>=0.3.0",
+    "numpy",
+    "pandas",
+    "scipy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+    "portray",
+    "pytest",
+    "xarray",
+]
+
+[project.urls]
+Source = "https://github.com/hetio/hetmatpy"
+Documentation = "https://hetio.github.io/hetmatpy"
+Tracker = "https://github.com/hetio/hetmatpy/issues"
+Homepage = "https://het.io/software/"
+Publication = "https://greenelab.github.io/connectivity-search-manuscript/"
+
+[tool.setuptools.dynamic]
+version = {attr = "hetmatpy.__version__"}
+
 # https://pycqa.github.io/isort/docs/configuration/config_files.html
 [tool.isort]
 profile = "black"
