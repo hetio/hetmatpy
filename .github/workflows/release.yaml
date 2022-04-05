@@ -12,13 +12,14 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Python
       uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install wheel
-        pip install ".[dev]"
+        pip install build wheel
     - name: Build package
-      run: python setup.py sdist bdist_wheel
+      run: python -m build --sdist --wheel --outdir=dist
     - name: Deploy package
       if: '!github.event.repository.fork'
       uses: pypa/gh-action-pypi-publish@release/v1
