@@ -1,7 +1,10 @@
 name: Tests
 on:
-- push
-- pull_request
+  push:
+  pull_request:
+  schedule:
+    - cron: '10 10 1 * *'  # once a month
+
 jobs:
 
   pytest:
@@ -11,11 +14,11 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: ['3.6', '3.7', '3.8']
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Install Python
       uses: actions/setup-python@v2
       with:
@@ -32,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Install Python
       uses: actions/setup-python@v2
     - name: Install dependencies
@@ -51,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Install Python
       uses: actions/setup-python@v2
     - name: Install dependencies
