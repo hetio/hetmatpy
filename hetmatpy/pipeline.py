@@ -55,9 +55,11 @@ def add_gamma_hurdle_to_dgp_df(dgp_df):
             ', '.join(missing)
         )
     # Compute gamma-hurdle parameters
-    dgp_df['mean_nz'] = dgp_df['sum'] / dgp_df['nnz']
+    # to_numeric prevents ZeroDivisionError when nnz is an column with object dtype
+    # https://github.com/pandas-dev/pandas/issues/46292
+    dgp_df['mean_nz'] = dgp_df['sum'] / pandas.to_numeric(dgp_df['nnz'])
     dgp_df['sd_nz'] = dgp_df[['sum_of_squares', 'sum', 'nnz']].apply(lambda row: calculate_sd(*row), raw=True, axis=1)
-    dgp_df['beta'] = (dgp_df['mean_nz'] / dgp_df['sd_nz'] ** 2).replace(numpy.inf, numpy.nan)
+    dgp_df['beta'] = (dgp_df['mean_nz'] / pandas.to_numeric(dgp_df['sd_nz'] ** 2)).replace(numpy.inf, numpy.nan)
     dgp_df['alpha'] = dgp_df['mean_nz'] * dgp_df['beta']
 
     return dgp_df

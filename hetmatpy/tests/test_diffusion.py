@@ -74,7 +74,7 @@ class TestDualNormalize:
     def get_problem_matrix(type):
         """Return a problematic matrix of specified type"""
         matrix_dict = {
-            'empty_row': numpy.array([[1, 2], [3, 4], []]),
+            'empty_row': numpy.array([[1, 2], [3, 4], []], dtype=object),
             'empty_matrix': numpy.array([[], [], []]),
             'nan_matrix': numpy.array([[numpy.nan, numpy.nan], [1, 0.5]]),
             'infinite_matrix': numpy.array([[numpy.inf, numpy.inf], [1, 0.5]]),

@@ -1,4 +1,3 @@
-import numpy
 import pandas
 import pytest
 
@@ -175,10 +174,11 @@ def test_add_gamma_hurdle():
 
     # Test nnz = 1
     expected_mean_nz_0 = 4.0
+    print(dgp_df)
     assert expected_mean_nz_0 == dgp_df['mean_nz'][0]
-    assert numpy.isnan(dgp_df['sd_nz'][0])
-    assert numpy.isnan(dgp_df['beta'][0])
-    assert numpy.isnan(dgp_df['alpha'][0])
+    assert pandas.isna(dgp_df['sd_nz'][0])
+    assert pandas.isna(dgp_df['beta'][0])
+    assert pandas.isna(dgp_df['alpha'][0])
 
     # Test a normal case
     expected_mean_nz_1 = 4 / 3
@@ -195,8 +195,8 @@ def test_add_gamma_hurdle():
     expected_sd_nz_2 = 0.0
     assert expected_mean_nz_2 == dgp_df['mean_nz'][2]
     assert expected_sd_nz_2 == dgp_df['sd_nz'][2]
-    assert numpy.isnan(dgp_df['beta'][2])
-    assert numpy.isnan(dgp_df['alpha'][2])
+    assert pandas.isna(dgp_df['beta'][2])
+    assert pandas.isna(dgp_df['alpha'][2])
 
 
 @pytest.mark.parametrize('row, expected_output', [
