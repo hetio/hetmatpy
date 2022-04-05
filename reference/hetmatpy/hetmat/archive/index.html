@@ -694,7 +694,11 @@
 
     <span class="k">if</span> <span class="n">destination_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-        <span class="n">destination_path</span> <span class="o">=</span> <span class="n">hetmat</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="n">hetmat</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.zip&#39;</span><span class="p">)</span>
+        <span class="n">destination_path</span> <span class="o">=</span> <span class="n">hetmat</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+
+            <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="n">hetmat</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.zip&quot;</span>
+
+        <span class="p">)</span>
 
     <span class="n">create_archive_by_globs</span><span class="p">(</span>
 
@@ -702,11 +706,11 @@
 
         <span class="n">root_directory</span><span class="o">=</span><span class="n">hetmat</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
 
-        <span class="n">include_globs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;nodes/*&#39;</span><span class="p">,</span> <span class="s1">&#39;edges/*&#39;</span><span class="p">],</span>
+        <span class="n">include_globs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nodes/*&quot;</span><span class="p">,</span> <span class="s2">&quot;edges/*&quot;</span><span class="p">],</span>
 
-        <span class="n">include_paths</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;metagraph.json&#39;</span><span class="p">],</span>
+        <span class="n">include_paths</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;metagraph.json&quot;</span><span class="p">],</span>
 
-        <span class="n">zip_mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span>
+        <span class="n">zip_mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -714,11 +718,19 @@
 
 <span class="k">def</span> <span class="nf">create_archive_by_globs</span><span class="p">(</span>
 
-        <span class="n">destination_path</span><span class="p">,</span> <span class="n">root_directory</span><span class="p">,</span>
+    <span class="n">destination_path</span><span class="p">,</span>
 
-        <span class="n">include_globs</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude_globs</span><span class="o">=</span><span class="p">[],</span> <span class="n">include_paths</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">root_directory</span><span class="p">,</span>
 
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">include_globs</span><span class="o">=</span><span class="p">[],</span>
+
+    <span class="n">exclude_globs</span><span class="o">=</span><span class="p">[],</span>
+
+    <span class="n">include_paths</span><span class="o">=</span><span class="p">[],</span>
+
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -750,9 +762,19 @@
 
 <span class="k">def</span> <span class="nf">create_archive</span><span class="p">(</span>
 
-        <span class="n">destination_path</span><span class="p">,</span> <span class="n">root_directory</span><span class="p">,</span> <span class="n">source_paths</span><span class="p">,</span>
+    <span class="n">destination_path</span><span class="p">,</span>
 
-        <span class="n">zip_mode</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_LZMA</span><span class="p">,</span> <span class="n">split_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">root_directory</span><span class="p">,</span>
+
+    <span class="n">source_paths</span><span class="p">,</span>
+
+    <span class="n">zip_mode</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+
+    <span class="n">compression</span><span class="o">=</span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_LZMA</span><span class="p">,</span>
+
+    <span class="n">split_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -772,7 +794,7 @@
 
     <span class="n">root_directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">root_directory</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">zip_mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">}</span>
+    <span class="k">assert</span> <span class="n">zip_mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">}</span>
 
     <span class="n">source_paths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">source_paths</span><span class="p">)))</span>
 
@@ -784,7 +806,11 @@
 
     <span class="k">else</span><span class="p">:</span>
 
-        <span class="n">zip_path_formatter</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">destination_path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">-</span><span class="se">{{</span><span class="s1">:04d</span><span class="se">}}</span><span class="si">{</span><span class="n">destination_path</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">zip_path_formatter</span> <span class="o">=</span> <span class="p">(</span>
+
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">destination_path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">-</span><span class="se">{{</span><span class="s2">:04d</span><span class="se">}}</span><span class="si">{</span><span class="n">destination_path</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span>
+
+        <span class="p">)</span>
 
         <span class="n">split_num</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -814,7 +840,11 @@
 
                 <span class="n">zip_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">zip_path</span><span class="p">)</span>
 
-                <span class="n">zip_file</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">zip_mode</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span>
+                <span class="n">zip_file</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span>
+
+                    <span class="n">zip_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">zip_mode</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression</span>
+
+                <span class="p">)</span>
 
         <span class="n">zip_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">source_fs_path</span><span class="p">,</span> <span class="n">source_path</span><span class="p">)</span>
 
@@ -822,9 +852,9 @@
 
     <span class="n">info_df</span> <span class="o">=</span> <span class="n">get_archive_info_df</span><span class="p">(</span><span class="n">zip_paths</span><span class="p">)</span>
 
-    <span class="n">info_path</span> <span class="o">=</span> <span class="n">destination_path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">destination_path</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;-info.tsv&#39;</span><span class="p">)</span>
+    <span class="n">info_path</span> <span class="o">=</span> <span class="n">destination_path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">destination_path</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-info.tsv&quot;</span><span class="p">)</span>
 
-    <span class="n">info_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">info_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">info_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">info_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="n">info_path</span><span class="p">]</span> <span class="o">+</span> <span class="n">zip_paths</span>
 
@@ -838,15 +868,15 @@
 
     <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
 
-        <span class="s1">&#39;filename&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;filename&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;file_size&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;file_size&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;compress_type&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;compress_type&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;compress_size&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;compress_size&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;CRC&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CRC&quot;</span><span class="p">,</span>
 
     <span class="p">]</span>
 
@@ -864,7 +894,7 @@
 
             <span class="n">row</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;archive&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;archive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span>
 
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
 
@@ -890,13 +920,17 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">is_url</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^(http|ftp)s?://&#39;</span><span class="p">,</span> <span class="n">archive_path</span><span class="p">)</span>
+    <span class="n">is_url</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
+
+        <span class="s2">&quot;^(http|ftp)s?://&quot;</span><span class="p">,</span> <span class="n">archive_path</span>
+
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">is_url</span><span class="p">:</span>
 
         <span class="n">archive_path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">archive_path</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
 
         <span class="n">zip_file</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">destination_dir</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">source_paths</span><span class="p">)</span>
 
@@ -928,9 +962,19 @@ path is a TSV with information on each archived file.</p>
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">create_archive</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">destination_path</span><span class="p">,</span><span class="w"> </span><span class="n">root_directory</span><span class="p">,</span><span class="w"> </span><span class="n">source_paths</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">destination_path</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">zip_mode</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">compression</span><span class="o">=</span><span class="n">zipfile</span><span class="p">.</span><span class="n">ZIP_LZMA</span><span class="p">,</span><span class="w"> </span><span class="n">split_size</span><span class="o">=</span><span class="k">None</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">root_directory</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">source_paths</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">zip_mode</span><span class="o">=</span><span class="ss">&quot;x&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">compression</span><span class="o">=</span><span class="n">zipfile</span><span class="p">.</span><span class="n">ZIP_LZMA</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">split_size</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -950,7 +994,7 @@ path is a TSV with information on each archived file.</p>
 
 <span class="w">    </span><span class="n">root_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="n">root_directory</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">zip_mode</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="err">{</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;a&#39;</span><span class="err">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="w"> </span><span class="n">zip_mode</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;w&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;x&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;a&quot;</span><span class="err">}</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">source_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sorted</span><span class="p">(</span><span class="k">set</span><span class="p">(</span><span class="k">map</span><span class="p">(</span><span class="nf">str</span><span class="p">,</span><span class="w"> </span><span class="n">source_paths</span><span class="p">)))</span><span class="w"></span>
 
@@ -962,7 +1006,11 @@ path is a TSV with information on each archived file.</p>
 
 <span class="w">    </span><span class="k">else</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">zip_path_formatter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="s1">&#39;{destination_path.stem}-{{:04d}}{destination_path.suffix}&#39;</span><span class="p">.</span><span class="nf">format</span><span class="w"></span>
+<span class="w">        </span><span class="n">zip_path_formatter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;{destination_path.stem}-{{:04d}}{destination_path.suffix}&quot;</span><span class="p">.</span><span class="nf">format</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">split_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
 
@@ -992,7 +1040,11 @@ path is a TSV with information on each archived file.</p>
 
 <span class="w">                </span><span class="n">zip_paths</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">zip_path</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">zip_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zipfile</span><span class="p">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_path</span><span class="p">,</span><span class="w"> </span><span class="n">mode</span><span class="o">=</span><span class="n">zip_mode</span><span class="p">,</span><span class="w"> </span><span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="n">zip_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zipfile</span><span class="p">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">zip_path</span><span class="p">,</span><span class="w"> </span><span class="n">mode</span><span class="o">=</span><span class="n">zip_mode</span><span class="p">,</span><span class="w"> </span><span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="w"></span>
+
+<span class="w">                </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">zip_file</span><span class="p">.</span><span class="k">write</span><span class="p">(</span><span class="n">source_fs_path</span><span class="p">,</span><span class="w"> </span><span class="n">source_path</span><span class="p">)</span><span class="w"></span>
 
@@ -1000,9 +1052,9 @@ path is a TSV with information on each archived file.</p>
 
 <span class="w">    </span><span class="n">info_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_archive_info_df</span><span class="p">(</span><span class="n">zip_paths</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">info_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">destination_path</span><span class="p">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">destination_path</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;-info.tsv&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">info_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">destination_path</span><span class="p">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">destination_path</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;-info.tsv&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">info_df</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">info_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\t&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">index</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">info_df</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">info_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="ss">&quot;\t&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">index</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">[</span><span class="n">info_path</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">zip_paths</span><span class="w"></span>
 </code></pre></div>
@@ -1026,11 +1078,19 @@ Finally, paths relative to root_directory are included from include_paths.</p>
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">create_archive_by_globs</span><span class="ss">(</span>
 
-        <span class="nv">destination_path</span>, <span class="nv">root_directory</span>,
+    <span class="nv">destination_path</span>,
 
-        <span class="nv">include_globs</span><span class="o">=</span>[], <span class="nv">exclude_globs</span><span class="o">=</span>[], <span class="nv">include_paths</span><span class="o">=</span>[],
+    <span class="nv">root_directory</span>,
 
-        <span class="o">**</span><span class="nv">kwargs</span><span class="ss">)</span>:
+    <span class="nv">include_globs</span><span class="o">=</span>[],
+
+    <span class="nv">exclude_globs</span><span class="o">=</span>[],
+
+    <span class="nv">include_paths</span><span class="o">=</span>[],
+
+    <span class="o">**</span><span class="nv">kwargs</span>,
+
+<span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1088,7 +1148,11 @@ directory with .zip appended. Returns the destination path.</p>
 
     <span class="k">if</span> <span class="nv">destination_path</span> <span class="nv">is</span> <span class="nv">None</span>:
 
-        <span class="nv">destination_path</span> <span class="o">=</span> <span class="nv">hetmat</span>.<span class="nv">directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">..</span><span class="s1">&#39;</span>, <span class="nv">hetmat</span>.<span class="nv">directory</span>.<span class="nv">absolute</span><span class="ss">()</span>.<span class="nv">name</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="s">.zip</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">destination_path</span> <span class="o">=</span> <span class="nv">hetmat</span>.<span class="nv">directory</span>.<span class="nv">joinpath</span><span class="ss">(</span>
+
+            <span class="s2">&quot;</span><span class="s">..</span><span class="s2">&quot;</span>, <span class="nv">hetmat</span>.<span class="nv">directory</span>.<span class="nv">absolute</span><span class="ss">()</span>.<span class="nv">name</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">.zip</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
 
     <span class="nv">create_archive_by_globs</span><span class="ss">(</span>
 
@@ -1096,11 +1160,11 @@ directory with .zip appended. Returns the destination path.</p>
 
         <span class="nv">root_directory</span><span class="o">=</span><span class="nv">hetmat</span>.<span class="nv">directory</span>,
 
-        <span class="nv">include_globs</span><span class="o">=</span>[<span class="s1">&#39;</span><span class="s">nodes/*</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">edges/*</span><span class="s1">&#39;</span>],
+        <span class="nv">include_globs</span><span class="o">=</span>[<span class="s2">&quot;</span><span class="s">nodes/*</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">edges/*</span><span class="s2">&quot;</span>],
 
-        <span class="nv">include_paths</span><span class="o">=</span>[<span class="s1">&#39;</span><span class="s">metagraph.json</span><span class="s1">&#39;</span>],
+        <span class="nv">include_paths</span><span class="o">=</span>[<span class="s2">&quot;</span><span class="s">metagraph.json</span><span class="s2">&quot;</span>],
 
-        <span class="nv">zip_mode</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">w</span><span class="s1">&#39;</span>,
+        <span class="nv">zip_mode</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">w</span><span class="s2">&quot;</span>,
 
     <span class="ss">)</span>
 
@@ -1127,15 +1191,15 @@ directory with .zip appended. Returns the destination path.</p>
 
 <span class="w">    </span><span class="n">fields</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n"></span>
 
-<span class="n">        &#39;filename&#39;,</span>
+<span class="n">        &quot;filename&quot;,</span>
 
-<span class="n">        &#39;file_size&#39;,</span>
+<span class="n">        &quot;file_size&quot;,</span>
 
-<span class="n">        &#39;compress_type&#39;,</span>
+<span class="n">        &quot;compress_type&quot;,</span>
 
-<span class="n">        &#39;compress_size&#39;,</span>
+<span class="n">        &quot;compress_size&quot;,</span>
 
-<span class="n">        &#39;CRC&#39;,</span>
+<span class="n">        &quot;CRC&quot;,</span>
 
 <span class="n">    </span><span class="o">]</span><span class="w"></span>
 
@@ -1153,7 +1217,7 @@ directory with .zip appended. Returns the destination path.</p>
 
 <span class="w">            </span><span class="k">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">()</span><span class="w"></span>
 
-<span class="w">            </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;archive&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">path</span><span class="p">.</span><span class="n">name</span><span class="w"></span>
+<span class="w">            </span><span class="k">row</span><span class="o">[</span><span class="n">&quot;archive&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">path</span><span class="p">.</span><span class="n">name</span><span class="w"></span>
 
 <span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">fields</span><span class="p">:</span><span class="w"></span>
 
@@ -1194,13 +1258,17 @@ a list of specific paths within the zipfile to extract only those members.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">is_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;^(http|ftp)s?://&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">archive_path</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">is_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="s2">&quot;^(http|ftp)s?://&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">archive_path</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">is_url</span><span class="p">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">archive_path</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">archive_path</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">with</span><span class="w"> </span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span><span class="w"> </span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">zip_file</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">with</span><span class="w"> </span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span><span class="w"> </span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">zip_file</span><span class="p">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">zip_file</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">destination_dir</span><span class="p">,</span><span class="w"> </span><span class="n">members</span><span class="o">=</span><span class="n">source_paths</span><span class="p">)</span><span class="w"></span>
 

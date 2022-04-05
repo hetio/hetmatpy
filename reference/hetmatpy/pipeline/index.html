@@ -792,7 +792,7 @@
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">squared_deviations</span> <span class="o">=</span> <span class="n">sum_of_squares</span> <span class="o">-</span> <span class="n">unsquared_sum</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">number_nonzero</span>
+    <span class="n">squared_deviations</span> <span class="o">=</span> <span class="n">sum_of_squares</span> <span class="o">-</span> <span class="n">unsquared_sum</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">number_nonzero</span>
 
     <span class="c1"># If all the values in the row are the same we&#39;ll manually return zero,</span>
 
@@ -824,19 +824,21 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;add_gamma_hurdle_to_dgp_df: dgp_df must be a pandas.DataFrame&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-    <span class="n">missing</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nnz&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;sum_of_squares&#39;</span><span class="p">}</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">dgp_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="s2">&quot;add_gamma_hurdle_to_dgp_df: dgp_df must be a pandas.DataFrame&quot;</span>
+
+        <span class="p">)</span>
+
+    <span class="n">missing</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nnz&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;sum_of_squares&quot;</span><span class="p">}</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">dgp_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
 
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-            <span class="s1">&#39;add_gamma_hurdle_to_dgp_df: &#39;</span>
+            <span class="s2">&quot;add_gamma_hurdle_to_dgp_df: &quot;</span>
 
-            <span class="s1">&#39;dgp_df missing the following required columns: &#39;</span> <span class="o">+</span>
-
-            <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span>
+            <span class="s2">&quot;dgp_df missing the following required columns: &quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span>
 
         <span class="p">)</span>
 
@@ -846,13 +848,21 @@
 
     <span class="c1"># https://github.com/pandas-dev/pandas/issues/46292</span>
 
-    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">])</span>
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;mean_nz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">])</span>
 
-    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[[</span><span class="s1">&#39;sum_of_squares&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;nnz&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">calculate_sd</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">),</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;sd_nz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[[</span><span class="s2">&quot;sum_of_squares&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;nnz&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
 
-    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="kp">inf</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">nan</span><span class="p">)</span>
+        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">calculate_sd</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">),</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
 
-    <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+
+        <span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;mean_nz&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;sd_nz&quot;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="kp">inf</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">nan</span><span class="p">)</span>
+
+    <span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;mean_nz&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dgp_df</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">dgp_df</span>
 
@@ -868,19 +878,27 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="s1">&#39;beta&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;beta&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
 
-        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_nz&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sd_nz&quot;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
 
-    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">isinf</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">isinf</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]):</span>
 
-        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">nan</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">nan</span>
 
-    <span class="k">if</span> <span class="s1">&#39;alpha&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;alpha&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
 
-        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_nz&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaincc</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span>
+
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">]</span>
+
+        <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>
+
+        <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaincc</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;dwpc&quot;</span><span class="p">])</span>
+
+    <span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">path_does_not_exist</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
 
@@ -894,11 +912,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="s1">&#39;path_count&#39;</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;path_count&quot;</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
 
-        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;path_count&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;path_count&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
 
-    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;dwpc&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
 
 <span class="k">def</span> <span class="nf">calculate_empirical_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
 
@@ -914,7 +932,7 @@
 
         <span class="k">return</span> <span class="mf">1.0</span>
 
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
         <span class="c1"># No nonzero DWPCs are found in the permuted network, but paths are</span>
 
@@ -922,17 +940,17 @@
 
         <span class="k">return</span> <span class="mf">0.0</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;sd_nz&quot;</span><span class="p">]):</span>
 
         <span class="c1"># The DWPCs in the permuted network are identical</span>
 
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;dwpc&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;mean_nz&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">FLOAT_ERROR_TOLERANCE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;dwpc&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_nz&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">FLOAT_ERROR_TOLERANCE</span><span class="p">:</span>
 
             <span class="c1"># The DWPC you found in the true network is smaller than or equal</span>
 
             <span class="c1"># to those in the permuted network</span>
 
-            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>
 
         <span class="c1"># The DWPC you found in the true network is larger than those in the</span>
 
@@ -950,7 +968,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">path_does_not_exist</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;sd_nz&#39;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">path_does_not_exist</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">sd_is_positive</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;sd_nz&quot;</span><span class="p">]):</span>
 
         <span class="k">return</span> <span class="n">calculate_empirical_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
@@ -968,33 +986,43 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">stats_path</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_running_degree_group_path</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span> <span class="s1">&#39;dwpc&#39;</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv.gz&#39;</span><span class="p">)</span>
+    <span class="n">stats_path</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_running_degree_group_path</span><span class="p">(</span>
 
-    <span class="n">dgp_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">stats_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">metapath</span><span class="p">,</span> <span class="s2">&quot;dwpc&quot;</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv.gz&quot;</span>
+
+    <span class="p">)</span>
+
+    <span class="n">dgp_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">stats_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">dgp_df</span> <span class="o">=</span> <span class="n">add_gamma_hurdle_to_dgp_df</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">)</span>
 
-    <span class="n">degrees_to_dgp</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;source_degree&#39;</span><span class="p">,</span> <span class="s1">&#39;target_degree&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+    <span class="n">degrees_to_dgp</span> <span class="o">=</span> <span class="n">dgp_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;source_degree&quot;</span><span class="p">,</span> <span class="s2">&quot;target_degree&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span>
+
+        <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span>
+
+    <span class="p">)</span>
 
     <span class="n">dwpc_row_generator</span> <span class="o">=</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">degree_group</span><span class="o">.</span><span class="n">dwpc_to_degrees</span><span class="p">(</span>
 
-        <span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span> <span class="n">ignore_zeros</span><span class="o">=</span><span class="n">ignore_zeros</span><span class="p">)</span>
+        <span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span> <span class="n">ignore_zeros</span><span class="o">=</span><span class="n">ignore_zeros</span>
+
+    <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dwpc_row_generator</span><span class="p">:</span>
 
-        <span class="n">degrees</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;source_degree&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;target_degree&#39;</span><span class="p">]</span>
+        <span class="n">degrees</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;source_degree&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;target_degree&quot;</span><span class="p">]</span>
 
         <span class="n">dgp</span> <span class="o">=</span> <span class="n">degrees_to_dgp</span><span class="p">[</span><span class="n">degrees</span><span class="p">]</span>
 
         <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dgp</span><span class="p">)</span>
 
-        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;p_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;p_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_p_value</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;p_value&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;p_value&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_p_value</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;p_value&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;p_value&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_p_value</span><span class="p">:</span>
 
             <span class="k">continue</span>
 
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;sum_of_squares&#39;</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;sum_of_squares&quot;</span><span class="p">,</span> <span class="s2">&quot;beta&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">]:</span>
 
             <span class="k">del</span> <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
@@ -1018,7 +1046,7 @@
 
         <span class="k">try</span><span class="p">:</span>
 
-            <span class="n">head</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">chunk</span><span class="p">),</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">chunk</span><span class="p">),)</span>
 
         <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
 
@@ -1026,7 +1054,11 @@
 
         <span class="k">yield</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">grouped_tsv_writer</span><span class="p">(</span><span class="n">row_generator</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">group_size</span><span class="o">=</span><span class="mi">20_000</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">grouped_tsv_writer</span><span class="p">(</span>
+
+    <span class="n">row_generator</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">group_size</span><span class="o">=</span><span class="mi">20_000</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1046,9 +1078,9 @@
 
         <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;header&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;header&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="k">else</span> <span class="s1">&#39;w&#39;</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span> <span class="k">if</span> <span class="n">i</span> <span class="k">else</span> <span class="s2">&quot;w&quot;</span>
 
         <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
@@ -1083,19 +1115,21 @@
 
     <span class="k">if</span> <span class="nv">not</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">dgp_df</span>, <span class="nv">pandas</span>.<span class="nv">DataFrame</span><span class="ss">)</span>:
 
-        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">add_gamma_hurdle_to_dgp_df: dgp_df must be a pandas.DataFrame</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span>
 
-    <span class="nv">missing</span> <span class="o">=</span> {<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">sum</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">sum_of_squares</span><span class="s1">&#39;</span>} <span class="o">-</span> <span class="nv">set</span><span class="ss">(</span><span class="nv">dgp_df</span>.<span class="nv">columns</span><span class="ss">)</span>
+            <span class="s2">&quot;</span><span class="s">add_gamma_hurdle_to_dgp_df: dgp_df must be a pandas.DataFrame</span><span class="s2">&quot;</span>
+
+        <span class="ss">)</span>
+
+    <span class="nv">missing</span> <span class="o">=</span> {<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">sum</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">sum_of_squares</span><span class="s2">&quot;</span>} <span class="o">-</span> <span class="nv">set</span><span class="ss">(</span><span class="nv">dgp_df</span>.<span class="nv">columns</span><span class="ss">)</span>
 
     <span class="k">if</span> <span class="nv">missing</span>:
 
         <span class="nv">raise</span> <span class="nv">ValueError</span><span class="ss">(</span>
 
-            <span class="s1">&#39;</span><span class="s">add_gamma_hurdle_to_dgp_df: </span><span class="s1">&#39;</span>
+            <span class="s2">&quot;</span><span class="s">add_gamma_hurdle_to_dgp_df: </span><span class="s2">&quot;</span>
 
-            <span class="s1">&#39;</span><span class="s">dgp_df missing the following required columns: </span><span class="s1">&#39;</span> <span class="o">+</span>
-
-            <span class="s1">&#39;</span><span class="s">, </span><span class="s1">&#39;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">missing</span><span class="ss">)</span>
+            <span class="s2">&quot;</span><span class="s">dgp_df missing the following required columns: </span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">, </span><span class="s2">&quot;</span>.<span class="nv">join</span><span class="ss">(</span><span class="nv">missing</span><span class="ss">)</span>
 
         <span class="ss">)</span>
 
@@ -1105,13 +1139,21 @@
 
     # <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">pandas</span><span class="o">-</span><span class="nv">dev</span><span class="o">/</span><span class="nv">pandas</span><span class="o">/</span><span class="nv">issues</span><span class="o">/</span><span class="mi">46292</span>
 
-    <span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">mean_nz</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">sum</span><span class="s1">&#39;</span>] <span class="o">/</span> <span class="nv">pandas</span>.<span class="nv">to_numeric</span><span class="ss">(</span><span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>]<span class="ss">)</span>
+    <span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">mean_nz</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">sum</span><span class="s2">&quot;</span>] <span class="o">/</span> <span class="nv">pandas</span>.<span class="nv">to_numeric</span><span class="ss">(</span><span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>]<span class="ss">)</span>
 
-    <span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">sd_nz</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">dgp_df</span>[[<span class="s1">&#39;</span><span class="s">sum_of_squares</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">sum</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>]].<span class="nv">apply</span><span class="ss">(</span><span class="nv">lambda</span> <span class="nv">row</span>: <span class="nv">calculate_sd</span><span class="ss">(</span><span class="o">*</span><span class="nv">row</span><span class="ss">)</span>, <span class="nv">raw</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">axis</span><span class="o">=</span><span class="mi">1</span><span class="ss">)</span>
+    <span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">sd_nz</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">dgp_df</span>[[<span class="s2">&quot;</span><span class="s">sum_of_squares</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">sum</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>]].<span class="nv">apply</span><span class="ss">(</span>
 
-    <span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">beta</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="ss">(</span><span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">mean_nz</span><span class="s1">&#39;</span>] <span class="o">/</span> <span class="nv">pandas</span>.<span class="nv">to_numeric</span><span class="ss">(</span><span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">sd_nz</span><span class="s1">&#39;</span>] <span class="o">**</span> <span class="mi">2</span><span class="ss">))</span>.<span class="nv">replace</span><span class="ss">(</span><span class="nv">numpy</span>.<span class="nv">inf</span>, <span class="nv">numpy</span>.<span class="nv">nan</span><span class="ss">)</span>
+        <span class="nv">lambda</span> <span class="nv">row</span>: <span class="nv">calculate_sd</span><span class="ss">(</span><span class="o">*</span><span class="nv">row</span><span class="ss">)</span>, <span class="nv">raw</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">axis</span><span class="o">=</span><span class="mi">1</span>
 
-    <span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">alpha</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">mean_nz</span><span class="s1">&#39;</span>] <span class="o">*</span> <span class="nv">dgp_df</span>[<span class="s1">&#39;</span><span class="s">beta</span><span class="s1">&#39;</span>]
+    <span class="ss">)</span>
+
+    <span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">beta</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="ss">(</span>
+
+        <span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">mean_nz</span><span class="s2">&quot;</span>] <span class="o">/</span> <span class="nv">pandas</span>.<span class="nv">to_numeric</span><span class="ss">(</span><span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">sd_nz</span><span class="s2">&quot;</span>] <span class="o">**</span> <span class="mi">2</span><span class="ss">)</span>
+
+    <span class="ss">)</span>.<span class="nv">replace</span><span class="ss">(</span><span class="nv">numpy</span>.<span class="nv">inf</span>, <span class="nv">numpy</span>.<span class="nv">nan</span><span class="ss">)</span>
+
+    <span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">alpha</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">mean_nz</span><span class="s2">&quot;</span>] <span class="o">*</span> <span class="nv">dgp_df</span>[<span class="s2">&quot;</span><span class="s">beta</span><span class="s2">&quot;</span>]
 
     <span class="k">return</span> <span class="nv">dgp_df</span>
 </code></pre></div>
@@ -1140,7 +1182,7 @@
 
         <span class="k">return</span> <span class="mi">1</span>.<span class="mi">0</span>
 
-    <span class="k">if</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="mi">0</span>:
+    <span class="k">if</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="mi">0</span>:
 
         # <span class="nv">No</span> <span class="nv">nonzero</span> <span class="nv">DWPCs</span> <span class="nv">are</span> <span class="nv">found</span> <span class="nv">in</span> <span class="nv">the</span> <span class="nv">permuted</span> <span class="nv">network</span>, <span class="nv">but</span> <span class="nv">paths</span> <span class="nv">are</span>
 
@@ -1148,17 +1190,17 @@
 
         <span class="k">return</span> <span class="mi">0</span>.<span class="mi">0</span>
 
-    <span class="k">if</span> <span class="nv">not</span> <span class="nv">sd_is_positive</span><span class="ss">(</span><span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">sd_nz</span><span class="s1">&#39;</span>]<span class="ss">)</span>:
+    <span class="k">if</span> <span class="nv">not</span> <span class="nv">sd_is_positive</span><span class="ss">(</span><span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">sd_nz</span><span class="s2">&quot;</span>]<span class="ss">)</span>:
 
         # <span class="nv">The</span> <span class="nv">DWPCs</span> <span class="nv">in</span> <span class="nv">the</span> <span class="nv">permuted</span> <span class="nv">network</span> <span class="nv">are</span> <span class="nv">identical</span>
 
-        <span class="k">if</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">dwpc</span><span class="s1">&#39;</span>] <span class="o">&lt;=</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">mean_nz</span><span class="s1">&#39;</span>] <span class="o">+</span> <span class="nv">FLOAT_ERROR_TOLERANCE</span>:
+        <span class="k">if</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">dwpc</span><span class="s2">&quot;</span>] <span class="o">&lt;=</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">mean_nz</span><span class="s2">&quot;</span>] <span class="o">+</span> <span class="nv">FLOAT_ERROR_TOLERANCE</span>:
 
             # <span class="nv">The</span> <span class="nv">DWPC</span> <span class="nv">you</span> <span class="nv">found</span> <span class="nv">in</span> <span class="nv">the</span> <span class="nv">true</span> <span class="nv">network</span> <span class="nv">is</span> <span class="nv">smaller</span> <span class="nv">than</span> <span class="nv">or</span> <span class="nv">equal</span>
 
             # <span class="nv">to</span> <span class="nv">those</span> <span class="nv">in</span> <span class="nv">the</span> <span class="nv">permuted</span> <span class="nv">network</span>
 
-            <span class="k">return</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>] <span class="o">/</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">n</span><span class="s1">&#39;</span>]
+            <span class="k">return</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>] <span class="o">/</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">n</span><span class="s2">&quot;</span>]
 
         # <span class="nv">The</span> <span class="nv">DWPC</span> <span class="nv">you</span> <span class="nv">found</span> <span class="nv">in</span> <span class="nv">the</span> <span class="nv">true</span> <span class="nv">network</span> <span class="nv">is</span> <span class="nv">larger</span> <span class="nv">than</span> <span class="nv">those</span> <span class="nv">in</span> <span class="nv">the</span>
 
@@ -1193,19 +1235,27 @@ and add them to row.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="s1">&#39;</span><span class="s">beta</span><span class="s1">&#39;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">row</span>:
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="s">beta</span><span class="s2">&quot;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">row</span>:
 
-        <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">beta</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">mean_nz</span><span class="s1">&#39;</span>] <span class="o">/</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">sd_nz</span><span class="s1">&#39;</span>] <span class="o">**</span> <span class="mi">2</span>
+        <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">beta</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">mean_nz</span><span class="s2">&quot;</span>] <span class="o">/</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">sd_nz</span><span class="s2">&quot;</span>] <span class="o">**</span> <span class="mi">2</span>
 
-    <span class="k">if</span> <span class="nv">numpy</span>.<span class="nv">isinf</span><span class="ss">(</span><span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">beta</span><span class="s1">&#39;</span>]<span class="ss">)</span>:
+    <span class="k">if</span> <span class="nv">numpy</span>.<span class="nv">isinf</span><span class="ss">(</span><span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">beta</span><span class="s2">&quot;</span>]<span class="ss">)</span>:
 
-        <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">beta</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">numpy</span>.<span class="nv">nan</span>
+        <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">beta</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">numpy</span>.<span class="nv">nan</span>
 
-    <span class="k">if</span> <span class="s1">&#39;</span><span class="s">alpha</span><span class="s1">&#39;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">row</span>:
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="s">alpha</span><span class="s2">&quot;</span> <span class="nv">not</span> <span class="nv">in</span> <span class="nv">row</span>:
 
-        <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">alpha</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">mean_nz</span><span class="s1">&#39;</span>] <span class="o">*</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">beta</span><span class="s1">&#39;</span>]
+        <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">alpha</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">mean_nz</span><span class="s2">&quot;</span>] <span class="o">*</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">beta</span><span class="s2">&quot;</span>]
 
-    <span class="k">return</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>] <span class="o">/</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">n</span><span class="s1">&#39;</span>] <span class="o">*</span> <span class="nv">scipy</span>.<span class="nv">special</span>.<span class="nv">gammaincc</span><span class="ss">(</span><span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">alpha</span><span class="s1">&#39;</span>], <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">beta</span><span class="s1">&#39;</span>] <span class="o">*</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">dwpc</span><span class="s1">&#39;</span>]<span class="ss">)</span>
+    <span class="k">return</span> <span class="ss">(</span>
+
+        <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>]
+
+        <span class="o">/</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">n</span><span class="s2">&quot;</span>]
+
+        <span class="o">*</span> <span class="nv">scipy</span>.<span class="nv">special</span>.<span class="nv">gammaincc</span><span class="ss">(</span><span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">alpha</span><span class="s2">&quot;</span>], <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">beta</span><span class="s2">&quot;</span>] <span class="o">*</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">dwpc</span><span class="s2">&quot;</span>]<span class="ss">)</span>
+
+    <span class="ss">)</span>
 </code></pre></div>
 
 </details>
@@ -1226,7 +1276,7 @@ and add them to row.</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="mi">0</span> <span class="nv">or</span> <span class="nv">path_does_not_exist</span><span class="ss">(</span><span class="nv">row</span><span class="ss">)</span> <span class="nv">or</span> <span class="nv">not</span> <span class="nv">sd_is_positive</span><span class="ss">(</span><span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">sd_nz</span><span class="s1">&#39;</span>]<span class="ss">)</span>:
+    <span class="k">if</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="mi">0</span> <span class="nv">or</span> <span class="nv">path_does_not_exist</span><span class="ss">(</span><span class="nv">row</span><span class="ss">)</span> <span class="nv">or</span> <span class="nv">not</span> <span class="nv">sd_is_positive</span><span class="ss">(</span><span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">sd_nz</span><span class="s2">&quot;</span>]<span class="ss">)</span>:
 
         <span class="k">return</span> <span class="nv">calculate_empirical_p_value</span><span class="ss">(</span><span class="nv">row</span><span class="ss">)</span>
 
@@ -1259,7 +1309,7 @@ and add them to row.</p>
 
         <span class="k">return</span> <span class="nv">None</span>
 
-    <span class="nv">squared_deviations</span> <span class="o">=</span> <span class="nv">sum_of_squares</span> <span class="o">-</span> <span class="nv">unsquared_sum</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="nv">number_nonzero</span>
+    <span class="nv">squared_deviations</span> <span class="o">=</span> <span class="nv">sum_of_squares</span> <span class="o">-</span> <span class="nv">unsquared_sum</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="nv">number_nonzero</span>
 
     # <span class="k">If</span> <span class="nv">all</span> <span class="nv">the</span> <span class="nv">values</span> <span class="nv">in</span> <span class="nv">the</span> <span class="nv">row</span> <span class="nv">are</span> <span class="nv">the</span> <span class="nv">same</span> <span class="nv">we</span><span class="s1">&#39;</span><span class="s">ll manually return zero,</span>
 
@@ -1303,33 +1353,43 @@ and add them to row.</p>
 
 <span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">stats_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">get_running_degree_group_path</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dwpc&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv.gz&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">stats_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">get_running_degree_group_path</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">dgp_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">stats_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\t&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;dwpc&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="o">=</span><span class="ss">&quot;.tsv.gz&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">dgp_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">stats_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="ss">&quot;\t&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">dgp_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_gamma_hurdle_to_dgp_df</span><span class="p">(</span><span class="n">dgp_df</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">degrees_to_dgp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dgp_df</span><span class="p">.</span><span class="n">set_index</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;source_degree&#39;, &#39;target_degree&#39;</span><span class="o">]</span><span class="p">).</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">degrees_to_dgp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dgp_df</span><span class="p">.</span><span class="n">set_index</span><span class="p">(</span><span class="o">[</span><span class="n">&quot;source_degree&quot;, &quot;target_degree&quot;</span><span class="o">]</span><span class="p">).</span><span class="n">to_dict</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">orient</span><span class="o">=</span><span class="ss">&quot;index&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">dwpc_row_generator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">degree_group</span><span class="p">.</span><span class="n">dwpc_to_degrees</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">ignore_zeros</span><span class="o">=</span><span class="n">ignore_zeros</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">ignore_zeros</span><span class="o">=</span><span class="n">ignore_zeros</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">dwpc_row_generator</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">        </span><span class="nf">degrees</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;source_degree&#39;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;target_degree&#39;</span><span class="o">]</span><span class="w"></span>
+<span class="w">        </span><span class="nf">degrees</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&quot;source_degree&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&quot;target_degree&quot;</span><span class="o">]</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">dgp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">degrees_to_dgp</span><span class="o">[</span><span class="n">degrees</span><span class="o">]</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">row</span><span class="p">.</span><span class="k">update</span><span class="p">(</span><span class="n">dgp</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;p_value&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculate_p_value</span><span class="p">(</span><span class="k">row</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">row</span><span class="o">[</span><span class="n">&quot;p_value&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculate_p_value</span><span class="p">(</span><span class="k">row</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;p_value&#39;</span><span class="o">]</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&#39;p_value&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nl">max_p_value</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&quot;p_value&quot;</span><span class="o">]</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">&quot;p_value&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nl">max_p_value</span><span class="p">:</span><span class="w"></span>
 
 <span class="w">            </span><span class="k">continue</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="o">[</span><span class="n">&#39;sum&#39;, &#39;sum_of_squares&#39;, &#39;beta&#39;, &#39;alpha&#39;</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="o">[</span><span class="n">&quot;sum&quot;, &quot;sum_of_squares&quot;, &quot;beta&quot;, &quot;alpha&quot;</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">            </span><span class="n">del</span><span class="w"> </span><span class="k">row</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"></span>
 
@@ -1354,7 +1414,11 @@ write the TSV, enabling using pandas to write a generated rows that are too
 plentiful to fit in memory.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">grouped_tsv_writer</span><span class="p">(</span><span class="n">row_generator</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">group_size</span><span class="o">=</span><span class="mi">20</span><span class="n">_000</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">False</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">grouped_tsv_writer</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">row_generator</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">group_size</span><span class="o">=</span><span class="mi">20</span><span class="n">_000</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">False</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="w"></span>
+
+<span class="p">):</span><span class="w"></span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1374,9 +1438,9 @@ plentiful to fit in memory.</p>
 
 <span class="w">        </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;header&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb nb-Type">bool</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;header&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb nb-Type">bool</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;a&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;w&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;a&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;w&quot;</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
@@ -1411,7 +1475,7 @@ plentiful to fit in memory.</p>
 
 <span class="w">        </span><span class="n">try</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next</span><span class="p">(</span><span class="n">chunk</span><span class="p">),</span><span class="w"></span>
+<span class="w">            </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">next</span><span class="p">(</span><span class="n">chunk</span><span class="p">),)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">except</span><span class="w"> </span><span class="n">StopIteration</span><span class="p">:</span><span class="w"></span>
 
@@ -1444,11 +1508,11 @@ count isn't present in the row</p>
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="s1">&#39;</span><span class="s">path_count</span><span class="s1">&#39;</span> <span class="nv">in</span> <span class="nv">row</span>:
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="s">path_count</span><span class="s2">&quot;</span> <span class="nv">in</span> <span class="nv">row</span>:
 
-        <span class="k">return</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">path_count</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">path_count</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="mi">0</span>
 
-    <span class="k">return</span> <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">dwpc</span><span class="s1">&#39;</span>] <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">dwpc</span><span class="s2">&quot;</span>] <span class="o">==</span> <span class="mi">0</span>
 </code></pre></div>
 
 </details>

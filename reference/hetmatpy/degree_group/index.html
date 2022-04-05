@@ -676,9 +676,9 @@
 
 <span class="kn">import</span> <span class="nn">scipy.sparse</span>
 
-<span class="kn">from</span> <span class="nn">hetmatpy.matrix</span> <span class="kn">import</span> <span class="n">metaedge_to_adjacency_matrix</span>
-
 <span class="kn">import</span> <span class="nn">hetmatpy.degree_weight</span>
+
+<span class="kn">from</span> <span class="nn">hetmatpy.matrix</span> <span class="kn">import</span> <span class="n">metaedge_to_adjacency_matrix</span>
 
 <span class="k">def</span> <span class="nf">degrees_to_degree_to_ind</span><span class="p">(</span><span class="n">degrees</span><span class="p">):</span>
 
@@ -694,9 +694,17 @@
 
     <span class="n">metapath</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">metagraph</span><span class="o">.</span><span class="n">get_metapath</span><span class="p">(</span><span class="n">metapath</span><span class="p">)</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">source_adj_mat</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">source_adj_mat</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">target_adj_mat</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span>
+
+    <span class="p">)</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">target_adj_mat</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span>
+
+        <span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span>
+
+    <span class="p">)</span>
 
     <span class="n">source_degrees</span> <span class="o">=</span> <span class="n">source_adj_mat</span><span class="o">.</span><span class="kp">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="kp">flat</span>
 
@@ -708,7 +716,11 @@
 
     <span class="k">return</span> <span class="n">source_degree_to_ind</span><span class="p">,</span> <span class="n">target_degree_to_ind</span>
 
-<span class="k">def</span> <span class="nf">generate_degree_group_stats</span><span class="p">(</span><span class="n">source_degree_to_ind</span><span class="p">,</span> <span class="n">target_degree_to_ind</span><span class="p">,</span> <span class="kp">matrix</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">generate_degree_group_stats</span><span class="p">(</span>
+
+    <span class="n">source_degree_to_ind</span><span class="p">,</span> <span class="n">target_degree_to_ind</span><span class="p">,</span> <span class="kp">matrix</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="mi">1</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -736,21 +748,21 @@
 
             <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
 
-                <span class="s1">&#39;source_degree&#39;</span><span class="p">:</span> <span class="n">source_degree</span><span class="p">,</span>
+                <span class="s2">&quot;source_degree&quot;</span><span class="p">:</span> <span class="n">source_degree</span><span class="p">,</span>
 
-                <span class="s1">&#39;target_degree&#39;</span><span class="p">:</span> <span class="n">target_degree</span><span class="p">,</span>
+                <span class="s2">&quot;target_degree&quot;</span><span class="p">:</span> <span class="n">target_degree</span><span class="p">,</span>
 
             <span class="p">}</span>
 
-            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">row_inds</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">col_inds</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">row_inds</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">col_inds</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">source_degree</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">target_degree</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
-                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
-                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
-                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sum_of_squares&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sum_of_squares&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
                 <span class="k">yield</span> <span class="n">row</span>
 
@@ -758,27 +770,39 @@
 
             <span class="n">slice_matrix</span> <span class="o">=</span> <span class="n">row_matrix</span><span class="p">[:,</span> <span class="n">col_inds</span><span class="p">]</span>
 
-            <span class="n">values</span> <span class="o">=</span> <span class="n">slice_matrix</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">slice_matrix</span><span class="p">)</span> <span class="k">else</span> <span class="n">slice_matrix</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">(</span>
+
+                <span class="n">slice_matrix</span><span class="o">.</span><span class="n">data</span>
+
+                <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">slice_matrix</span><span class="p">)</span>
+
+                <span class="k">else</span> <span class="n">slice_matrix</span>
+
+            <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
 
                 <span class="n">values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">arcsinh</span><span class="p">(</span><span class="n">values</span> <span class="o">/</span> <span class="n">scaler</span><span class="p">)</span>
 
-            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="kp">sum</span><span class="p">()</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="kp">sum</span><span class="p">()</span>
 
-            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sum_of_squares&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="kp">sum</span><span class="p">()</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sum_of_squares&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="kp">sum</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">slice_matrix</span><span class="p">):</span>
 
-                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">slice_matrix</span><span class="o">.</span><span class="n">nnz</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">slice_matrix</span><span class="o">.</span><span class="n">nnz</span>
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;nnz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">slice_matrix</span><span class="p">)</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">slice_matrix</span><span class="p">)</span>
 
             <span class="k">yield</span> <span class="n">row</span>
 
-<span class="k">def</span> <span class="nf">dwpc_to_degrees</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ignore_zeros</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_redundant</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">dwpc_to_degrees</span><span class="p">(</span>
+
+    <span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ignore_zeros</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_redundant</span><span class="o">=</span><span class="kc">True</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -802,9 +826,17 @@
 
     <span class="n">metapath</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">metagraph</span><span class="o">.</span><span class="n">get_metapath</span><span class="p">(</span><span class="n">metapath</span><span class="p">)</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">source_adj_mat</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">source_adj_mat</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">target_adj_mat</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span>
+
+    <span class="p">)</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">target_adj_mat</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span>
+
+        <span class="n">graph</span><span class="p">,</span> <span class="n">metapath</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span>
+
+    <span class="p">)</span>
 
     <span class="n">source_degrees</span> <span class="o">=</span> <span class="n">source_adj_mat</span><span class="o">.</span><span class="kp">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="kp">flat</span>
 
@@ -812,19 +844,23 @@
 
     <span class="k">del</span> <span class="n">source_adj_mat</span><span class="p">,</span> <span class="n">target_adj_mat</span>
 
-    <span class="n">source_path</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metapath</span><span class="o">.</span><span class="kp">source</span><span class="p">(),</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">)</span>
+    <span class="n">source_path</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metapath</span><span class="o">.</span><span class="kp">source</span><span class="p">(),</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;tsv&quot;</span><span class="p">)</span>
 
-    <span class="n">source_node_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">source_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">source_node_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">source_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="n">source_node_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">source_node_df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+    <span class="n">source_node_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">source_node_df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
-    <span class="n">target_path</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metapath</span><span class="o">.</span><span class="n">target</span><span class="p">(),</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">)</span>
+    <span class="n">target_path</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metapath</span><span class="o">.</span><span class="n">target</span><span class="p">(),</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;tsv&quot;</span><span class="p">)</span>
 
-    <span class="n">target_node_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">target_node_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="n">target_node_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">target_node_df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+    <span class="n">target_node_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">target_node_df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
-    <span class="n">row_names</span><span class="p">,</span> <span class="n">col_names</span><span class="p">,</span> <span class="n">dwpc_matrix</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span> <span class="s1">&#39;dwpc&#39;</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
+    <span class="n">row_names</span><span class="p">,</span> <span class="n">col_names</span><span class="p">,</span> <span class="n">dwpc_matrix</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">read_path_counts</span><span class="p">(</span>
+
+        <span class="n">metapath</span><span class="p">,</span> <span class="s2">&quot;dwpc&quot;</span><span class="p">,</span> <span class="n">damping</span>
+
+    <span class="p">)</span>
 
     <span class="n">dwpc_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">arcsinh</span><span class="p">(</span><span class="n">dwpc_matrix</span> <span class="o">/</span> <span class="n">dwpc_matrix</span><span class="o">.</span><span class="kp">mean</span><span class="p">())</span>
 
@@ -832,7 +868,7 @@
 
         <span class="n">dwpc_matrix</span> <span class="o">=</span> <span class="n">dwpc_matrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">path_count</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span> <span class="s1">&#39;dwpc&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">path_count</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span> <span class="s2">&quot;dwpc&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">path_count</span><span class="p">):</span>
 
@@ -856,21 +892,21 @@
 
         <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
 
-            <span class="s1">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">row_names</span><span class="p">[</span><span class="n">row_ind</span><span class="p">],</span>
+            <span class="s2">&quot;source_id&quot;</span><span class="p">:</span> <span class="n">row_names</span><span class="p">[</span><span class="n">row_ind</span><span class="p">],</span>
 
-            <span class="s1">&#39;target_id&#39;</span><span class="p">:</span> <span class="n">col_names</span><span class="p">[</span><span class="n">col_ind</span><span class="p">],</span>
+            <span class="s2">&quot;target_id&quot;</span><span class="p">:</span> <span class="n">col_names</span><span class="p">[</span><span class="n">col_ind</span><span class="p">],</span>
 
-            <span class="s1">&#39;source_name&#39;</span><span class="p">:</span> <span class="n">source_node_names</span><span class="p">[</span><span class="n">row_ind</span><span class="p">],</span>
+            <span class="s2">&quot;source_name&quot;</span><span class="p">:</span> <span class="n">source_node_names</span><span class="p">[</span><span class="n">row_ind</span><span class="p">],</span>
 
-            <span class="s1">&#39;target_name&#39;</span><span class="p">:</span> <span class="n">target_node_names</span><span class="p">[</span><span class="n">col_ind</span><span class="p">],</span>
+            <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="n">target_node_names</span><span class="p">[</span><span class="n">col_ind</span><span class="p">],</span>
 
-            <span class="s1">&#39;source_degree&#39;</span><span class="p">:</span> <span class="n">source_degrees</span><span class="p">[</span><span class="n">row_ind</span><span class="p">],</span>
+            <span class="s2">&quot;source_degree&quot;</span><span class="p">:</span> <span class="n">source_degrees</span><span class="p">[</span><span class="n">row_ind</span><span class="p">],</span>
 
-            <span class="s1">&#39;target_degree&#39;</span><span class="p">:</span> <span class="n">target_degrees</span><span class="p">[</span><span class="n">col_ind</span><span class="p">],</span>
+            <span class="s2">&quot;target_degree&quot;</span><span class="p">:</span> <span class="n">target_degrees</span><span class="p">[</span><span class="n">col_ind</span><span class="p">],</span>
 
-            <span class="s1">&#39;path_count&#39;</span><span class="p">:</span> <span class="n">path_count</span><span class="p">[</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">],</span>
+            <span class="s2">&quot;path_count&quot;</span><span class="p">:</span> <span class="n">path_count</span><span class="p">[</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">],</span>
 
-            <span class="s1">&#39;dwpc&#39;</span><span class="p">:</span> <span class="n">dwpc_value</span><span class="p">,</span>
+            <span class="s2">&quot;dwpc&quot;</span><span class="p">:</span> <span class="n">dwpc_value</span><span class="p">,</span>
 
         <span class="p">}</span>
 
@@ -886,19 +922,31 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="kp">matrix</span> <span class="o">=</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">degree_weight</span><span class="o">.</span><span class="n">dwpc</span><span class="p">(</span><span class="n">permuted_hetmat</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="kp">matrix</span> <span class="o">=</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">degree_weight</span><span class="o">.</span><span class="n">dwpc</span><span class="p">(</span>
 
-    <span class="n">source_deg_to_ind</span><span class="p">,</span> <span class="n">target_deg_to_ind</span> <span class="o">=</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">degree_group</span><span class="o">.</span><span class="n">metapath_to_degree_dicts</span><span class="p">(</span><span class="n">permuted_hetmat</span><span class="p">,</span> <span class="n">metapath</span><span class="p">)</span>
+        <span class="n">permuted_hetmat</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span>
+
+    <span class="p">)</span>
+
+    <span class="p">(</span>
+
+        <span class="n">source_deg_to_ind</span><span class="p">,</span>
+
+        <span class="n">target_deg_to_ind</span><span class="p">,</span>
+
+    <span class="p">)</span> <span class="o">=</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">degree_group</span><span class="o">.</span><span class="n">metapath_to_degree_dicts</span><span class="p">(</span><span class="n">permuted_hetmat</span><span class="p">,</span> <span class="n">metapath</span><span class="p">)</span>
 
     <span class="n">row_generator</span> <span class="o">=</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="n">degree_group</span><span class="o">.</span><span class="n">generate_degree_group_stats</span><span class="p">(</span>
 
-        <span class="n">source_deg_to_ind</span><span class="p">,</span> <span class="n">target_deg_to_ind</span><span class="p">,</span> <span class="kp">matrix</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="n">dwpc_mean</span><span class="p">)</span>
+        <span class="n">source_deg_to_ind</span><span class="p">,</span> <span class="n">target_deg_to_ind</span><span class="p">,</span> <span class="kp">matrix</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="n">dwpc_mean</span>
+
+    <span class="p">)</span>
 
     <span class="n">degree_grouped_df</span> <span class="o">=</span> <span class="p">(</span>
 
         <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">row_generator</span><span class="p">)</span>
 
-        <span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;source_degree&#39;</span><span class="p">,</span> <span class="s1">&#39;target_degree&#39;</span><span class="p">])</span>
+        <span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;source_degree&quot;</span><span class="p">,</span> <span class="s2">&quot;target_degree&quot;</span><span class="p">])</span>
 
         <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">n_perms</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -974,7 +1022,11 @@
 </table>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">dwpc_to_degrees</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">ignore_zeros</span><span class="o">=</span><span class="k">False</span><span class="p">,</span><span class="w"> </span><span class="n">ignore_redundant</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">dwpc_to_degrees</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">ignore_zeros</span><span class="o">=</span><span class="k">False</span><span class="p">,</span><span class="w"> </span><span class="n">ignore_redundant</span><span class="o">=</span><span class="k">True</span><span class="w"></span>
+
+<span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -998,9 +1050,17 @@
 
 <span class="w">    </span><span class="n">metapath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">metagraph</span><span class="p">.</span><span class="n">get_metapath</span><span class="p">(</span><span class="n">metapath</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">source_adj_mat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">source_adj_mat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">target_adj_mat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="o">[</span><span class="n">-1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">target_adj_mat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="o">[</span><span class="n">-1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">source_degrees</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">source_adj_mat</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="n">flat</span><span class="w"></span>
 
@@ -1008,19 +1068,23 @@
 
 <span class="w">    </span><span class="n">del</span><span class="w"> </span><span class="n">source_adj_mat</span><span class="p">,</span><span class="w"> </span><span class="n">target_adj_mat</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">source_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">source</span><span class="p">(),</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">source_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">source</span><span class="p">(),</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="ss">&quot;tsv&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">source_node_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">source_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\t&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">source_node_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">source_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="ss">&quot;\t&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">source_node_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">source_node_df</span><span class="o">[</span><span class="n">&#39;name&#39;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">source_node_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">source_node_df</span><span class="o">[</span><span class="n">&quot;name&quot;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">target_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">target</span><span class="p">(),</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">target_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metapath</span><span class="p">.</span><span class="n">target</span><span class="p">(),</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="ss">&quot;tsv&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">target_node_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\t&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">target_node_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="ss">&quot;\t&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">target_node_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">target_node_df</span><span class="o">[</span><span class="n">&#39;name&#39;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">target_node_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">target_node_df</span><span class="o">[</span><span class="n">&quot;name&quot;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">row_names</span><span class="p">,</span><span class="w"> </span><span class="n">col_names</span><span class="p">,</span><span class="w"> </span><span class="n">dwpc_matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dwpc&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">row_names</span><span class="p">,</span><span class="w"> </span><span class="n">col_names</span><span class="p">,</span><span class="w"> </span><span class="n">dwpc_matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;dwpc&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">dwpc_matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numpy</span><span class="p">.</span><span class="n">arcsinh</span><span class="p">(</span><span class="n">dwpc_matrix</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">dwpc_matrix</span><span class="p">.</span><span class="n">mean</span><span class="p">())</span><span class="w"></span>
 
@@ -1028,7 +1092,7 @@
 
 <span class="w">        </span><span class="n">dwpc_matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dwpc_matrix</span><span class="p">.</span><span class="n">toarray</span><span class="p">()</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">path_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dwpc&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">path_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="n">read_path_counts</span><span class="p">(</span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;dwpc&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">path_count</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
@@ -1052,21 +1116,21 @@
 
 <span class="w">        </span><span class="k">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;source_id&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">row_names</span><span class="o">[</span><span class="n">row_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;source_id&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">row_names</span><span class="o">[</span><span class="n">row_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;target_id&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">col_names</span><span class="o">[</span><span class="n">col_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;target_id&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">col_names</span><span class="o">[</span><span class="n">col_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;source_name&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">source_node_names</span><span class="o">[</span><span class="n">row_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;source_name&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">source_node_names</span><span class="o">[</span><span class="n">row_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;target_name&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">target_node_names</span><span class="o">[</span><span class="n">col_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;target_name&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">target_node_names</span><span class="o">[</span><span class="n">col_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;source_degree&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">source_degrees</span><span class="o">[</span><span class="n">row_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;source_degree&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">source_degrees</span><span class="o">[</span><span class="n">row_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;target_degree&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">target_degrees</span><span class="o">[</span><span class="n">col_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;target_degree&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">target_degrees</span><span class="o">[</span><span class="n">col_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;path_count&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">path_count</span><span class="o">[</span><span class="n">row_ind, col_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;path_count&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">path_count</span><span class="o">[</span><span class="n">row_ind, col_ind</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;dwpc&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">dwpc_value</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;dwpc&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">dwpc_value</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">        </span><span class="err">}</span><span class="w"></span>
 
@@ -1087,7 +1151,11 @@
 <p>Yield dictionaries with degree grouped stats</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">generate_degree_group_stats</span><span class="ss">(</span><span class="nv">source_degree_to_ind</span>, <span class="nv">target_degree_to_ind</span>, <span class="nv">matrix</span>, <span class="nv">scale</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">scaler</span><span class="o">=</span><span class="mi">1</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">generate_degree_group_stats</span><span class="ss">(</span>
+
+    <span class="nv">source_degree_to_ind</span>, <span class="nv">target_degree_to_ind</span>, <span class="nv">matrix</span>, <span class="nv">scale</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">scaler</span><span class="o">=</span><span class="mi">1</span>
+
+<span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1115,21 +1183,21 @@
 
             <span class="nv">row</span> <span class="o">=</span> {
 
-                <span class="s1">&#39;</span><span class="s">source_degree</span><span class="s1">&#39;</span>: <span class="nv">source_degree</span>,
+                <span class="s2">&quot;</span><span class="s">source_degree</span><span class="s2">&quot;</span>: <span class="nv">source_degree</span>,
 
-                <span class="s1">&#39;</span><span class="s">target_degree</span><span class="s1">&#39;</span>: <span class="nv">target_degree</span>,
+                <span class="s2">&quot;</span><span class="s">target_degree</span><span class="s2">&quot;</span>: <span class="nv">target_degree</span>,
 
             }
 
-            <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">n</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">row_inds</span><span class="ss">)</span> <span class="o">*</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">col_inds</span><span class="ss">)</span>
+            <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">n</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">row_inds</span><span class="ss">)</span> <span class="o">*</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">col_inds</span><span class="ss">)</span>
 
             <span class="k">if</span> <span class="nv">source_degree</span> <span class="o">==</span> <span class="mi">0</span> <span class="nv">or</span> <span class="nv">target_degree</span> <span class="o">==</span> <span class="mi">0</span>:
 
-                <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">sum</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="mi">0</span>
+                <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">sum</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="mi">0</span>
 
-                <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="mi">0</span>
+                <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="mi">0</span>
 
-                <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">sum_of_squares</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="mi">0</span>
+                <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">sum_of_squares</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="mi">0</span>
 
                 <span class="nv">yield</span> <span class="nv">row</span>
 
@@ -1137,23 +1205,31 @@
 
             <span class="nv">slice_matrix</span> <span class="o">=</span> <span class="nv">row_matrix</span>[:, <span class="nv">col_inds</span>]
 
-            <span class="nv">values</span> <span class="o">=</span> <span class="nv">slice_matrix</span>.<span class="nv">data</span> <span class="k">if</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">issparse</span><span class="ss">(</span><span class="nv">slice_matrix</span><span class="ss">)</span> <span class="k">else</span> <span class="nv">slice_matrix</span>
+            <span class="nv">values</span> <span class="o">=</span> <span class="ss">(</span>
+
+                <span class="nv">slice_matrix</span>.<span class="nv">data</span>
+
+                <span class="k">if</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">issparse</span><span class="ss">(</span><span class="nv">slice_matrix</span><span class="ss">)</span>
+
+                <span class="k">else</span> <span class="nv">slice_matrix</span>
+
+            <span class="ss">)</span>
 
             <span class="k">if</span> <span class="nv">scale</span>:
 
                 <span class="nv">values</span> <span class="o">=</span> <span class="nv">numpy</span>.<span class="nv">arcsinh</span><span class="ss">(</span><span class="nv">values</span> <span class="o">/</span> <span class="nv">scaler</span><span class="ss">)</span>
 
-            <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">sum</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">values</span>.<span class="nv">sum</span><span class="ss">()</span>
+            <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">sum</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">values</span>.<span class="nv">sum</span><span class="ss">()</span>
 
-            <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">sum_of_squares</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="ss">(</span><span class="nv">values</span> <span class="o">**</span> <span class="mi">2</span><span class="ss">)</span>.<span class="nv">sum</span><span class="ss">()</span>
+            <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">sum_of_squares</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="ss">(</span><span class="nv">values</span><span class="o">**</span><span class="mi">2</span><span class="ss">)</span>.<span class="nv">sum</span><span class="ss">()</span>
 
             <span class="k">if</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">issparse</span><span class="ss">(</span><span class="nv">slice_matrix</span><span class="ss">)</span>:
 
-                <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">slice_matrix</span>.<span class="nv">nnz</span>
+                <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">slice_matrix</span>.<span class="nv">nnz</span>
 
             <span class="k">else</span>:
 
-                <span class="nv">row</span>[<span class="s1">&#39;</span><span class="s">nnz</span><span class="s1">&#39;</span>] <span class="o">=</span> <span class="nv">numpy</span>.<span class="nv">count_nonzero</span><span class="ss">(</span><span class="nv">slice_matrix</span><span class="ss">)</span>
+                <span class="nv">row</span>[<span class="s2">&quot;</span><span class="s">nnz</span><span class="s2">&quot;</span>] <span class="o">=</span> <span class="nv">numpy</span>.<span class="nv">count_nonzero</span><span class="ss">(</span><span class="nv">slice_matrix</span><span class="ss">)</span>
 
             <span class="nv">yield</span> <span class="nv">row</span>
 </code></pre></div>
@@ -1172,9 +1248,17 @@
 
     <span class="nv">metapath</span> <span class="o">=</span> <span class="nv">graph</span>.<span class="nv">metagraph</span>.<span class="nv">get_metapath</span><span class="ss">(</span><span class="nv">metapath</span><span class="ss">)</span>
 
-    <span class="nv">_</span>, <span class="nv">_</span>, <span class="nv">source_adj_mat</span> <span class="o">=</span> <span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span><span class="nv">graph</span>, <span class="nv">metapath</span>[<span class="mi">0</span>], <span class="nv">dense_threshold</span><span class="o">=</span><span class="mi">0</span>.<span class="mi">7</span><span class="ss">)</span>
+    <span class="nv">_</span>, <span class="nv">_</span>, <span class="nv">source_adj_mat</span> <span class="o">=</span> <span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span>
 
-    <span class="nv">_</span>, <span class="nv">_</span>, <span class="nv">target_adj_mat</span> <span class="o">=</span> <span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span><span class="nv">graph</span>, <span class="nv">metapath</span>[<span class="o">-</span><span class="mi">1</span>], <span class="nv">dense_threshold</span><span class="o">=</span><span class="mi">0</span>.<span class="mi">7</span><span class="ss">)</span>
+        <span class="nv">graph</span>, <span class="nv">metapath</span>[<span class="mi">0</span>], <span class="nv">dense_threshold</span><span class="o">=</span><span class="mi">0</span>.<span class="mi">7</span>
+
+    <span class="ss">)</span>
+
+    <span class="nv">_</span>, <span class="nv">_</span>, <span class="nv">target_adj_mat</span> <span class="o">=</span> <span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span>
+
+        <span class="nv">graph</span>, <span class="nv">metapath</span>[<span class="o">-</span><span class="mi">1</span>], <span class="nv">dense_threshold</span><span class="o">=</span><span class="mi">0</span>.<span class="mi">7</span>
+
+    <span class="ss">)</span>
 
     <span class="nv">source_degrees</span> <span class="o">=</span> <span class="nv">source_adj_mat</span>.<span class="nv">sum</span><span class="ss">(</span><span class="nv">axis</span><span class="o">=</span><span class="mi">1</span><span class="ss">)</span>.<span class="nv">flat</span>
 
@@ -1211,19 +1295,31 @@
 
 <span class="w">    </span><span class="s">&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">degree_weight</span><span class="p">.</span><span class="n">dwpc</span><span class="p">(</span><span class="n">permuted_hetmat</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">degree_weight</span><span class="p">.</span><span class="n">dwpc</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">source_deg_to_ind</span><span class="p">,</span><span class="w"> </span><span class="n">target_deg_to_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">degree_group</span><span class="p">.</span><span class="n">metapath_to_degree_dicts</span><span class="p">(</span><span class="n">permuted_hetmat</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">permuted_hetmat</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">source_deg_to_ind</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">target_deg_to_ind</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">degree_group</span><span class="p">.</span><span class="n">metapath_to_degree_dicts</span><span class="p">(</span><span class="n">permuted_hetmat</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">row_generator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">degree_group</span><span class="p">.</span><span class="n">generate_degree_group_stats</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">source_deg_to_ind</span><span class="p">,</span><span class="w"> </span><span class="n">target_deg_to_ind</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">scale</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"> </span><span class="n">scaler</span><span class="o">=</span><span class="n">dwpc_mean</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">source_deg_to_ind</span><span class="p">,</span><span class="w"> </span><span class="n">target_deg_to_ind</span><span class="p">,</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">scale</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"> </span><span class="n">scaler</span><span class="o">=</span><span class="n">dwpc_mean</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">degree_grouped_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">pandas</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">row_generator</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="p">.</span><span class="n">set_index</span><span class="p">([&#39;</span><span class="n">source_degree</span><span class="p">&#39;,</span><span class="w"> </span><span class="p">&#39;</span><span class="n">target_degree</span><span class="p">&#39;])</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">set_index</span><span class="p">([</span><span class="s">&quot;source_degree&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;target_degree&quot;</span><span class="p">])</span><span class="w"></span>
 
 <span class="w">        </span><span class="p">.</span><span class="k">assign</span><span class="p">(</span><span class="n">n_perms</span><span class="o">=</span><span class="mh">1</span><span class="p">)</span><span class="w"></span>
 

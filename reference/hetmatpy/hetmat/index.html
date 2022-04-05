@@ -1002,7 +1002,11 @@
 
 <span class="kn">import</span> <span class="nn">hetmatpy.matrix</span>
 
-<span class="k">def</span> <span class="nf">hetmat_from_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">save_metagraph</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">hetmat_from_graph</span><span class="p">(</span>
+
+    <span class="n">graph</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">save_metagraph</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_edges</span><span class="o">=</span><span class="kc">True</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1032,11 +1036,11 @@
 
             <span class="n">rows</span><span class="o">.</span><span class="kp">append</span><span class="p">((</span><span class="n">position</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
 
-        <span class="n">node_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="s1">&#39;identifier&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+        <span class="n">node_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">,</span> <span class="s2">&quot;identifier&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">hetmat</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metanode</span><span class="p">)</span>
 
-        <span class="n">node_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">node_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Save metaedges</span>
 
@@ -1044,7 +1048,11 @@
 
     <span class="k">for</span> <span class="n">metaedge</span> <span class="ow">in</span> <span class="n">metaedges</span><span class="p">:</span>
 
-        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="kp">matrix</span> <span class="o">=</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">metaedge</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="kp">matrix</span> <span class="o">=</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span>
+
+            <span class="n">graph</span><span class="p">,</span> <span class="n">metaedge</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mi">1</span>
+
+        <span class="p">)</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">hetmat</span><span class="o">.</span><span class="n">get_edges_path</span><span class="p">(</span><span class="n">metaedge</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
@@ -1066,7 +1074,15 @@
 
     <span class="n">permuted_hetmat</span> <span class="o">=</span> <span class="n">hetmat_from_graph</span><span class="p">(</span>
 
-        <span class="n">permuted_graph</span><span class="p">,</span> <span class="n">permuted_hetmat</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">save_metagraph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_nodes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">permuted_graph</span><span class="p">,</span>
+
+        <span class="n">permuted_hetmat</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+
+        <span class="n">save_metagraph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+        <span class="n">save_nodes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">permuted_hetmat</span>
 
@@ -1096,13 +1112,13 @@
 
         <span class="n">hetmat</span><span class="o">.</span><span class="n">permutations_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
 
-    <span class="n">directory</span> <span class="o">=</span> <span class="n">hetmat</span><span class="o">.</span><span class="n">permutations_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">permutation_id</span><span class="si">}</span><span class="s1">.hetmat&#39;</span><span class="p">)</span>
+    <span class="n">directory</span> <span class="o">=</span> <span class="n">hetmat</span><span class="o">.</span><span class="n">permutations_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">permutation_id</span><span class="si">}</span><span class="s2">.hetmat&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
         <span class="c1"># If directory exists, back it up using a .bak extension</span>
 
-        <span class="n">backup_directory</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">directory</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.bak&#39;</span><span class="p">)</span>
+        <span class="n">backup_directory</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">directory</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.bak&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">backup_directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
@@ -1114,45 +1130,45 @@
 
     <span class="n">permuted_hetmat</span><span class="o">.</span><span class="n">is_permutation</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="n">permuted_hetmat</span><span class="o">.</span><span class="n">metagraph_path</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="s1">&#39;../../metagraph.json&#39;</span><span class="p">)</span>
+    <span class="n">permuted_hetmat</span><span class="o">.</span><span class="n">metagraph_path</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="s2">&quot;../../metagraph.json&quot;</span><span class="p">)</span>
 
     <span class="n">permuted_hetmat</span><span class="o">.</span><span class="n">nodes_directory</span><span class="o">.</span><span class="n">rmdir</span><span class="p">()</span>
 
-    <span class="n">permuted_hetmat</span><span class="o">.</span><span class="n">nodes_directory</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="s1">&#39;../../nodes&#39;</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">permuted_hetmat</span><span class="o">.</span><span class="n">nodes_directory</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="s2">&quot;../../nodes&quot;</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">permuted_hetmat</span>
 
-<span class="k">def</span> <span class="nf">read_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;infer&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">read_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;infer&quot;</span><span class="p">):</span>
 
     <span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">file_format</span> <span class="o">==</span> <span class="s1">&#39;infer&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">file_format</span> <span class="o">==</span> <span class="s2">&quot;infer&quot;</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.sparse.npz&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.sparse.npz&quot;</span><span class="p">):</span>
 
-            <span class="n">file_format</span> <span class="o">=</span> <span class="s1">&#39;sparse.npz&#39;</span>
+            <span class="n">file_format</span> <span class="o">=</span> <span class="s2">&quot;sparse.npz&quot;</span>
 
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.npy&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">):</span>
 
-            <span class="n">file_format</span> <span class="o">=</span> <span class="s1">&#39;npy&#39;</span>
+            <span class="n">file_format</span> <span class="o">=</span> <span class="s2">&quot;npy&quot;</span>
 
-    <span class="k">if</span> <span class="n">file_format</span> <span class="o">==</span> <span class="s1">&#39;infer&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">file_format</span> <span class="o">==</span> <span class="s2">&quot;infer&quot;</span><span class="p">:</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Could not infer file_format for </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Could not infer file_format for </span><span class="si">{path}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">file_format</span> <span class="o">==</span> <span class="s1">&#39;sparse.npz&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">file_format</span> <span class="o">==</span> <span class="s2">&quot;sparse.npz&quot;</span><span class="p">:</span>
 
         <span class="c1"># https://docs.scipy.org/doc/scipy-1.0.0/reference/generated/scipy.sparse.load_npz.html</span>
 
         <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">load_npz</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">file_format</span> <span class="o">==</span> <span class="s1">&#39;npy&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">file_format</span> <span class="o">==</span> <span class="s2">&quot;npy&quot;</span><span class="p">:</span>
 
         <span class="c1"># https://docs.scipy.org/doc/numpy-1.14.0/reference/generated/numpy.load.html</span>
 
         <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;file_format=</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s1"> is not supported.&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;file_format=</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">save_matrix</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
 
@@ -1174,17 +1190,17 @@
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.npy&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">):</span>
 
-            <span class="n">path</span> <span class="o">+=</span> <span class="s1">&#39;.npy&#39;</span>
+            <span class="n">path</span> <span class="o">+=</span> <span class="s2">&quot;.npy&quot;</span>
 
         <span class="n">numpy</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="kp">matrix</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="kp">matrix</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.sparse.npz&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.sparse.npz&quot;</span><span class="p">):</span>
 
-            <span class="n">path</span> <span class="o">+=</span> <span class="s1">&#39;.sparse.npz&#39;</span>
+            <span class="n">path</span> <span class="o">+=</span> <span class="s2">&quot;.sparse.npz&quot;</span>
 
         <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">save_npz</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="kp">matrix</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -1216,7 +1232,7 @@
 
     <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">:</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span>
 
         <span class="n">paths</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
 
@@ -1224,9 +1240,9 @@
 
             <span class="k">continue</span>
 
-        <span class="kp">transpose</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transpose&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="kp">transpose</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;transpose&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">file_format</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_format&#39;</span><span class="p">,</span> <span class="s1">&#39;infer&#39;</span><span class="p">)</span>
+        <span class="n">file_format</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_format&quot;</span><span class="p">,</span> <span class="s2">&quot;infer&quot;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
 
@@ -1234,13 +1250,13 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error reading matrix at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading matrix at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">delete_failures</span><span class="p">:</span>
 
                 <span class="n">path</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
 
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deleting file at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleting file at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="k">continue</span>
 
@@ -1252,21 +1268,21 @@
 
     <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
 
-        <span class="s1">&#39;No matrix files found at the specified paths:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+        <span class="s2">&quot;No matrix files found at the specified paths:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
 
-        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paths</span><span class="p">))</span>
+    <span class="p">)</span>
 
 <span class="n">compression_extension</span> <span class="o">=</span> <span class="p">{</span>
 
-    <span class="s1">&#39;gzip&#39;</span><span class="p">:</span> <span class="s1">&#39;.gz&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;gzip&quot;</span><span class="p">:</span> <span class="s2">&quot;.gz&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;bz2&#39;</span><span class="p">:</span> <span class="s1">&#39;.bz2&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;bz2&quot;</span><span class="p">:</span> <span class="s2">&quot;.bz2&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;zip&#39;</span><span class="p">:</span> <span class="s1">&#39;.zip&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;zip&quot;</span><span class="p">:</span> <span class="s2">&quot;.zip&quot;</span><span class="p">,</span>
 
-    <span class="s1">&#39;xz&#39;</span><span class="p">:</span> <span class="s1">&#39;.xz&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;xz&quot;</span><span class="p">:</span> <span class="s2">&quot;.xz&quot;</span><span class="p">,</span>
 
-    <span class="kc">None</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="kc">None</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
 
 <span class="p">}</span>
 
@@ -1276,7 +1292,7 @@
 
     <span class="n">nodes_formats</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="s1">&#39;tsv&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;tsv&quot;</span><span class="p">,</span>
 
         <span class="c1"># &#39;feather&#39;,</span>
 
@@ -1290,9 +1306,9 @@
 
     <span class="n">edges_formats</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="s1">&#39;npy&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;npy&quot;</span><span class="p">,</span>
 
-        <span class="s1">&#39;sparse.npz&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;sparse.npz&quot;</span><span class="p">,</span>
 
         <span class="c1"># &#39;tsv&#39;,</span>
 
@@ -1308,13 +1324,13 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">metagraph_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;metagraph.json&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metagraph_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;metagraph.json&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">nodes_directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;nodes&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes_directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;nodes&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">edges_directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;edges&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edges_directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;edges&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">path_counts_directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;path-counts&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_counts_directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;path-counts&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">path_counts_cache</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1322,7 +1338,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">is_permutation</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">permutations_directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;permutations&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">permutations_directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;permutations&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">initialize</span><span class="p">:</span>
 
@@ -1374,7 +1390,7 @@
 
         <span class="n">permutations</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">permutations_directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.hetmat&#39;</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">permutations_directory</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.hetmat&quot;</span><span class="p">)):</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
 
@@ -1384,15 +1400,27 @@
 
             <span class="kp">permutation</span><span class="o">.</span><span class="n">is_permutation</span> <span class="o">=</span> <span class="kc">True</span>
 
-            <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
             <span class="n">permutations</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="kp">permutation</span>
 
         <span class="k">return</span> <span class="n">permutations</span>
 
-    <span class="k">def</span> <span class="nf">permute_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_new_permutations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">namer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">permute_graph</span><span class="p">(</span>
 
-                      <span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="kp">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">,</span>
+
+        <span class="n">num_new_permutations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+        <span class="n">namer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+        <span class="n">start_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+        <span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+
+        <span class="kp">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+
+    <span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1432,7 +1460,7 @@
 
             <span class="c1"># If no namer given, continue increasing names by one for new permutations</span>
 
-            <span class="n">namer</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s1">03</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">namer</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">03</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
         <span class="n">stat_dfs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
@@ -1458,15 +1486,23 @@
 
                 <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">original_matrix</span> <span class="o">=</span> <span class="n">start_from</span><span class="o">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span>
 
-                    <span class="n">metaedge</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">metaedge</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="mi">1</span>
 
-                <span class="n">is_directed</span> <span class="o">=</span> <span class="n">metaedge</span><span class="o">.</span><span class="n">direction</span> <span class="o">!=</span> <span class="s1">&#39;both&#39;</span>
+                <span class="p">)</span>
+
+                <span class="n">is_directed</span> <span class="o">=</span> <span class="n">metaedge</span><span class="o">.</span><span class="n">direction</span> <span class="o">!=</span> <span class="s2">&quot;both&quot;</span>
 
                 <span class="n">permuted_matrix</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">hetmatpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">permute_matrix</span><span class="p">(</span>
 
-                    <span class="n">original_matrix</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="n">is_directed</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span>
+                    <span class="n">original_matrix</span><span class="p">,</span>
 
-                    <span class="kp">seed</span><span class="o">=</span><span class="kp">seed</span><span class="p">)</span>
+                    <span class="n">directed</span><span class="o">=</span><span class="n">is_directed</span><span class="p">,</span>
+
+                    <span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span>
+
+                    <span class="kp">seed</span><span class="o">=</span><span class="kp">seed</span><span class="p">,</span>
+
+                <span class="p">)</span>
 
                 <span class="n">path</span> <span class="o">=</span> <span class="n">new_hetmat</span><span class="o">.</span><span class="n">get_edges_path</span><span class="p">(</span><span class="n">metaedge</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
@@ -1474,11 +1510,11 @@
 
                 <span class="n">stat_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
 
-                <span class="n">stat_df</span><span class="p">[</span><span class="s1">&#39;metaedge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metaedge</span>
+                <span class="n">stat_df</span><span class="p">[</span><span class="s2">&quot;metaedge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metaedge</span>
 
-                <span class="n">stat_df</span><span class="p">[</span><span class="s1">&#39;abbrev&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metaedge</span><span class="o">.</span><span class="n">get_abbrev</span><span class="p">()</span>
+                <span class="n">stat_df</span><span class="p">[</span><span class="s2">&quot;abbrev&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metaedge</span><span class="o">.</span><span class="n">get_abbrev</span><span class="p">()</span>
 
-                <span class="n">stat_df</span><span class="p">[</span><span class="s1">&#39;permutation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">permutation_name</span>
+                <span class="n">stat_df</span><span class="p">[</span><span class="s2">&quot;permutation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">permutation_name</span>
 
                 <span class="n">stat_dfs</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="n">stat_df</span><span class="p">)</span>
 
@@ -1524,7 +1560,7 @@
 
         <span class="n">hetnetpy</span><span class="o">.</span><span class="n">readwrite</span><span class="o">.</span><span class="n">write_metagraph</span><span class="p">(</span><span class="n">metagraph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metagraph_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_nodes_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metanode</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_nodes_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metanode</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;tsv&quot;</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1536,15 +1572,15 @@
 
         <span class="n">metanode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metagraph</span><span class="o">.</span><span class="n">get_metanode</span><span class="p">(</span><span class="n">metanode</span><span class="p">)</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">metanode</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metanode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">file_format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">path</span>
 
-    <span class="k">def</span> <span class="nf">get_edges_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metaedge</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;npy&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_edges_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metaedge</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;npy&quot;</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1556,11 +1592,11 @@
 
         <span class="n">metaedge_abbrev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metagraph</span><span class="o">.</span><span class="n">get_metaedge</span><span class="p">(</span><span class="n">metaedge</span><span class="p">)</span><span class="o">.</span><span class="n">get_abbrev</span><span class="p">()</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">metaedge_abbrev</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metaedge_abbrev</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">file_format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">path</span>
 
@@ -1576,15 +1612,19 @@
 
         <span class="n">damping</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">damping</span><span class="p">)</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_counts_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">damping</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">metapath</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_counts_directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">damping</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">metapath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">file_format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">path</span>
 
-    <span class="k">def</span> <span class="nf">get_running_degree_group_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv.gz&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_running_degree_group_path</span><span class="p">(</span>
+
+        <span class="bp">self</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv.gz&quot;</span>
+
+    <span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1598,9 +1638,15 @@
 
         <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
 
-            <span class="s1">&#39;adjusted-path-counts&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">damping</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;adjusted-path-counts&quot;</span><span class="p">,</span>
 
-            <span class="s1">&#39;degree-grouped-permutations&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">metapath</span><span class="si">}{</span><span class="n">extension</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">damping</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;degree-grouped-permutations&quot;</span><span class="p">,</span>
+
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metapath</span><span class="si">}{</span><span class="n">extension</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">path</span>
 
@@ -1610,9 +1656,17 @@
 
         <span class="n">compr</span> <span class="o">=</span> <span class="n">compression_extension</span><span class="p">[</span><span class="n">compression</span><span class="p">]</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;adjusted-path-counts&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">damping</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
 
-                                       <span class="s1">&#39;adjusted-dwpcs&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">metapath</span><span class="si">}</span><span class="s1">.tsv</span><span class="si">{</span><span class="n">compr</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="s2">&quot;adjusted-path-counts&quot;</span><span class="p">,</span>
+
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">damping</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+            <span class="s2">&quot;adjusted-dwpcs&quot;</span><span class="p">,</span>
+
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metapath</span><span class="si">}</span><span class="s2">.tsv</span><span class="si">{</span><span class="n">compr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">path</span>
 
@@ -1626,11 +1680,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metanode</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metanode</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;tsv&quot;</span><span class="p">)</span>
 
-        <span class="n">node_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">node_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">node_df</span><span class="p">[</span><span class="s1">&#39;identifier&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">node_df</span><span class="p">[</span><span class="s2">&quot;identifier&quot;</span><span class="p">])</span>
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
 
@@ -1642,11 +1696,17 @@
 
     <span class="k">def</span> <span class="nf">metaedge_to_adjacency_matrix</span><span class="p">(</span>
 
-            <span class="bp">self</span><span class="p">,</span> <span class="n">metaedge</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
 
-            <span class="kp">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">metaedge</span><span class="p">,</span>
 
-            <span class="n">file_formats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sparse.npz&#39;</span><span class="p">,</span> <span class="s1">&#39;npy&#39;</span><span class="p">]):</span>
+        <span class="kp">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+        <span class="n">dense_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+        <span class="n">file_formats</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sparse.npz&quot;</span><span class="p">,</span> <span class="s2">&quot;npy&quot;</span><span class="p">],</span>
+
+    <span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1670,7 +1730,7 @@
 
             <span class="p">)</span>
 
-            <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;transpose&#39;</span><span class="p">:</span> <span class="kp">invert</span><span class="p">,</span> <span class="s1">&#39;file_format&#39;</span><span class="p">:</span> <span class="n">file_format</span><span class="p">}</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;transpose&quot;</span><span class="p">:</span> <span class="kp">invert</span><span class="p">,</span> <span class="s2">&quot;file_format&quot;</span><span class="p">:</span> <span class="n">file_format</span><span class="p">}</span>
 
             <span class="n">specs</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 
@@ -1678,7 +1738,11 @@
 
         <span class="k">if</span> <span class="n">dense_threshold</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="kp">matrix</span> <span class="o">=</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">sparsify_or_densify</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="n">dense_threshold</span><span class="p">)</span>
+            <span class="kp">matrix</span> <span class="o">=</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">sparsify_or_densify</span><span class="p">(</span>
+
+                <span class="kp">matrix</span><span class="p">,</span> <span class="n">dense_threshold</span><span class="o">=</span><span class="n">dense_threshold</span>
+
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="kp">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -1692,9 +1756,9 @@
 
     <span class="k">def</span> <span class="nf">read_path_counts</span><span class="p">(</span>
 
-            <span class="bp">self</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">file_formats</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sparse.npz&quot;</span><span class="p">,</span> <span class="s2">&quot;npy&quot;</span><span class="p">]</span>
 
-            <span class="n">file_formats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sparse.npz&#39;</span><span class="p">,</span> <span class="s1">&#39;npy&#39;</span><span class="p">]):</span>
+    <span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1708,13 +1772,13 @@
 
         <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">metric</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s1">&#39;dwpc&#39;</span> <span class="ow">and</span> <span class="n">category</span> <span class="o">==</span> <span class="s1">&#39;no_repeats&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;dwpc&quot;</span> <span class="ow">and</span> <span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;no_repeats&quot;</span><span class="p">:</span>
 
-            <span class="n">metrics</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;dwwc&#39;</span><span class="p">)</span>
+            <span class="n">metrics</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s2">&quot;dwwc&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s1">&#39;dwwc&#39;</span> <span class="ow">and</span> <span class="n">category</span> <span class="o">==</span> <span class="s1">&#39;no_repeats&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;dwwc&quot;</span> <span class="ow">and</span> <span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;no_repeats&quot;</span><span class="p">:</span>
 
-            <span class="n">metrics</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;dwpc&#39;</span><span class="p">)</span>
+            <span class="n">metrics</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s2">&quot;dwpc&quot;</span><span class="p">)</span>
 
         <span class="n">specs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
@@ -1732,7 +1796,9 @@
 
             <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_path_counts_path</span><span class="p">(</span>
 
-                <span class="n">metapath</span><span class="o">=</span><span class="n">metapath</span><span class="o">.</span><span class="n">inverse</span> <span class="k">if</span> <span class="kp">invert</span> <span class="k">else</span> <span class="n">metapath</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
+                <span class="n">metapath</span><span class="o">=</span><span class="n">metapath</span><span class="o">.</span><span class="n">inverse</span> <span class="k">if</span> <span class="kp">invert</span> <span class="k">else</span> <span class="n">metapath</span><span class="p">,</span>
+
+                <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
 
                 <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span>
 
@@ -1740,7 +1806,7 @@
 
             <span class="p">)</span>
 
-            <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;transpose&#39;</span><span class="p">:</span> <span class="kp">invert</span><span class="p">,</span> <span class="s1">&#39;file_format&#39;</span><span class="p">:</span> <span class="n">file_format</span><span class="p">}</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;transpose&quot;</span><span class="p">:</span> <span class="kp">invert</span><span class="p">,</span> <span class="s2">&quot;file_format&quot;</span><span class="p">:</span> <span class="n">file_format</span><span class="p">}</span>
 
             <span class="n">specs</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 
@@ -1807,7 +1873,11 @@
 <p>Create a hetmat.HetMat from a hetnetpy.hetnet.Graph.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">hetmat_from_graph</span><span class="ss">(</span><span class="nv">graph</span>, <span class="nv">path</span>, <span class="nv">save_metagraph</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">save_nodes</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">save_edges</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">hetmat_from_graph</span><span class="ss">(</span>
+
+    <span class="nv">graph</span>, <span class="nv">path</span>, <span class="nv">save_metagraph</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">save_nodes</span><span class="o">=</span><span class="nv">True</span>, <span class="nv">save_edges</span><span class="o">=</span><span class="nv">True</span>
+
+<span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1837,11 +1907,11 @@
 
             <span class="nv">rows</span>.<span class="nv">append</span><span class="ss">((</span><span class="nv">position</span>, <span class="nv">node</span>.<span class="nv">identifier</span>, <span class="nv">node</span>.<span class="nv">name</span><span class="ss">))</span>
 
-        <span class="nv">node_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">DataFrame</span><span class="ss">(</span><span class="nv">rows</span>, <span class="nv">columns</span><span class="o">=</span>[<span class="s1">&#39;</span><span class="s">position</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">identifier</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">name</span><span class="s1">&#39;</span>]<span class="ss">)</span>
+        <span class="nv">node_df</span> <span class="o">=</span> <span class="nv">pandas</span>.<span class="nv">DataFrame</span><span class="ss">(</span><span class="nv">rows</span>, <span class="nv">columns</span><span class="o">=</span>[<span class="s2">&quot;</span><span class="s">position</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">identifier</span><span class="s2">&quot;</span>, <span class="s2">&quot;</span><span class="s">name</span><span class="s2">&quot;</span>]<span class="ss">)</span>
 
         <span class="nv">path</span> <span class="o">=</span> <span class="nv">hetmat</span>.<span class="nv">get_nodes_path</span><span class="ss">(</span><span class="nv">metanode</span><span class="ss">)</span>
 
-        <span class="nv">node_df</span>.<span class="nv">to_csv</span><span class="ss">(</span><span class="nv">path</span>, <span class="nv">index</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">node_df</span>.<span class="nv">to_csv</span><span class="ss">(</span><span class="nv">path</span>, <span class="nv">index</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     # <span class="nv">Save</span> <span class="nv">metaedges</span>
 
@@ -1849,7 +1919,11 @@
 
     <span class="k">for</span> <span class="nv">metaedge</span> <span class="nv">in</span> <span class="nv">metaedges</span>:
 
-        <span class="nv">rows</span>, <span class="nv">cols</span>, <span class="nv">matrix</span> <span class="o">=</span> <span class="nv">hetnetpy</span>.<span class="nv">matrix</span>.<span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span><span class="nv">graph</span>, <span class="nv">metaedge</span>, <span class="nv">dense_threshold</span><span class="o">=</span><span class="mi">1</span><span class="ss">)</span>
+        <span class="nv">rows</span>, <span class="nv">cols</span>, <span class="nv">matrix</span> <span class="o">=</span> <span class="nv">hetnetpy</span>.<span class="nv">matrix</span>.<span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span>
+
+            <span class="nv">graph</span>, <span class="nv">metaedge</span>, <span class="nv">dense_threshold</span><span class="o">=</span><span class="mi">1</span>
+
+        <span class="ss">)</span>
 
         <span class="nv">path</span> <span class="o">=</span> <span class="nv">hetmat</span>.<span class="nv">get_edges_path</span><span class="ss">(</span><span class="nv">metaedge</span>, <span class="nv">file_format</span><span class="o">=</span><span class="nv">None</span><span class="ss">)</span>
 
@@ -1885,7 +1959,15 @@
 
     <span class="nv">permuted_hetmat</span> <span class="o">=</span> <span class="nv">hetmat_from_graph</span><span class="ss">(</span>
 
-        <span class="nv">permuted_graph</span>, <span class="nv">permuted_hetmat</span>.<span class="nv">directory</span>, <span class="nv">save_metagraph</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">save_nodes</span><span class="o">=</span><span class="nv">False</span><span class="ss">)</span>
+        <span class="nv">permuted_graph</span>,
+
+        <span class="nv">permuted_hetmat</span>.<span class="nv">directory</span>,
+
+        <span class="nv">save_metagraph</span><span class="o">=</span><span class="nv">False</span>,
+
+        <span class="nv">save_nodes</span><span class="o">=</span><span class="nv">False</span>,
+
+    <span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">permuted_hetmat</span>
 </code></pre></div>
@@ -1967,13 +2049,13 @@
 
         <span class="nv">hetmat</span>.<span class="nv">permutations_directory</span>.<span class="nv">mkdir</span><span class="ss">()</span>
 
-    <span class="nv">directory</span> <span class="o">=</span> <span class="nv">hetmat</span>.<span class="nv">permutations_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{permutation_id}.hetmat</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">directory</span> <span class="o">=</span> <span class="nv">hetmat</span>.<span class="nv">permutations_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{permutation_id}.hetmat</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="k">if</span> <span class="nv">directory</span>.<span class="nv">is_dir</span><span class="ss">()</span>:
 
         # <span class="k">If</span> <span class="nv">directory</span> <span class="nv">exists</span>, <span class="nv">back</span> <span class="nv">it</span> <span class="nv">up</span> <span class="nv">using</span> <span class="nv">a</span> .<span class="nv">bak</span> <span class="nv">extension</span>
 
-        <span class="nv">backup_directory</span> <span class="o">=</span> <span class="nv">directory</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="nv">directory</span>.<span class="nv">name</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="s">.bak</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">backup_directory</span> <span class="o">=</span> <span class="nv">directory</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="nv">directory</span>.<span class="nv">name</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">.bak</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="k">if</span> <span class="nv">backup_directory</span>.<span class="nv">is_dir</span><span class="ss">()</span>:
 
@@ -1985,11 +2067,11 @@
 
     <span class="nv">permuted_hetmat</span>.<span class="nv">is_permutation</span> <span class="o">=</span> <span class="nv">True</span>
 
-    <span class="nv">permuted_hetmat</span>.<span class="nv">metagraph_path</span>.<span class="nv">symlink_to</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">../../metagraph.json</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">permuted_hetmat</span>.<span class="nv">metagraph_path</span>.<span class="nv">symlink_to</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">../../metagraph.json</span><span class="s2">&quot;</span><span class="ss">)</span>
 
     <span class="nv">permuted_hetmat</span>.<span class="nv">nodes_directory</span>.<span class="nv">rmdir</span><span class="ss">()</span>
 
-    <span class="nv">permuted_hetmat</span>.<span class="nv">nodes_directory</span>.<span class="nv">symlink_to</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">../../nodes</span><span class="s1">&#39;</span>, <span class="nv">target_is_directory</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
+    <span class="nv">permuted_hetmat</span>.<span class="nv">nodes_directory</span>.<span class="nv">symlink_to</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">../../nodes</span><span class="s2">&quot;</span>, <span class="nv">target_is_directory</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
 
     <span class="k">return</span> <span class="nv">permuted_hetmat</span>
 </code></pre></div>
@@ -2041,7 +2123,7 @@ supports the following keys:
 
     for spec <span class="k">in</span> specs<span class="p">:</span>
 
-        <span class="ss">path =</span> pathlib<span class="o">.</span>Path<span class="p">(</span>spec<span class="p">[</span><span class="err">&#39;</span>path&#39;<span class="p">])</span>
+        <span class="ss">path =</span> pathlib<span class="o">.</span>Path<span class="p">(</span>spec<span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span>
 
         paths<span class="o">.</span>append<span class="p">(</span>str<span class="p">(</span>path<span class="p">))</span>
 
@@ -2049,9 +2131,9 @@ supports the following keys:
 
             continue
 
-        <span class="ss">transpose =</span> spec<span class="o">.</span>get<span class="p">(</span><span class="err">&#39;</span>transpose&#39;<span class="p">,</span> False<span class="p">)</span>
+        <span class="ss">transpose =</span> spec<span class="o">.</span>get<span class="p">(</span><span class="s2">&quot;transpose&quot;</span><span class="p">,</span> False<span class="p">)</span>
 
-        <span class="ss">file_format =</span> spec<span class="o">.</span>get<span class="p">(</span><span class="err">&#39;</span>file_format&#39;<span class="p">,</span> <span class="err">&#39;</span>infer&#39;<span class="p">)</span>
+        <span class="ss">file_format =</span> spec<span class="o">.</span>get<span class="p">(</span><span class="s2">&quot;file_format&quot;</span><span class="p">,</span> <span class="s2">&quot;infer&quot;</span><span class="p">)</span>
 
         try<span class="p">:</span>
 
@@ -2059,13 +2141,13 @@ supports the following keys:
 
         except Exception as error<span class="p">:</span>
 
-            logging<span class="o">.</span>warning<span class="p">(</span>f&#39;Error reading matrix at <span class="p">{</span>path<span class="p">}:</span><span class="err">\</span>n<span class="p">{</span>error<span class="p">}</span><span class="err">&#39;</span><span class="p">)</span>
+            logging<span class="o">.</span>warning<span class="p">(</span>f<span class="s2">&quot;Error reading matrix at {path}:</span><span class="se">\</span><span class="s2">n{error}&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> delete_failures<span class="p">:</span>
 
                 path<span class="o">.</span>unlink<span class="p">()</span>
 
-                logging<span class="o">.</span>warning<span class="p">(</span>f&#39;Deleting file at <span class="p">{</span>path<span class="p">}</span><span class="err">&#39;</span><span class="p">)</span>
+                logging<span class="o">.</span>warning<span class="p">(</span>f<span class="s2">&quot;Deleting file at {path}&quot;</span><span class="p">)</span>
 
                 continue
 
@@ -2077,9 +2159,9 @@ supports the following keys:
 
     raise FileNotFoundError<span class="p">(</span>
 
-        <span class="err">&#39;</span>No matrix files found at the specified <span class="l">paths:\n&#39;</span> <span class="o">+</span>
+        <span class="s2">&quot;No matrix files found at the specified paths:</span><span class="se">\</span><span class="s2">n&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\</span><span class="s2">n&quot;</span><span class="o">.</span>join<span class="p">(</span>paths<span class="p">)</span>
 
-        <span class="err">&#39;\</span>n&#39;<span class="o">.</span>join<span class="p">(</span>paths<span class="p">))</span>
+    <span class="p">)</span>
 </code></pre></div>
 
 </details>
@@ -2092,37 +2174,37 @@ supports the following keys:
 
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">read_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;infer&#39;</span><span class="p">):</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">read_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;infer&quot;</span><span class="p">):</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;infer&#39;</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;infer&quot;</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.sparse.npz&#39;</span><span class="p">):</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.sparse.npz&quot;</span><span class="p">):</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">file_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;sparse.npz&#39;</span><span class="w"></span>
+<span class="w">            </span><span class="n">file_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;sparse.npz&quot;</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.npy&#39;</span><span class="p">):</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">):</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">file_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;npy&#39;</span><span class="w"></span>
+<span class="w">            </span><span class="n">file_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;npy&quot;</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;infer&#39;</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;infer&quot;</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s1">&#39;Could not infer file_format for {path}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s2">&quot;Could not infer file_format for {path}&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;sparse.npz&#39;</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;sparse.npz&quot;</span><span class="p">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="c1"># https://docs.scipy.org/doc/scipy-1.0.0/reference/generated/scipy.sparse.load_npz.html</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">load_npz</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;npy&#39;</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;npy&quot;</span><span class="p">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="c1"># https://docs.scipy.org/doc/numpy-1.14.0/reference/generated/numpy.load.html</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">numpy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;file_format={file_format} is not supported.&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;file_format={file_format} is not supported.&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2157,17 +2239,17 @@ supports the following keys:
 
     <span class="k">if</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">matrix</span>, <span class="nv">numpy</span>.<span class="nv">ndarray</span><span class="ss">)</span>:
 
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">path</span>.<span class="nv">endswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">.npy</span><span class="s1">&#39;</span><span class="ss">)</span>:
+        <span class="k">if</span> <span class="nv">not</span> <span class="nv">path</span>.<span class="nv">endswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">.npy</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
-            <span class="nv">path</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="s">.npy</span><span class="s1">&#39;</span>
+            <span class="nv">path</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="s">.npy</span><span class="s2">&quot;</span>
 
         <span class="nv">numpy</span>.<span class="nv">save</span><span class="ss">(</span><span class="nv">path</span>, <span class="nv">matrix</span><span class="ss">)</span>
 
     <span class="nv">elif</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">issparse</span><span class="ss">(</span><span class="nv">matrix</span><span class="ss">)</span>:
 
-        <span class="k">if</span> <span class="nv">not</span> <span class="nv">path</span>.<span class="nv">endswith</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">.sparse.npz</span><span class="s1">&#39;</span><span class="ss">)</span>:
+        <span class="k">if</span> <span class="nv">not</span> <span class="nv">path</span>.<span class="nv">endswith</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">.sparse.npz</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
-            <span class="nv">path</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="s">.sparse.npz</span><span class="s1">&#39;</span>
+            <span class="nv">path</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="s">.sparse.npz</span><span class="s2">&quot;</span>
 
         <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">save_npz</span><span class="ss">(</span><span class="nv">path</span>, <span class="nv">matrix</span>, <span class="nv">compressed</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
 </code></pre></div>
@@ -2189,7 +2271,7 @@ supports the following keys:
 
 <span class="w">    </span><span class="n">nodes_formats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
 
-<span class="w">        </span><span class="s1">&#39;tsv&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;tsv&quot;</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="s1">&#39;feather&#39;</span><span class="p">,</span><span class="w"></span>
 
@@ -2203,9 +2285,9 @@ supports the following keys:
 
 <span class="w">    </span><span class="n">edges_formats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
 
-<span class="w">        </span><span class="s1">&#39;npy&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;npy&quot;</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">        </span><span class="s1">&#39;sparse.npz&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;sparse.npz&quot;</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="s1">&#39;tsv&#39;</span><span class="p">,</span><span class="w"></span>
 
@@ -2221,13 +2303,13 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pathlib</span><span class="p">.</span><span class="k">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">metagraph_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;metagraph.json&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">metagraph_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;metagraph.json&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">nodes_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;nodes&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">nodes_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;nodes&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">edges_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;edges&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">edges_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;edges&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">path_counts_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;path-counts&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">path_counts_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;path-counts&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">path_counts_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
@@ -2235,7 +2317,7 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">is_permutation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">False</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">permutations_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;permutations&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="n">permutations_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="ss">&quot;permutations&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">initialize</span><span class="err">:</span><span class="w"></span>
 
@@ -2287,7 +2369,7 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">permutations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{}</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">directory</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">sorted</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">permutations_directory</span><span class="p">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.hetmat&#39;</span><span class="p">))</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">directory</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">sorted</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">permutations_directory</span><span class="p">.</span><span class="n">glob</span><span class="p">(</span><span class="ss">&quot;*.hetmat&quot;</span><span class="p">))</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">directory</span><span class="p">.</span><span class="n">is_dir</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 
@@ -2297,15 +2379,27 @@ supports the following keys:
 
 <span class="w">            </span><span class="n">permutation</span><span class="p">.</span><span class="n">is_permutation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">directory</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">directory</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">rsplit</span><span class="p">(</span><span class="ss">&quot;.&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">            </span><span class="n">permutations</span><span class="o">[</span><span class="n">name</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">permutation</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">permutations</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">permute_graph</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">num_new_permutations</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="n">namer</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="n">start_from</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">permute_graph</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                      </span><span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">num_new_permutations</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">namer</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">start_from</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2345,7 +2439,7 @@ supports the following keys:
 
 <span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="n">namer</span><span class="w"> </span><span class="n">given</span><span class="p">,</span><span class="w"> </span><span class="k">continue</span><span class="w"> </span><span class="n">increasing</span><span class="w"> </span><span class="k">names</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">permutations</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">namer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{x:03}&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">itertools</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="k">start</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="n">namer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;{x:03}&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">itertools</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="k">start</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">stat_dfs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">()</span><span class="w"></span>
 
@@ -2371,15 +2465,23 @@ supports the following keys:
 
 <span class="w">                </span><span class="k">rows</span><span class="p">,</span><span class="w"> </span><span class="n">cols</span><span class="p">,</span><span class="w"> </span><span class="n">original_matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_from</span><span class="p">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                    </span><span class="n">metaedge</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                    </span><span class="n">metaedge</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">is_directed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="p">.</span><span class="n">direction</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;both&#39;</span><span class="w"></span>
+<span class="w">                </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">is_directed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="p">.</span><span class="n">direction</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="ss">&quot;both&quot;</span><span class="w"></span>
 
 <span class="w">                </span><span class="n">permuted_matrix</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">permute_matrix</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                    </span><span class="n">original_matrix</span><span class="p">,</span><span class="w"> </span><span class="n">directed</span><span class="o">=</span><span class="n">is_directed</span><span class="p">,</span><span class="w"> </span><span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">original_matrix</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">                    </span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span><span class="w"></span>
+<span class="w">                    </span><span class="n">directed</span><span class="o">=</span><span class="n">is_directed</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">                </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">                </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_hetmat</span><span class="p">.</span><span class="n">get_edges_path</span><span class="p">(</span><span class="n">metaedge</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="k">None</span><span class="p">)</span><span class="w"></span>
 
@@ -2387,11 +2489,11 @@ supports the following keys:
 
 <span class="w">                </span><span class="n">stat_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&#39;metaedge&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="w"></span>
+<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&quot;metaedge&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&#39;abbrev&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="p">.</span><span class="n">get_abbrev</span><span class="p">()</span><span class="w"></span>
+<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&quot;abbrev&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="p">.</span><span class="n">get_abbrev</span><span class="p">()</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&#39;permutation&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">permutation_name</span><span class="w"></span>
+<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&quot;permutation&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">permutation_name</span><span class="w"></span>
 
 <span class="w">                </span><span class="n">stat_dfs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">stat_df</span><span class="p">)</span><span class="w"></span>
 
@@ -2437,7 +2539,7 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">hetnetpy</span><span class="p">.</span><span class="n">readwrite</span><span class="p">.</span><span class="n">write_metagraph</span><span class="p">(</span><span class="n">metagraph</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">metagraph_path</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metanode</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metanode</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="ss">&quot;tsv&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2449,15 +2551,15 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">metanode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">metagraph</span><span class="p">.</span><span class="n">get_metanode</span><span class="p">(</span><span class="n">metanode</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">nodes_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{metanode}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">nodes_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;{metanode}&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">path</span><span class="p">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{path.name}.{file_format}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">path</span><span class="p">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;{path.name}.{file_format}&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">path</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_edges_path</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metaedge</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;npy&#39;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_edges_path</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metaedge</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="ss">&quot;npy&quot;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2469,11 +2571,11 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">metaedge_abbrev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">metagraph</span><span class="p">.</span><span class="n">get_metaedge</span><span class="p">(</span><span class="n">metaedge</span><span class="p">).</span><span class="n">get_abbrev</span><span class="p">()</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">edges_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{metaedge_abbrev}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">edges_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;{metaedge_abbrev}&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">path</span><span class="p">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{path.name}.{file_format}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">path</span><span class="p">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;{path.name}.{file_format}&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">path</span><span class="w"></span>
 
@@ -2489,15 +2591,19 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">damping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">float</span><span class="p">(</span><span class="n">damping</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">path_counts_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{metric}-{damping}/{metapath}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">path_counts_directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;{metric}-{damping}/{metapath}&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">file_format</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">path</span><span class="p">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{path.name}.{file_format}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">path</span><span class="p">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;{path.name}.{file_format}&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">path</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_running_degree_group_path</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv.gz&#39;</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">get_running_degree_group_path</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">extension</span><span class="o">=</span><span class="ss">&quot;.tsv.gz&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2511,9 +2617,15 @@ supports the following keys:
 
 <span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;adjusted-path-counts&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="s1">&#39;{metric}-{damping}&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;adjusted-path-counts&quot;</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="s1">&#39;degree-grouped-permutations&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="s1">&#39;{metapath}{extension}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;{metric}-{damping}&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="ss">&quot;degree-grouped-permutations&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;{metapath}{extension}&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">path</span><span class="w"></span>
 
@@ -2523,9 +2635,17 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">compr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compression_extension</span><span class="o">[</span><span class="n">compression</span><span class="o">]</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;adjusted-path-counts&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="s1">&#39;{metric}-{damping}&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                                       </span><span class="s1">&#39;adjusted-dwpcs&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="s1">&#39;{metapath}.tsv{compr}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;adjusted-path-counts&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;{metric}-{damping}&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="ss">&quot;adjusted-dwpcs&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;{metapath}.tsv{compr}&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">path</span><span class="w"></span>
 
@@ -2539,11 +2659,11 @@ supports the following keys:
 
 <span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metanode</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metanode</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="ss">&quot;tsv&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">node_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="k">path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\t&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">node_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="k">path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="ss">&quot;\t&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">node_df</span><span class="o">[</span><span class="n">&#39;identifier&#39;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">node_df</span><span class="o">[</span><span class="n">&quot;identifier&quot;</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="nv">@functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">()</span><span class="w"></span>
 
@@ -2555,11 +2675,17 @@ supports the following keys:
 
 <span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metaedge</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">dtype</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">metaedge</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">file_formats</span><span class="o">=[</span><span class="n">&#39;sparse.npz&#39;, &#39;npy&#39;</span><span class="o">]</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">dtype</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">dense_threshold</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">file_formats</span><span class="o">=[</span><span class="n">&quot;sparse.npz&quot;, &quot;npy&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2583,7 +2709,7 @@ supports the following keys:
 
 <span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">spec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="s1">&#39;path&#39;</span><span class="err">:</span><span class="w"> </span><span class="k">path</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;transpose&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">invert</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;file_format&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">file_format</span><span class="err">}</span><span class="w"></span>
+<span class="w">            </span><span class="n">spec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;path&quot;</span><span class="err">:</span><span class="w"> </span><span class="k">path</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;transpose&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">invert</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;file_format&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">file_format</span><span class="err">}</span><span class="w"></span>
 
 <span class="w">            </span><span class="n">specs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="w"></span>
 
@@ -2591,7 +2717,11 @@ supports the following keys:
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">dense_threshold</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetnetpy</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">sparsify_or_densify</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="n">dense_threshold</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetnetpy</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">sparsify_or_densify</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="n">dense_threshold</span><span class="w"></span>
+
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">dtype</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="k">None</span><span class="err">:</span><span class="w"></span>
 
@@ -2605,9 +2735,9 @@ supports the following keys:
 
 <span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">read_path_counts</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">file_formats</span><span class="o">=[</span><span class="n">&quot;sparse.npz&quot;, &quot;npy&quot;</span><span class="o">]</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">file_formats</span><span class="o">=[</span><span class="n">&#39;sparse.npz&#39;, &#39;npy&#39;</span><span class="o">]</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -2621,13 +2751,13 @@ supports the following keys:
 
 <span class="w">        </span><span class="n">metrics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">metric</span><span class="o">]</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">metric</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;dwpc&#39;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;no_repeats&#39;</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">metric</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;dwpc&quot;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;no_repeats&quot;</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">metrics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;dwwc&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">metrics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="ss">&quot;dwwc&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">metric</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;dwwc&#39;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;no_repeats&#39;</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">metric</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;dwwc&quot;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;no_repeats&quot;</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">metrics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;dwpc&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">metrics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="ss">&quot;dwpc&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">specs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">()</span><span class="w"></span>
 
@@ -2645,7 +2775,9 @@ supports the following keys:
 
 <span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">get_path_counts_path</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">metapath</span><span class="o">=</span><span class="n">metapath</span><span class="p">.</span><span class="n">inverse</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">invert</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">metapath</span><span class="o">=</span><span class="n">metapath</span><span class="p">.</span><span class="n">inverse</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">invert</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">                </span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span><span class="w"></span>
 
@@ -2653,7 +2785,7 @@ supports the following keys:
 
 <span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">spec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="s1">&#39;path&#39;</span><span class="err">:</span><span class="w"> </span><span class="k">path</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;transpose&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">invert</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;file_format&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">file_format</span><span class="err">}</span><span class="w"></span>
+<span class="w">            </span><span class="n">spec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;path&quot;</span><span class="err">:</span><span class="w"> </span><span class="k">path</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;transpose&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">invert</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;file_format&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">file_format</span><span class="err">}</span><span class="w"></span>
 
 <span class="w">            </span><span class="n">specs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="w"></span>
 
@@ -2793,7 +2925,7 @@ extension.</p>
 <p>file_format=None returns the path without any extension suffix.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_edges_path</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">metaedge</span>, <span class="nv">file_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">npy</span><span class="s1">&#39;</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_edges_path</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">metaedge</span>, <span class="nv">file_format</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">npy</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
         <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2805,11 +2937,11 @@ extension.</p>
 
         <span class="nv">metaedge_abbrev</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">metagraph</span>.<span class="nv">get_metaedge</span><span class="ss">(</span><span class="nv">metaedge</span><span class="ss">)</span>.<span class="nv">get_abbrev</span><span class="ss">()</span>
 
-        <span class="nv">path</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">edges_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{metaedge_abbrev}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">path</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">edges_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{metaedge_abbrev}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="k">if</span> <span class="nv">file_format</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">None</span>:
 
-            <span class="nv">path</span> <span class="o">=</span> <span class="nv">path</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{path.name}.{file_format}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">path</span> <span class="o">=</span> <span class="nv">path</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{path.name}.{file_format}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="k">return</span> <span class="nv">path</span>
 </code></pre></div>
@@ -2833,9 +2965,17 @@ extension.</p>
 
 <span class="w">        </span><span class="n">compr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compression_extension</span><span class="o">[</span><span class="n">compression</span><span class="o">]</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;adjusted-path-counts&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="s1">&#39;{metric}-{damping}&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">directory</span><span class="p">.</span><span class="n">joinpath</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                                       </span><span class="s1">&#39;adjusted-dwpcs&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="s1">&#39;{metapath}.tsv{compr}&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;adjusted-path-counts&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;{metric}-{damping}&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="ss">&quot;adjusted-dwpcs&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">f</span><span class="ss">&quot;{metapath}.tsv{compr}&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">path</span><span class="w"></span>
 </code></pre></div>
@@ -2861,11 +3001,11 @@ extension.</p>
 
 <span class="sd">        &quot;&quot;&quot;</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metanode</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;tsv&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">get_nodes_path</span><span class="p">(</span><span class="n">metanode</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;tsv&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">node_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">node_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">node_df</span><span class="p">[</span><span class="s1">&#39;identifier&#39;</span><span class="p">])</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">node_df</span><span class="p">[</span><span class="s2">&quot;identifier&quot;</span><span class="p">])</span><span class="w"></span>
 </code></pre></div>
 
 </details>
@@ -2881,7 +3021,7 @@ extension.</p>
 <p>file_format=None returns the path without any extension suffix.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_nodes_path</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">metanode</span>, <span class="nv">file_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">tsv</span><span class="s1">&#39;</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_nodes_path</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">metanode</span>, <span class="nv">file_format</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">tsv</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
         <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2893,11 +3033,11 @@ extension.</p>
 
         <span class="nv">metanode</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">metagraph</span>.<span class="nv">get_metanode</span><span class="ss">(</span><span class="nv">metanode</span><span class="ss">)</span>
 
-        <span class="nv">path</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">nodes_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{metanode}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">path</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">nodes_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{metanode}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="k">if</span> <span class="nv">file_format</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">None</span>:
 
-            <span class="nv">path</span> <span class="o">=</span> <span class="nv">path</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{path.name}.{file_format}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">path</span> <span class="o">=</span> <span class="nv">path</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{path.name}.{file_format}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="k">return</span> <span class="nv">path</span>
 </code></pre></div>
@@ -2929,11 +3069,11 @@ extension.</p>
 
         <span class="nv">damping</span> <span class="o">=</span> <span class="nv">float</span><span class="ss">(</span><span class="nv">damping</span><span class="ss">)</span>
 
-        <span class="nv">path</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">path_counts_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{metric}-{damping}/{metapath}</span><span class="s1">&#39;</span><span class="ss">)</span>
+        <span class="nv">path</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">path_counts_directory</span>.<span class="nv">joinpath</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{metric}-{damping}/{metapath}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="k">if</span> <span class="nv">file_format</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">None</span>:
 
-            <span class="nv">path</span> <span class="o">=</span> <span class="nv">path</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">{path.name}.{file_format}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">path</span> <span class="o">=</span> <span class="nv">path</span>.<span class="nv">with_name</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">{path.name}.{file_format}</span><span class="s2">&quot;</span><span class="ss">)</span>
 
         <span class="k">return</span> <span class="nv">path</span>
 </code></pre></div>
@@ -2953,7 +3093,11 @@ extension.</p>
 <p>Must specify extension.</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_running_degree_group_path</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">metapath</span>, <span class="nv">metric</span>, <span class="nv">damping</span>, <span class="nv">extension</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">.tsv.gz</span><span class="s1">&#39;</span><span class="ss">)</span>:
+<div class="codehilite"><pre><span></span><code>    <span class="nv">def</span> <span class="nv">get_running_degree_group_path</span><span class="ss">(</span>
+
+        <span class="nv">self</span>, <span class="nv">metapath</span>, <span class="nv">metric</span>, <span class="nv">damping</span>, <span class="nv">extension</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">.tsv.gz</span><span class="s2">&quot;</span>
+
+    <span class="ss">)</span>:
 
         <span class="s2">&quot;&quot;&quot;</span>
 
@@ -2967,9 +3111,15 @@ extension.</p>
 
         <span class="nv">path</span> <span class="o">=</span> <span class="nv">self</span>.<span class="nv">directory</span>.<span class="nv">joinpath</span><span class="ss">(</span>
 
-            <span class="s1">&#39;</span><span class="s">adjusted-path-counts</span><span class="s1">&#39;</span>, <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{metric}-{damping}</span><span class="s1">&#39;</span>,
+            <span class="s2">&quot;</span><span class="s">adjusted-path-counts</span><span class="s2">&quot;</span>,
 
-            <span class="s1">&#39;</span><span class="s">degree-grouped-permutations</span><span class="s1">&#39;</span>, <span class="nv">f</span><span class="s1">&#39;</span><span class="s">{metapath}{extension}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{metric}-{damping}</span><span class="s2">&quot;</span>,
+
+            <span class="s2">&quot;</span><span class="s">degree-grouped-permutations</span><span class="s2">&quot;</span>,
+
+            <span class="nv">f</span><span class="s2">&quot;</span><span class="s">{metapath}{extension}</span><span class="s2">&quot;</span>,
+
+        <span class="ss">)</span>
 
         <span class="k">return</span> <span class="nv">path</span>
 </code></pre></div>
@@ -3030,11 +3180,17 @@ extension.</p>
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">            </span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">metaedge</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="bp">self</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">dtype</span><span class="o">=</span><span class="n">None</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="n">None</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">metaedge</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">file_formats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sparse.npz&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;npy&#39;</span><span class="p">]):</span><span class="w"></span>
+<span class="w">        </span><span class="n">dtype</span><span class="o">=</span><span class="n">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">dense_threshold</span><span class="o">=</span><span class="n">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">file_formats</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sparse.npz&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;npy&quot;</span><span class="p">],</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">):</span><span class="w"></span>
 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -3058,7 +3214,7 @@ extension.</p>
 
 <span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">spec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;transpose&#39;</span><span class="p">:</span><span class="w"> </span><span class="n">invert</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;file_format&#39;</span><span class="p">:</span><span class="w"> </span><span class="n">file_format</span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="n">spec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;transpose&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">invert</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;file_format&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">file_format</span><span class="p">}</span><span class="w"></span>
 
 <span class="w">            </span><span class="n">specs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="w"></span>
 
@@ -3066,7 +3222,11 @@ extension.</p>
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">dense_threshold</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">None</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetnetpy</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">sparsify_or_densify</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="n">dense_threshold</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetnetpy</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">sparsify_or_densify</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="n">dense_threshold</span><span class="w"></span>
+
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">dtype</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">None</span><span class="p">:</span><span class="w"></span>
 
@@ -3149,9 +3309,21 @@ extension.</p>
 </table>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">permute_graph</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">num_new_permutations</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="n">namer</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="n">start_from</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">permute_graph</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                      </span><span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">num_new_permutations</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">namer</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">start_from</span><span class="o">=</span><span class="k">None</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3191,7 +3363,7 @@ extension.</p>
 
 <span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="n">namer</span><span class="w"> </span><span class="n">given</span><span class="p">,</span><span class="w"> </span><span class="k">continue</span><span class="w"> </span><span class="n">increasing</span><span class="w"> </span><span class="k">names</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">permutations</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">namer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{x:03}&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">itertools</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="k">start</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="n">namer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;{x:03}&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">itertools</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="k">start</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">stat_dfs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">()</span><span class="w"></span>
 
@@ -3217,15 +3389,23 @@ extension.</p>
 
 <span class="w">                </span><span class="k">rows</span><span class="p">,</span><span class="w"> </span><span class="n">cols</span><span class="p">,</span><span class="w"> </span><span class="n">original_matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_from</span><span class="p">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                    </span><span class="n">metaedge</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                    </span><span class="n">metaedge</span><span class="p">,</span><span class="w"> </span><span class="n">dense_threshold</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">is_directed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="p">.</span><span class="n">direction</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;both&#39;</span><span class="w"></span>
+<span class="w">                </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">is_directed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="p">.</span><span class="n">direction</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="ss">&quot;both&quot;</span><span class="w"></span>
 
 <span class="w">                </span><span class="n">permuted_matrix</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hetmatpy</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">permute_matrix</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                    </span><span class="n">original_matrix</span><span class="p">,</span><span class="w"> </span><span class="n">directed</span><span class="o">=</span><span class="n">is_directed</span><span class="p">,</span><span class="w"> </span><span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">original_matrix</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">                    </span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span><span class="w"></span>
+<span class="w">                    </span><span class="n">directed</span><span class="o">=</span><span class="n">is_directed</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">                    </span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">                </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">                </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_hetmat</span><span class="p">.</span><span class="n">get_edges_path</span><span class="p">(</span><span class="n">metaedge</span><span class="p">,</span><span class="w"> </span><span class="n">file_format</span><span class="o">=</span><span class="k">None</span><span class="p">)</span><span class="w"></span>
 
@@ -3233,11 +3413,11 @@ extension.</p>
 
 <span class="w">                </span><span class="n">stat_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pandas</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&#39;metaedge&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="w"></span>
+<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&quot;metaedge&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&#39;abbrev&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="p">.</span><span class="n">get_abbrev</span><span class="p">()</span><span class="w"></span>
+<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&quot;abbrev&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metaedge</span><span class="p">.</span><span class="n">get_abbrev</span><span class="p">()</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&#39;permutation&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">permutation_name</span><span class="w"></span>
+<span class="w">                </span><span class="n">stat_df</span><span class="o">[</span><span class="n">&quot;permutation&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">permutation_name</span><span class="w"></span>
 
 <span class="w">                </span><span class="n">stat_dfs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">stat_df</span><span class="p">)</span><span class="w"></span>
 
@@ -3267,9 +3447,9 @@ extension.</p>
 <summary>View Source</summary>
 <div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">read_path_counts</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">,</span><span class="w"> </span><span class="n">damping</span><span class="p">,</span><span class="w"> </span><span class="n">file_formats</span><span class="o">=[</span><span class="n">&quot;sparse.npz&quot;, &quot;npy&quot;</span><span class="o">]</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">file_formats</span><span class="o">=[</span><span class="n">&#39;sparse.npz&#39;, &#39;npy&#39;</span><span class="o">]</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
 
@@ -3283,13 +3463,13 @@ extension.</p>
 
 <span class="w">        </span><span class="n">metrics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">metric</span><span class="o">]</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">metric</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;dwpc&#39;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;no_repeats&#39;</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">metric</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;dwpc&quot;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;no_repeats&quot;</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">metrics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;dwwc&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">metrics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="ss">&quot;dwwc&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">metric</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;dwwc&#39;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;no_repeats&#39;</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">metric</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;dwwc&quot;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">&quot;no_repeats&quot;</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">metrics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;dwpc&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">metrics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="ss">&quot;dwpc&quot;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">specs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">()</span><span class="w"></span>
 
@@ -3307,7 +3487,9 @@ extension.</p>
 
 <span class="w">            </span><span class="k">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">get_path_counts_path</span><span class="p">(</span><span class="w"></span>
 
-<span class="w">                </span><span class="n">metapath</span><span class="o">=</span><span class="n">metapath</span><span class="p">.</span><span class="n">inverse</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">invert</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">metapath</span><span class="o">=</span><span class="n">metapath</span><span class="p">.</span><span class="n">inverse</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">invert</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">metapath</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">                </span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span><span class="w"></span>
 
@@ -3315,7 +3497,7 @@ extension.</p>
 
 <span class="w">            </span><span class="p">)</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">spec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="s1">&#39;path&#39;</span><span class="err">:</span><span class="w"> </span><span class="k">path</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;transpose&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">invert</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;file_format&#39;</span><span class="err">:</span><span class="w"> </span><span class="n">file_format</span><span class="err">}</span><span class="w"></span>
+<span class="w">            </span><span class="n">spec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;path&quot;</span><span class="err">:</span><span class="w"> </span><span class="k">path</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;transpose&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">invert</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;file_format&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">file_format</span><span class="err">}</span><span class="w"></span>
 
 <span class="w">            </span><span class="n">specs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="w"></span>
 

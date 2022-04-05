@@ -662,9 +662,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">source_node_ids</span><span class="p">,</span> <span class="n">target_node_ids</span><span class="p">,</span> <span class="n">adjacency_matrix</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">source_node_ids</span><span class="p">,</span> <span class="n">target_node_ids</span><span class="p">,</span> <span class="n">adjacency_matrix</span> <span class="o">=</span> <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span>
 
-        <span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">metaedge</span><span class="p">,</span> <span class="kp">dtype</span><span class="o">=</span><span class="kp">dtype</span><span class="p">))</span>
+        <span class="n">graph</span><span class="p">,</span> <span class="n">metaedge</span><span class="p">,</span> <span class="kp">dtype</span><span class="o">=</span><span class="kp">dtype</span>
+
+    <span class="p">)</span>
 
     <span class="n">dims</span> <span class="o">=</span> <span class="n">metaedge</span><span class="o">.</span><span class="kp">source</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">metaedge</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">identifier</span>
 
@@ -672,13 +674,7 @@
 
     <span class="n">data_array</span> <span class="o">=</span> <span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
 
-        <span class="n">adjacency_matrix</span><span class="p">,</span>
-
-        <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span>
-
-        <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span>
-
-        <span class="n">name</span><span class="o">=</span><span class="n">metaedge</span><span class="o">.</span><span class="n">get_unicode_str</span><span class="p">()</span>
+        <span class="n">adjacency_matrix</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">metaedge</span><span class="o">.</span><span class="n">get_unicode_str</span><span class="p">()</span>
 
     <span class="p">)</span>
 
@@ -742,9 +738,11 @@
 
     <span class="s2">&quot;&quot;&quot;</span>
 
-    <span class="nv">source_node_ids</span>, <span class="nv">target_node_ids</span>, <span class="nv">adjacency_matrix</span> <span class="o">=</span> <span class="ss">(</span>
+    <span class="nv">source_node_ids</span>, <span class="nv">target_node_ids</span>, <span class="nv">adjacency_matrix</span> <span class="o">=</span> <span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span>
 
-        <span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span><span class="nv">graph</span>, <span class="nv">metaedge</span>, <span class="nv">dtype</span><span class="o">=</span><span class="nv">dtype</span><span class="ss">))</span>
+        <span class="nv">graph</span>, <span class="nv">metaedge</span>, <span class="nv">dtype</span><span class="o">=</span><span class="nv">dtype</span>
+
+    <span class="ss">)</span>
 
     <span class="nv">dims</span> <span class="o">=</span> <span class="nv">metaedge</span>.<span class="nv">source</span>.<span class="nv">identifier</span>, <span class="nv">metaedge</span>.<span class="nv">target</span>.<span class="nv">identifier</span>
 
@@ -752,13 +750,7 @@
 
     <span class="nv">data_array</span> <span class="o">=</span> <span class="nv">xarray</span>.<span class="nv">DataArray</span><span class="ss">(</span>
 
-        <span class="nv">adjacency_matrix</span>,
-
-        <span class="nv">coords</span><span class="o">=</span><span class="nv">coords</span>,
-
-        <span class="nv">dims</span><span class="o">=</span><span class="nv">dims</span>,
-
-        <span class="nv">name</span><span class="o">=</span><span class="nv">metaedge</span>.<span class="nv">get_unicode_str</span><span class="ss">()</span>
+        <span class="nv">adjacency_matrix</span>, <span class="nv">coords</span><span class="o">=</span><span class="nv">coords</span>, <span class="nv">dims</span><span class="o">=</span><span class="nv">dims</span>, <span class="nv">name</span><span class="o">=</span><span class="nv">metaedge</span>.<span class="nv">get_unicode_str</span><span class="ss">()</span>
 
     <span class="ss">)</span>
 

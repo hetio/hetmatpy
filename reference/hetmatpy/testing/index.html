@@ -644,7 +644,7 @@
 
 <span class="kn">import</span> <span class="nn">hetmatpy.hetmat</span>
 
-<span class="n">format_github_url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/</span><span class="si">{repo_slug}</span><span class="s1">/raw/</span><span class="si">{commit}</span><span class="s1">/</span><span class="si">{path}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
+<span class="n">format_github_url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/</span><span class="si">{repo_slug}</span><span class="s2">/raw/</span><span class="si">{commit}</span><span class="s2">/</span><span class="si">{path}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span>
 
 <span class="n">hetnet_urls</span> <span class="o">=</span> <span class="p">{</span>
 
@@ -652,45 +652,39 @@
 
     <span class="c1"># (2015) PLOS Comp Bio. https://doi.org/10.1371/journal.pcbi.1004259.g002</span>
 
-    <span class="s1">&#39;disease-gene-example&#39;</span><span class="p">:</span>
+    <span class="s2">&quot;disease-gene-example&quot;</span><span class="p">:</span> <span class="n">format_github_url</span><span class="p">(</span>
 
-        <span class="n">format_github_url</span><span class="p">(</span>
+        <span class="n">repo_slug</span><span class="o">=</span><span class="s2">&quot;hetio/hetnetpy&quot;</span><span class="p">,</span>
 
-            <span class="n">repo_slug</span><span class="o">=</span><span class="s1">&#39;hetio/hetnetpy&#39;</span><span class="p">,</span>
+        <span class="n">commit</span><span class="o">=</span><span class="s2">&quot;9dc747b8fc4e23ef3437829ffde4d047f2e1bdde&quot;</span><span class="p">,</span>
 
-            <span class="n">commit</span><span class="o">=</span><span class="s1">&#39;9dc747b8fc4e23ef3437829ffde4d047f2e1bdde&#39;</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="s2">&quot;test/data/disease-gene-example-graph.json&quot;</span><span class="p">,</span>
 
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;test/data/disease-gene-example-graph.json&#39;</span><span class="p">,</span>
-
-        <span class="p">),</span>
+    <span class="p">),</span>
 
     <span class="c1"># The bupropion and nicotine dependence Hetionet v1.0 subgraph.</span>
 
-    <span class="s1">&#39;bupropion-subgraph&#39;</span><span class="p">:</span>
+    <span class="s2">&quot;bupropion-subgraph&quot;</span><span class="p">:</span> <span class="n">format_github_url</span><span class="p">(</span>
 
-        <span class="n">format_github_url</span><span class="p">(</span>
+        <span class="n">repo_slug</span><span class="o">=</span><span class="s2">&quot;hetio/hetnetpy&quot;</span><span class="p">,</span>
 
-            <span class="n">repo_slug</span><span class="o">=</span><span class="s1">&#39;hetio/hetnetpy&#39;</span><span class="p">,</span>
+        <span class="n">commit</span><span class="o">=</span><span class="s2">&quot;30c6dbb18a17c05d71cb909cf57af7372e4d4908&quot;</span><span class="p">,</span>
 
-            <span class="n">commit</span><span class="o">=</span><span class="s1">&#39;30c6dbb18a17c05d71cb909cf57af7372e4d4908&#39;</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="s2">&quot;test/data/bupropion-CbGpPWpGaD-subgraph.json.xz&quot;</span><span class="p">,</span>
 
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;test/data/bupropion-CbGpPWpGaD-subgraph.json.xz&#39;</span><span class="p">,</span>
-
-        <span class="p">),</span>
+    <span class="p">),</span>
 
     <span class="c1"># A random Hetionet v1.0 subgraph.</span>
 
-    <span class="s1">&#39;random-subgraph&#39;</span><span class="p">:</span>
+    <span class="s2">&quot;random-subgraph&quot;</span><span class="p">:</span> <span class="n">format_github_url</span><span class="p">(</span>
 
-        <span class="n">format_github_url</span><span class="p">(</span>
+        <span class="n">repo_slug</span><span class="o">=</span><span class="s2">&quot;hetio/hetnetpy&quot;</span><span class="p">,</span>
 
-            <span class="n">repo_slug</span><span class="o">=</span><span class="s1">&#39;hetio/hetnetpy&#39;</span><span class="p">,</span>
+        <span class="n">commit</span><span class="o">=</span><span class="s2">&quot;30c6dbb18a17c05d71cb909cf57af7372e4d4908&quot;</span><span class="p">,</span>
 
-            <span class="n">commit</span><span class="o">=</span><span class="s1">&#39;30c6dbb18a17c05d71cb909cf57af7372e4d4908&#39;</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="s2">&quot;test/data/random-subgraph.json.xz&quot;</span><span class="p">,</span>
 
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;test/data/random-subgraph.json.xz&#39;</span><span class="p">,</span>
-
-        <span class="p">),</span>
+    <span class="p">),</span>
 
 <span class="p">}</span>
 
@@ -708,11 +702,11 @@
 
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> is not a supported test hetnet.</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not a supported test hetnet.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="s1">&#39;Choose from the following currently defined hetnets: &#39;</span> <span class="o">+</span>
+            <span class="s2">&quot;Choose from the following currently defined hetnets: &quot;</span>
 
-            <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hetnet_urls</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hetnet_urls</span><span class="p">)</span>
 
         <span class="p">)</span>
 
@@ -780,11 +774,11 @@ The substitutions are identified by braces ('{' and '}').</p>
 
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> is not a supported test hetnet.</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not a supported test hetnet.</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-            <span class="s1">&#39;Choose from the following currently defined hetnets: &#39;</span> <span class="o">+</span>
+            <span class="s2">&quot;Choose from the following currently defined hetnets: &quot;</span>
 
-            <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hetnet_urls</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hetnet_urls</span><span class="p">)</span>
 
         <span class="p">)</span>
 

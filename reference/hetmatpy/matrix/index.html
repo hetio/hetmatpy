@@ -652,15 +652,15 @@
 <p>None</p>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span>
-
-<span class="kn">import</span> <span class="nn">scipy.sparse</span>
-
-<span class="kn">import</span> <span class="nn">hetnetpy.hetnet</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">hetnetpy.hetnet</span>
 
 <span class="kn">import</span> <span class="nn">hetnetpy.matrix</span>
 
 <span class="kn">import</span> <span class="nn">hetnetpy.permute</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">scipy.sparse</span>
 
 <span class="kn">import</span> <span class="nn">hetmatpy.hetmat</span>
 
@@ -682,9 +682,13 @@
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="n">hetnet</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">metaedge_to_adjacency_matrix</span><span class="p">(</span>
 
-    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;graph_or_hetmat is an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+
+        <span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;graph_or_hetmat is an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_node_identifiers</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">metanode</span><span class="p">):</span>
 
@@ -704,7 +708,7 @@
 
         <span class="k">return</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="kp">matrix</span><span class="o">.</span><span class="n">get_node_identifiers</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">,</span> <span class="n">metanode</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;graph_or_hetmat is an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;graph_or_hetmat is an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">graph_or_hetmat</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="kp">matrix</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">damping_exponent</span><span class="p">):</span>
 
@@ -740,7 +744,7 @@
 
         <span class="k">return</span> <span class="kp">matrix</span>
 
-    <span class="k">with</span> <span class="n">numpy</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="kp">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">numpy</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="kp">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
 
         <span class="n">vector</span> <span class="o">**=</span> <span class="o">-</span><span class="n">damping_exponent</span>
 
@@ -748,7 +752,7 @@
 
     <span class="n">vector</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;rows&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;rows&quot;</span><span class="p">:</span>
 
         <span class="c1"># equivalent to `vector @ matrix` but returns scipy.sparse.csc not scipy.sparse.csr  # noqa: E501</span>
 
@@ -766,7 +770,7 @@
 
     <span class="k">assert</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">ndim</span> <span class="o">==</span> <span class="mi">2</span>
 
-    <span class="k">assert</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">dtype</span> <span class="o">!=</span> <span class="s1">&#39;O&#39;</span>  <span class="c1"># Ensures no empty row</span>
+    <span class="k">assert</span> <span class="kp">matrix</span><span class="o">.</span><span class="kp">dtype</span> <span class="o">!=</span> <span class="s2">&quot;O&quot;</span>  <span class="c1"># Ensures no empty row</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="kp">matrix</span><span class="p">):</span>
 
@@ -790,9 +794,11 @@
 
     <span class="k">return</span> <span class="kp">matrix</span>
 
-<span class="k">def</span> <span class="nf">permute_matrix</span><span class="p">(</span><span class="n">adjacency_matrix</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">permute_matrix</span><span class="p">(</span>
 
-                   <span class="n">excluded_pair_set</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span> <span class="kp">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">adjacency_matrix</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">excluded_pair_set</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span> <span class="kp">seed</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 
@@ -836,17 +842,27 @@
 
     <span class="n">permuted_edges</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">hetnetpy</span><span class="o">.</span><span class="n">permute</span><span class="o">.</span><span class="n">permute_pair_list</span><span class="p">(</span>
 
-        <span class="n">edge_list</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="n">directed</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span>
+        <span class="n">edge_list</span><span class="p">,</span>
 
-        <span class="n">excluded_pair_set</span><span class="o">=</span><span class="n">excluded_pair_set</span><span class="p">,</span> <span class="kp">seed</span><span class="o">=</span><span class="kp">seed</span><span class="p">)</span>
+        <span class="n">directed</span><span class="o">=</span><span class="n">directed</span><span class="p">,</span>
+
+        <span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span><span class="p">,</span>
+
+        <span class="n">excluded_pair_set</span><span class="o">=</span><span class="n">excluded_pair_set</span><span class="p">,</span>
+
+        <span class="kp">seed</span><span class="o">=</span><span class="kp">seed</span><span class="p">,</span>
+
+    <span class="p">)</span>
 
     <span class="n">edges</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">array</span><span class="p">(</span><span class="n">permuted_edges</span><span class="p">)</span>
 
     <span class="kp">ones</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">),</span> <span class="kp">dtype</span><span class="o">=</span><span class="n">adjacency_matrix</span><span class="o">.</span><span class="kp">dtype</span><span class="p">)</span>
 
-    <span class="n">permuted_adjacency</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">((</span><span class="kp">ones</span><span class="p">,</span> <span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])),</span>
+    <span class="n">permuted_adjacency</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">(</span>
 
-                                                 <span class="kp">shape</span><span class="o">=</span><span class="n">adjacency_matrix</span><span class="o">.</span><span class="kp">shape</span><span class="p">)</span>
+        <span class="p">(</span><span class="kp">ones</span><span class="p">,</span> <span class="p">(</span><span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])),</span> <span class="kp">shape</span><span class="o">=</span><span class="n">adjacency_matrix</span><span class="o">.</span><span class="kp">shape</span>
+
+    <span class="p">)</span>
 
     <span class="c1"># Keep the same sparse type as adjacency_matrix</span>
 
@@ -886,7 +902,7 @@
 
     <span class="nv">assert</span> <span class="nv">matrix</span>.<span class="nv">ndim</span> <span class="o">==</span> <span class="mi">2</span>
 
-    <span class="nv">assert</span> <span class="nv">matrix</span>.<span class="nv">dtype</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="s">O</span><span class="s1">&#39;</span>  # <span class="nv">Ensures</span> <span class="nv">no</span> <span class="nv">empty</span> <span class="nv">row</span>
+    <span class="nv">assert</span> <span class="nv">matrix</span>.<span class="nv">dtype</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="s">O</span><span class="s2">&quot;</span>  # <span class="nv">Ensures</span> <span class="nv">no</span> <span class="nv">empty</span> <span class="nv">row</span>
 
     <span class="k">if</span> <span class="nv">not</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">issparse</span><span class="ss">(</span><span class="nv">matrix</span><span class="ss">)</span>:
 
@@ -940,7 +956,7 @@
 
         <span class="k">return</span> <span class="nv">hetnetpy</span>.<span class="nv">matrix</span>.<span class="nv">get_node_identifiers</span><span class="ss">(</span><span class="nv">graph_or_hetmat</span>, <span class="nv">metanode</span><span class="ss">)</span>
 
-    <span class="nv">raise</span> <span class="nv">TypeError</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="nv">raise</span> <span class="nv">TypeError</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}</span><span class="s2">&quot;</span><span class="ss">)</span>
 </code></pre></div>
 
 </details>
@@ -975,9 +991,13 @@ graph_or_hetmat to be either a hetnetpy.hetnet.Graph or hetmatpy.hetmat.HetMat.<
 
     <span class="k">if</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">graph_or_hetmat</span>, <span class="nv">hetnetpy</span>.<span class="nv">hetnet</span>.<span class="nv">Graph</span><span class="ss">)</span>:
 
-        <span class="k">return</span> <span class="nv">hetnetpy</span>.<span class="nv">matrix</span>.<span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span><span class="nv">graph_or_hetmat</span>, <span class="o">*</span><span class="nv">args</span>, <span class="o">**</span><span class="nv">kwargs</span><span class="ss">)</span>
+        <span class="k">return</span> <span class="nv">hetnetpy</span>.<span class="nv">matrix</span>.<span class="nv">metaedge_to_adjacency_matrix</span><span class="ss">(</span>
 
-    <span class="nv">raise</span> <span class="nv">TypeError</span><span class="ss">(</span><span class="nv">f</span><span class="s1">&#39;</span><span class="s">graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}</span><span class="s1">&#39;</span><span class="ss">)</span>
+            <span class="nv">graph_or_hetmat</span>, <span class="o">*</span><span class="nv">args</span>, <span class="o">**</span><span class="nv">kwargs</span>
+
+        <span class="ss">)</span>
+
+    <span class="nv">raise</span> <span class="nv">TypeError</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;</span><span class="s">graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}</span><span class="s2">&quot;</span><span class="ss">)</span>
 </code></pre></div>
 
 </details>
@@ -1035,7 +1055,7 @@ damping_exponent : float
 
         <span class="k">return</span> <span class="nv">matrix</span>
 
-    <span class="nv">with</span> <span class="nv">numpy</span>.<span class="nv">errstate</span><span class="ss">(</span><span class="nv">divide</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">ignore</span><span class="s1">&#39;</span><span class="ss">)</span>:
+    <span class="nv">with</span> <span class="nv">numpy</span>.<span class="nv">errstate</span><span class="ss">(</span><span class="nv">divide</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">ignore</span><span class="s2">&quot;</span><span class="ss">)</span>:
 
         <span class="nv">vector</span> <span class="o">**=</span> <span class="o">-</span><span class="nv">damping_exponent</span>
 
@@ -1043,7 +1063,7 @@ damping_exponent : float
 
     <span class="nv">vector</span> <span class="o">=</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">diags</span><span class="ss">(</span><span class="nv">vector</span><span class="ss">)</span>
 
-    <span class="k">if</span> <span class="nv">axis</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="s">rows</span><span class="s1">&#39;</span>:
+    <span class="k">if</span> <span class="nv">axis</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">rows</span><span class="s2">&quot;</span>:
 
         # <span class="nv">equivalent</span> <span class="nv">to</span> `<span class="nv">vector</span> @ <span class="nv">matrix</span>` <span class="nv">but</span> <span class="nv">returns</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">csc</span> <span class="nv">not</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">csr</span>  # <span class="nv">noqa</span>: <span class="nv">E501</span>
 
@@ -1139,9 +1159,11 @@ damping_exponent : float
 </table>
 <details class="example">
 <summary>View Source</summary>
-<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">permute_matrix</span><span class="ss">(</span><span class="nv">adjacency_matrix</span>, <span class="nv">directed</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">multiplier</span><span class="o">=</span><span class="mi">10</span>,
+<div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">permute_matrix</span><span class="ss">(</span>
 
-                   <span class="nv">excluded_pair_set</span><span class="o">=</span><span class="nv">set</span><span class="ss">()</span>, <span class="nv">seed</span><span class="o">=</span><span class="mi">0</span><span class="ss">)</span>:
+    <span class="nv">adjacency_matrix</span>, <span class="nv">directed</span><span class="o">=</span><span class="nv">False</span>, <span class="nv">multiplier</span><span class="o">=</span><span class="mi">10</span>, <span class="nv">excluded_pair_set</span><span class="o">=</span><span class="nv">set</span><span class="ss">()</span>, <span class="nv">seed</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="ss">)</span>:
 
     <span class="s2">&quot;&quot;&quot;</span>
 
@@ -1185,17 +1207,27 @@ damping_exponent : float
 
     <span class="nv">permuted_edges</span>, <span class="nv">stats</span> <span class="o">=</span> <span class="nv">hetnetpy</span>.<span class="nv">permute</span>.<span class="nv">permute_pair_list</span><span class="ss">(</span>
 
-        <span class="nv">edge_list</span>, <span class="nv">directed</span><span class="o">=</span><span class="nv">directed</span>, <span class="nv">multiplier</span><span class="o">=</span><span class="nv">multiplier</span>,
+        <span class="nv">edge_list</span>,
 
-        <span class="nv">excluded_pair_set</span><span class="o">=</span><span class="nv">excluded_pair_set</span>, <span class="nv">seed</span><span class="o">=</span><span class="nv">seed</span><span class="ss">)</span>
+        <span class="nv">directed</span><span class="o">=</span><span class="nv">directed</span>,
+
+        <span class="nv">multiplier</span><span class="o">=</span><span class="nv">multiplier</span>,
+
+        <span class="nv">excluded_pair_set</span><span class="o">=</span><span class="nv">excluded_pair_set</span>,
+
+        <span class="nv">seed</span><span class="o">=</span><span class="nv">seed</span>,
+
+    <span class="ss">)</span>
 
     <span class="nv">edges</span> <span class="o">=</span> <span class="nv">numpy</span>.<span class="nv">array</span><span class="ss">(</span><span class="nv">permuted_edges</span><span class="ss">)</span>
 
     <span class="nv">ones</span> <span class="o">=</span> <span class="nv">numpy</span>.<span class="nv">ones</span><span class="ss">(</span><span class="nv">len</span><span class="ss">(</span><span class="nv">edges</span><span class="ss">)</span>, <span class="nv">dtype</span><span class="o">=</span><span class="nv">adjacency_matrix</span>.<span class="nv">dtype</span><span class="ss">)</span>
 
-    <span class="nv">permuted_adjacency</span> <span class="o">=</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">csc_matrix</span><span class="ss">((</span><span class="nv">ones</span>, <span class="ss">(</span><span class="nv">edges</span>[:, <span class="mi">0</span>], <span class="nv">edges</span>[:, <span class="mi">1</span>]<span class="ss">))</span>,
+    <span class="nv">permuted_adjacency</span> <span class="o">=</span> <span class="nv">scipy</span>.<span class="nv">sparse</span>.<span class="nv">csc_matrix</span><span class="ss">(</span>
 
-                                                 <span class="nv">shape</span><span class="o">=</span><span class="nv">adjacency_matrix</span>.<span class="nv">shape</span><span class="ss">)</span>
+        <span class="ss">(</span><span class="nv">ones</span>, <span class="ss">(</span><span class="nv">edges</span>[:, <span class="mi">0</span>], <span class="nv">edges</span>[:, <span class="mi">1</span>]<span class="ss">))</span>, <span class="nv">shape</span><span class="o">=</span><span class="nv">adjacency_matrix</span>.<span class="nv">shape</span>
+
+    <span class="ss">)</span>
 
     # <span class="nv">Keep</span> <span class="nv">the</span> <span class="nv">same</span> <span class="nv">sparse</span> <span class="nv">type</span> <span class="nv">as</span> <span class="nv">adjacency_matrix</span>
 
