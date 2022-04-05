@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
+requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
@@ -48,8 +48,8 @@ Tracker = "https://github.com/hetio/hetmatpy/issues"
 Homepage = "https://het.io/software/"
 Publication = "https://greenelab.github.io/connectivity-search-manuscript/"
 
-[tool.setuptools.dynamic]
-version = {attr = "hetmatpy.__version__"}
+[tool.setuptools_scm]
+# enable https://github.com/pypa/setuptools_scm
 
 # https://pycqa.github.io/isort/docs/configuration/config_files.html
 [tool.isort]
