@@ -1,15 +1,9 @@
 from collections import OrderedDict
 
 import numpy
-from hetnetpy.matrix import (
-    get_node_to_position,
-)
+from hetnetpy.matrix import get_node_to_position
 
-from .matrix import (
-    copy_array,
-    metaedge_to_adjacency_matrix,
-    normalize,
-)
+from .matrix import copy_array, metaedge_to_adjacency_matrix, normalize
 
 
 def diffusion_step(matrix, row_damping=0, column_damping=0):
@@ -42,23 +36,17 @@ def diffusion_step(matrix, row_damping=0, column_damping=0):
     # Perform column normalization
     if column_damping != 0:
         column_sums = numpy.array(matrix.sum(axis=0)).flatten()
-        matrix = normalize(matrix, column_sums, 'columns', column_damping)
+        matrix = normalize(matrix, column_sums, "columns", column_damping)
 
     # Perform row normalization
     if row_damping != 0:
         row_sums = numpy.array(matrix.sum(axis=1)).flatten()
-        matrix = normalize(matrix, row_sums, 'rows', row_damping)
+        matrix = normalize(matrix, row_sums, "rows", row_damping)
 
     return matrix
 
 
-def diffuse(
-        graph,
-        metapath,
-        source_node_weights,
-        column_damping=0,
-        row_damping=1
-        ):
+def diffuse(graph, metapath, source_node_weights, column_damping=0, row_damping=1):
     """
     Performs diffusion from the specified source nodes.
 
@@ -85,12 +73,12 @@ def diffuse(
         node_scores[i] = weight
 
     for metaedge in metapath:
-        row_names, column_names, adjacency_matrix = (
-            metaedge_to_adjacency_matrix(graph, metaedge))
+        row_names, column_names, adjacency_matrix = metaedge_to_adjacency_matrix(
+            graph, metaedge
+        )
 
         # Row/column normalization with degree damping
-        adjacency_matrix = diffusion_step(
-            adjacency_matrix, row_damping, column_damping)
+        adjacency_matrix = diffusion_step(adjacency_matrix, row_damping, column_damping)
 
         node_scores = node_scores @ adjacency_matrix
 

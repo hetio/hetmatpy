@@ -17,7 +17,9 @@ import hetmatpy.degree_weight
 import hetmatpy.matrix
 
 
-def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_edges=True):
+def hetmat_from_graph(
+    graph, path, save_metagraph=True, save_nodes=True, save_edges=True
+):
     """
     Create a hetmat.HetMat from a hetnetpy.hetnet.Graph.
     """
@@ -33,14 +35,16 @@ def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_ed
         node_to_position = hetnetpy.matrix.get_node_to_position(graph, metanode)
         for node, position in node_to_position.items():
             rows.append((position, node.identifier, node.name))
-        node_df = pandas.DataFrame(rows, columns=['position', 'identifier', 'name'])
+        node_df = pandas.DataFrame(rows, columns=["position", "identifier", "name"])
         path = hetmat.get_nodes_path(metanode)
-        node_df.to_csv(path, index=False, sep='\t')
+        node_df.to_csv(path, index=False, sep="\t")
 
     # Save metaedges
     metaedges = list(graph.metagraph.get_edges(exclude_inverts=True))
     for metaedge in metaedges:
-        rows, cols, matrix = hetnetpy.matrix.metaedge_to_adjacency_matrix(graph, metaedge, dense_threshold=1)
+        rows, cols, matrix = hetnetpy.matrix.metaedge_to_adjacency_matrix(
+            graph, metaedge, dense_threshold=1
+        )
         path = hetmat.get_edges_path(metaedge, file_format=None)
         save_matrix(matrix, path)
     return hetmat
@@ -53,7 +57,11 @@ def hetmat_from_permuted_graph(hetmat, permutation_id, permuted_graph):
     """
     permuted_hetmat = initialize_permutation_directory(hetmat, permutation_id)
     permuted_hetmat = hetmat_from_graph(
-        permuted_graph, permuted_hetmat.directory, save_metagraph=False, save_nodes=False)
+        permuted_graph,
+        permuted_hetmat.directory,
+        save_metagraph=False,
+        save_nodes=False,
+    )
     return permuted_hetmat
 
 
@@ -72,37 +80,37 @@ def initialize_permutation_directory(hetmat, permutation_id):
     """
     if not hetmat.permutations_directory.is_dir():
         hetmat.permutations_directory.mkdir()
-    directory = hetmat.permutations_directory.joinpath(f'{permutation_id}.hetmat')
+    directory = hetmat.permutations_directory.joinpath(f"{permutation_id}.hetmat")
     if directory.is_dir():
         # If directory exists, back it up using a .bak extension
-        backup_directory = directory.with_name(directory.name + '.bak')
+        backup_directory = directory.with_name(directory.name + ".bak")
         if backup_directory.is_dir():
             shutil.rmtree(backup_directory)
         shutil.move(directory, backup_directory)
     permuted_hetmat = HetMat(directory, initialize=True)
     permuted_hetmat.is_permutation = True
-    permuted_hetmat.metagraph_path.symlink_to('../../metagraph.json')
+    permuted_hetmat.metagraph_path.symlink_to("../../metagraph.json")
     permuted_hetmat.nodes_directory.rmdir()
-    permuted_hetmat.nodes_directory.symlink_to('../../nodes', target_is_directory=True)
+    permuted_hetmat.nodes_directory.symlink_to("../../nodes", target_is_directory=True)
     return permuted_hetmat
 
 
-def read_matrix(path, file_format='infer'):
+def read_matrix(path, file_format="infer"):
     path = str(path)
-    if file_format == 'infer':
-        if path.endswith('.sparse.npz'):
-            file_format = 'sparse.npz'
-        if path.endswith('.npy'):
-            file_format = 'npy'
-    if file_format == 'infer':
-        raise ValueError('Could not infer file_format for {path}')
-    if file_format == 'sparse.npz':
+    if file_format == "infer":
+        if path.endswith(".sparse.npz"):
+            file_format = "sparse.npz"
+        if path.endswith(".npy"):
+            file_format = "npy"
+    if file_format == "infer":
+        raise ValueError("Could not infer file_format for {path}")
+    if file_format == "sparse.npz":
         # https://docs.scipy.org/doc/scipy-1.0.0/reference/generated/scipy.sparse.load_npz.html
         return scipy.sparse.load_npz(path)
-    if file_format == 'npy':
+    if file_format == "npy":
         # https://docs.scipy.org/doc/numpy-1.14.0/reference/generated/numpy.load.html
         return numpy.load(path)
-    raise ValueError(f'file_format={file_format} is not supported.')
+    raise ValueError(f"file_format={file_format} is not supported.")
 
 
 def save_matrix(matrix, path):
@@ -115,12 +123,12 @@ def save_matrix(matrix, path):
         path.parent.mkdir()
     path = str(path)
     if isinstance(matrix, numpy.ndarray):
-        if not path.endswith('.npy'):
-            path += '.npy'
+        if not path.endswith(".npy"):
+            path += ".npy"
         numpy.save(path, matrix)
     elif scipy.sparse.issparse(matrix):
-        if not path.endswith('.sparse.npz'):
-            path += '.sparse.npz'
+        if not path.endswith(".sparse.npz"):
+            path += ".sparse.npz"
         scipy.sparse.save_npz(path, matrix, compressed=True)
 
 
@@ -138,34 +146,34 @@ def read_first_matrix(specs, delete_failures=False):
     """
     paths = list()
     for spec in specs:
-        path = pathlib.Path(spec['path'])
+        path = pathlib.Path(spec["path"])
         paths.append(str(path))
         if not path.is_file():
             continue
-        transpose = spec.get('transpose', False)
-        file_format = spec.get('file_format', 'infer')
+        transpose = spec.get("transpose", False)
+        file_format = spec.get("file_format", "infer")
         try:
             matrix = read_matrix(path, file_format=file_format)
         except Exception as error:
-            logging.warning(f'Error reading matrix at {path}:\n{error}')
+            logging.warning(f"Error reading matrix at {path}:\n{error}")
             if delete_failures:
                 path.unlink()
-                logging.warning(f'Deleting file at {path}')
+                logging.warning(f"Deleting file at {path}")
                 continue
         if transpose:
             matrix = matrix.transpose()
         return matrix
     raise FileNotFoundError(
-        'No matrix files found at the specified paths:\n' +
-        '\n'.join(paths))
+        "No matrix files found at the specified paths:\n" + "\n".join(paths)
+    )
 
 
 compression_extension = {
-    'gzip': '.gz',
-    'bz2': '.bz2',
-    'zip': '.zip',
-    'xz': '.xz',
-    None: '',
+    "gzip": ".gz",
+    "bz2": ".bz2",
+    "zip": ".zip",
+    "xz": ".xz",
+    None: "",
 }
 
 
@@ -173,7 +181,7 @@ class HetMat:
 
     # Supported formats for nodes files
     nodes_formats = {
-        'tsv',
+        "tsv",
         # 'feather',
         # 'pickle',
         # 'json',
@@ -181,8 +189,8 @@ class HetMat:
 
     # Supported formats for edges files
     edges_formats = {
-        'npy',
-        'sparse.npz',
+        "npy",
+        "sparse.npz",
         # 'tsv',
     }
 
@@ -191,14 +199,14 @@ class HetMat:
         Initialize a HetMat with its MetaGraph.
         """
         self.directory = pathlib.Path(directory)
-        self.metagraph_path = self.directory.joinpath('metagraph.json')
-        self.nodes_directory = self.directory.joinpath('nodes')
-        self.edges_directory = self.directory.joinpath('edges')
-        self.path_counts_directory = self.directory.joinpath('path-counts')
+        self.metagraph_path = self.directory.joinpath("metagraph.json")
+        self.nodes_directory = self.directory.joinpath("nodes")
+        self.edges_directory = self.directory.joinpath("edges")
+        self.path_counts_directory = self.directory.joinpath("path-counts")
         self.path_counts_cache = None
         # Permutations should set is_permutation=True
         self.is_permutation = False
-        self.permutations_directory = self.directory.joinpath('permutations')
+        self.permutations_directory = self.directory.joinpath("permutations")
         if initialize:
             self.initialize()
 
@@ -226,17 +234,23 @@ class HetMat:
         extension.
         """
         permutations = {}
-        for directory in sorted(self.permutations_directory.glob('*.hetmat')):
+        for directory in sorted(self.permutations_directory.glob("*.hetmat")):
             if not directory.is_dir():
                 continue
             permutation = HetMat(directory)
             permutation.is_permutation = True
-            name, _ = directory.name.rsplit('.', 1)
+            name, _ = directory.name.rsplit(".", 1)
             permutations[name] = permutation
         return permutations
 
-    def permute_graph(self, num_new_permutations=None, namer=None, start_from=None,
-                      multiplier=10, seed=0):
+    def permute_graph(
+        self,
+        num_new_permutations=None,
+        namer=None,
+        start_from=None,
+        multiplier=10,
+        seed=0,
+    ):
         """
         Generate and save permutations of the HetMat adjacency matrices.
 
@@ -257,7 +271,7 @@ class HetMat:
         """
         if namer is None:
             # If no namer given, continue increasing names by one for new permutations
-            namer = (f'{x:03}' for x in itertools.count(start=1))
+            namer = (f"{x:03}" for x in itertools.count(start=1))
 
         stat_dfs = list()
         for _ in range(num_new_permutations):
@@ -273,17 +287,21 @@ class HetMat:
             metaedges = list(self.metagraph.get_edges(exclude_inverts=True))
             for metaedge in metaedges:
                 rows, cols, original_matrix = start_from.metaedge_to_adjacency_matrix(
-                    metaedge, dense_threshold=1)
-                is_directed = metaedge.direction != 'both'
+                    metaedge, dense_threshold=1
+                )
+                is_directed = metaedge.direction != "both"
                 permuted_matrix, stats = hetmatpy.matrix.permute_matrix(
-                    original_matrix, directed=is_directed, multiplier=multiplier,
-                    seed=seed)
+                    original_matrix,
+                    directed=is_directed,
+                    multiplier=multiplier,
+                    seed=seed,
+                )
                 path = new_hetmat.get_edges_path(metaedge, file_format=None)
                 save_matrix(permuted_matrix, path)
                 stat_df = pandas.DataFrame(stats)
-                stat_df['metaedge'] = metaedge
-                stat_df['abbrev'] = metaedge.get_abbrev()
-                stat_df['permutation'] = permutation_name
+                stat_df["metaedge"] = metaedge
+                stat_df["abbrev"] = metaedge.get_abbrev()
+                stat_df["permutation"] = permutation_name
                 stat_dfs.append(stat_df)
             start_from = permutation_name
             seed += 1
@@ -309,26 +327,26 @@ class HetMat:
         """
         hetnetpy.readwrite.write_metagraph(metagraph, self.metagraph_path)
 
-    def get_nodes_path(self, metanode, file_format='tsv'):
+    def get_nodes_path(self, metanode, file_format="tsv"):
         """
         Get the path for the nodes file for the specified metanode. Setting
         file_format=None returns the path without any extension suffix.
         """
         metanode = self.metagraph.get_metanode(metanode)
-        path = self.nodes_directory.joinpath(f'{metanode}')
+        path = self.nodes_directory.joinpath(f"{metanode}")
         if file_format is not None:
-            path = path.with_name(f'{path.name}.{file_format}')
+            path = path.with_name(f"{path.name}.{file_format}")
         return path
 
-    def get_edges_path(self, metaedge, file_format='npy'):
+    def get_edges_path(self, metaedge, file_format="npy"):
         """
         Get the path for the edges file for the specified metaedge. Setting
         file_format=None returns the path without any extension suffix.
         """
         metaedge_abbrev = self.metagraph.get_metaedge(metaedge).get_abbrev()
-        path = self.edges_directory.joinpath(f'{metaedge_abbrev}')
+        path = self.edges_directory.joinpath(f"{metaedge_abbrev}")
         if file_format is not None:
-            path = path.with_name(f'{path.name}.{file_format}')
+            path = path.with_name(f"{path.name}.{file_format}")
         return path
 
     def get_path_counts_path(self, metapath, metric, damping, file_format):
@@ -337,27 +355,36 @@ class HetMat:
         Supported metrics are 'dwpc' and 'dwwc'.
         """
         damping = float(damping)
-        path = self.path_counts_directory.joinpath(f'{metric}-{damping}/{metapath}')
+        path = self.path_counts_directory.joinpath(f"{metric}-{damping}/{metapath}")
         if file_format is not None:
-            path = path.with_name(f'{path.name}.{file_format}')
+            path = path.with_name(f"{path.name}.{file_format}")
         return path
 
-    def get_running_degree_group_path(self, metapath, metric, damping, extension='.tsv.gz'):
+    def get_running_degree_group_path(
+        self, metapath, metric, damping, extension=".tsv.gz"
+    ):
         """
         Get path for degree-grouped permutatation running metrics.
         Must specify extension.
         """
         damping = float(damping)
         path = self.directory.joinpath(
-            'adjusted-path-counts', f'{metric}-{damping}',
-            'degree-grouped-permutations', f'{metapath}{extension}')
+            "adjusted-path-counts",
+            f"{metric}-{damping}",
+            "degree-grouped-permutations",
+            f"{metapath}{extension}",
+        )
         return path
 
     def get_metapath_summary_path(self, metapath, metric, damping, compression=None):
         damping = float(damping)
         compr = compression_extension[compression]
-        path = self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}',
-                                       'adjusted-dwpcs', f'{metapath}.tsv{compr}')
+        path = self.directory.joinpath(
+            "adjusted-path-counts",
+            f"{metric}-{damping}",
+            "adjusted-dwpcs",
+            f"{metapath}.tsv{compr}",
+        )
         return path
 
     @functools.lru_cache()
@@ -365,9 +392,9 @@ class HetMat:
         """
         Returns a list of node identifiers for a metapath
         """
-        path = self.get_nodes_path(metanode, file_format='tsv')
-        node_df = pandas.read_csv(path, sep='\t')
-        return list(node_df['identifier'])
+        path = self.get_nodes_path(metanode, file_format="tsv")
+        node_df = pandas.read_csv(path, sep="\t")
+        return list(node_df["identifier"])
 
     @functools.lru_cache()
     def count_nodes(self, metanode):
@@ -375,9 +402,12 @@ class HetMat:
         return len(nodes)
 
     def metaedge_to_adjacency_matrix(
-            self, metaedge,
-            dtype=None, dense_threshold=None,
-            file_formats=['sparse.npz', 'npy']):
+        self,
+        metaedge,
+        dtype=None,
+        dense_threshold=None,
+        file_formats=["sparse.npz", "npy"],
+    ):
         """
         file_formats sets the precedence of which file to read in
         """
@@ -389,11 +419,13 @@ class HetMat:
                 metaedge=metaedge.inverse if invert else metaedge,
                 file_format=file_format,
             )
-            spec = {'path': path, 'transpose': invert, 'file_format': file_format}
+            spec = {"path": path, "transpose": invert, "file_format": file_format}
             specs.append(spec)
         matrix = read_first_matrix(specs)
         if dense_threshold is not None:
-            matrix = hetnetpy.matrix.sparsify_or_densify(matrix, dense_threshold=dense_threshold)
+            matrix = hetnetpy.matrix.sparsify_or_densify(
+                matrix, dense_threshold=dense_threshold
+            )
         if dtype is not None:
             matrix = matrix.astype(dtype)
         row_ids = self.get_node_identifiers(metaedge.source)
@@ -401,18 +433,18 @@ class HetMat:
         return row_ids, col_ids, matrix
 
     def read_path_counts(
-            self, metapath, metric, damping,
-            file_formats=['sparse.npz', 'npy']):
+        self, metapath, metric, damping, file_formats=["sparse.npz", "npy"]
+    ):
         """
         Read matrix with values of a path-count-based metric. Attempts to
         locate any files with the matrix (or with trivial transformations).
         """
         category = hetmatpy.degree_weight.categorize(metapath)
         metrics = [metric]
-        if metric == 'dwpc' and category == 'no_repeats':
-            metrics.append('dwwc')
-        if metric == 'dwwc' and category == 'no_repeats':
-            metrics.append('dwpc')
+        if metric == "dwpc" and category == "no_repeats":
+            metrics.append("dwwc")
+        if metric == "dwwc" and category == "no_repeats":
+            metrics.append("dwpc")
         specs = list()
         configurations = itertools.product(
             file_formats,
@@ -421,11 +453,12 @@ class HetMat:
         )
         for file_format, metric, invert in configurations:
             path = self.get_path_counts_path(
-                metapath=metapath.inverse if invert else metapath, metric=metric,
+                metapath=metapath.inverse if invert else metapath,
+                metric=metric,
                 damping=damping,
                 file_format=file_format,
             )
-            spec = {'path': path, 'transpose': invert, 'file_format': file_format}
+            spec = {"path": path, "transpose": invert, "file_format": file_format}
             specs.append(spec)
         row_ids = self.get_node_identifiers(metapath.source())
         col_ids = self.get_node_identifiers(metapath.target())

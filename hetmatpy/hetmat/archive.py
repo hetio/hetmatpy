@@ -14,21 +14,27 @@ def create_hetmat_archive(hetmat, destination_path=None):
     directory with .zip appended. Returns the destination path.
     """
     if destination_path is None:
-        destination_path = hetmat.directory.joinpath('..', hetmat.directory.absolute().name + '.zip')
+        destination_path = hetmat.directory.joinpath(
+            "..", hetmat.directory.absolute().name + ".zip"
+        )
     create_archive_by_globs(
         destination_path=destination_path,
         root_directory=hetmat.directory,
-        include_globs=['nodes/*', 'edges/*'],
-        include_paths=['metagraph.json'],
-        zip_mode='w',
+        include_globs=["nodes/*", "edges/*"],
+        include_paths=["metagraph.json"],
+        zip_mode="w",
     )
     return destination_path
 
 
 def create_archive_by_globs(
-        destination_path, root_directory,
-        include_globs=[], exclude_globs=[], include_paths=[],
-        **kwargs):
+    destination_path,
+    root_directory,
+    include_globs=[],
+    exclude_globs=[],
+    include_paths=[],
+    **kwargs,
+):
     """
     First, paths relative to root_directory are included according to include_globs.
     Second, paths relative to root_directory are excluded according to exclude_globs.
@@ -46,8 +52,13 @@ def create_archive_by_globs(
 
 
 def create_archive(
-        destination_path, root_directory, source_paths,
-        zip_mode='x', compression=zipfile.ZIP_LZMA, split_size=None):
+    destination_path,
+    root_directory,
+    source_paths,
+    zip_mode="x",
+    compression=zipfile.ZIP_LZMA,
+    split_size=None,
+):
     """
     Create a zip archive of the source paths at the destination path.
     source_paths as paths relative to the hetmat root directory.
@@ -57,13 +68,15 @@ def create_archive(
     path is a TSV with information on each archived file.
     """
     root_directory = pathlib.Path(root_directory)
-    assert zip_mode in {'w', 'x', 'a'}
+    assert zip_mode in {"w", "x", "a"}
     source_paths = sorted(set(map(str, source_paths)))
     destination_path = pathlib.Path(destination_path)
     if split_size is None:
         zip_path = destination_path
     else:
-        zip_path_formatter = f'{destination_path.stem}-{{:04d}}{destination_path.suffix}'.format
+        zip_path_formatter = (
+            f"{destination_path.stem}-{{:04d}}{destination_path.suffix}".format
+        )
         split_num = 0
         zip_path = destination_path.with_name(zip_path_formatter(split_num))
     zip_paths = [zip_path]
@@ -78,12 +91,14 @@ def create_archive(
                 split_num += 1
                 zip_path = destination_path.with_name(zip_path_formatter(split_num))
                 zip_paths.append(zip_path)
-                zip_file = zipfile.ZipFile(zip_path, mode=zip_mode, compression=compression)
+                zip_file = zipfile.ZipFile(
+                    zip_path, mode=zip_mode, compression=compression
+                )
         zip_file.write(source_fs_path, source_path)
     zip_file.close()
     info_df = get_archive_info_df(zip_paths)
-    info_path = destination_path.with_name(destination_path.name + '-info.tsv')
-    info_df.to_csv(info_path, sep='\t', index=False)
+    info_path = destination_path.with_name(destination_path.name + "-info.tsv")
+    info_df.to_csv(info_path, sep="\t", index=False)
     return [info_path] + zip_paths
 
 
@@ -92,11 +107,11 @@ def get_archive_info_df(zip_paths):
     Return member file info for a list of zip archives.
     """
     fields = [
-        'filename',
-        'file_size',
-        'compress_type',
-        'compress_size',
-        'CRC',
+        "filename",
+        "file_size",
+        "compress_type",
+        "compress_size",
+        "CRC",
     ]
     rows = list()
     for path in zip_paths:
@@ -105,7 +120,7 @@ def get_archive_info_df(zip_paths):
             infolist = zip_file.infolist()
         for info in infolist:
             row = collections.OrderedDict()
-            row['archive'] = path.name
+            row["archive"] = path.name
             for field in fields:
                 row[field] = getattr(info, field)
             rows.append(row)
@@ -120,10 +135,12 @@ def load_archive(archive_path, destination_dir, source_paths=None):
     If source_paths=None, all zipped files are extracted. Pass source_paths
     a list of specific paths within the zipfile to extract only those members.
     """
-    is_url = isinstance(archive_path, str) and re.match('^(http|ftp)s?://', archive_path)
+    is_url = isinstance(archive_path, str) and re.match(
+        "^(http|ftp)s?://", archive_path
+    )
     if is_url:
         archive_path, _ = urllib.request.urlretrieve(archive_path)
-    with zipfile.ZipFile(archive_path, mode='r') as zip_file:
+    with zipfile.ZipFile(archive_path, mode="r") as zip_file:
         zip_file.extractall(destination_dir, members=source_paths)
     if is_url:
         urllib.request.urlcleanup()

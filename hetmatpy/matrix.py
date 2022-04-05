@@ -1,9 +1,8 @@
-import numpy
-import scipy.sparse
-
 import hetnetpy.hetnet
 import hetnetpy.matrix
 import hetnetpy.permute
+import numpy
+import scipy.sparse
 
 import hetmatpy.hetmat
 
@@ -17,8 +16,10 @@ def metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs):
     if isinstance(graph_or_hetmat, hetmatpy.hetmat.HetMat):
         return graph_or_hetmat.metaedge_to_adjacency_matrix(*args, **kwargs)
     if isinstance(graph_or_hetmat, hetnetpy.hetnet.Graph):
-        return hetnetpy.matrix.metaedge_to_adjacency_matrix(graph_or_hetmat, *args, **kwargs)
-    raise TypeError(f'graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}')
+        return hetnetpy.matrix.metaedge_to_adjacency_matrix(
+            graph_or_hetmat, *args, **kwargs
+        )
+    raise TypeError(f"graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}")
 
 
 def get_node_identifiers(graph_or_hetmat, metanode):
@@ -30,7 +31,7 @@ def get_node_identifiers(graph_or_hetmat, metanode):
         return graph_or_hetmat.get_node_identifiers(metanode)
     if isinstance(graph_or_hetmat, hetnetpy.hetnet.Graph):
         return hetnetpy.matrix.get_node_identifiers(graph_or_hetmat, metanode)
-    raise TypeError(f'graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}')
+    raise TypeError(f"graph_or_hetmat is an unsupported type: {type(graph_or_hetmat)}")
 
 
 def normalize(matrix, vector, axis, damping_exponent):
@@ -51,11 +52,11 @@ def normalize(matrix, vector, axis, damping_exponent):
     assert vector.ndim == 1
     if damping_exponent == 0:
         return matrix
-    with numpy.errstate(divide='ignore'):
+    with numpy.errstate(divide="ignore"):
         vector **= -damping_exponent
     vector[numpy.isinf(vector)] = 0
     vector = scipy.sparse.diags(vector)
-    if axis == 'rows':
+    if axis == "rows":
         # equivalent to `vector @ matrix` but returns scipy.sparse.csc not scipy.sparse.csr  # noqa: E501
         matrix = (matrix.transpose() @ vector).transpose()
     else:
@@ -66,7 +67,7 @@ def normalize(matrix, vector, axis, damping_exponent):
 def copy_array(matrix, copy=True, dtype=numpy.float64):
     """Returns a newly allocated array if copy is True"""
     assert matrix.ndim == 2
-    assert matrix.dtype != 'O'  # Ensures no empty row
+    assert matrix.dtype != "O"  # Ensures no empty row
     if not scipy.sparse.issparse(matrix):
         assert numpy.isfinite(matrix).all()  # Checks NaN and Inf
     try:
@@ -81,8 +82,9 @@ def copy_array(matrix, copy=True, dtype=numpy.float64):
     return matrix
 
 
-def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
-                   excluded_pair_set=set(), seed=0):
+def permute_matrix(
+    adjacency_matrix, directed=False, multiplier=10, excluded_pair_set=set(), seed=0
+):
     """
     Perform a degree-preserving permutation on a given adjacency matrix. Assumes
     boolean matrix, and is incompatible with weighted edges.
@@ -106,13 +108,18 @@ def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
     """
     edge_list = list(zip(*adjacency_matrix.nonzero()))
     permuted_edges, stats = hetnetpy.permute.permute_pair_list(
-        edge_list, directed=directed, multiplier=multiplier,
-        excluded_pair_set=excluded_pair_set, seed=seed)
+        edge_list,
+        directed=directed,
+        multiplier=multiplier,
+        excluded_pair_set=excluded_pair_set,
+        seed=seed,
+    )
 
     edges = numpy.array(permuted_edges)
     ones = numpy.ones(len(edges), dtype=adjacency_matrix.dtype)
-    permuted_adjacency = scipy.sparse.csc_matrix((ones, (edges[:, 0], edges[:, 1])),
-                                                 shape=adjacency_matrix.shape)
+    permuted_adjacency = scipy.sparse.csc_matrix(
+        (ones, (edges[:, 0], edges[:, 1])), shape=adjacency_matrix.shape
+    )
 
     # Keep the same sparse type as adjacency_matrix
     if scipy.sparse.issparse(adjacency_matrix):

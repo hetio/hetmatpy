@@ -1,9 +1,9 @@
 import platform
 
+import hetnetpy.pathtools
 import numpy
 import pytest
 
-import hetnetpy.pathtools
 from hetmatpy.degree_weight import dwpc
 from hetmatpy.testing import get_graph
 
@@ -14,10 +14,10 @@ def test_CbGpPWpGaD_traversal():
     metapath between bupropion and nicotine dependence. Expected values from
     the network traversal methods at https://git.io/vHBh2.
     """
-    graph = get_graph('bupropion-subgraph')
-    compound = 'DB01156'  # Bupropion
-    disease = 'DOID:0050742'  # nicotine dependence
-    metapath = graph.metagraph.metapath_from_abbrev('CbGpPWpGaD')
+    graph = get_graph("bupropion-subgraph")
+    compound = "DB01156"  # Bupropion
+    disease = "DOID:0050742"  # nicotine dependence
+    metapath = graph.metagraph.metapath_from_abbrev("CbGpPWpGaD")
     rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
     rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
     i = rows.index(compound)
@@ -33,14 +33,14 @@ def test_CbGiGiGaD_traversal():
     intended to correspond to the values from the entire Hetionet v1.0. Hence,
     the expected values are generated using hetnetpy.pathtools.
     """
-    graph = get_graph('bupropion-subgraph')
-    compound = 'DB01156'  # Bupropion
-    disease = 'DOID:0050742'  # nicotine dependence
-    metapath = graph.metagraph.metapath_from_abbrev('CbGiGiGaD')
+    graph = get_graph("bupropion-subgraph")
+    compound = "DB01156"  # Bupropion
+    disease = "DOID:0050742"  # nicotine dependence
+    metapath = graph.metagraph.metapath_from_abbrev("CbGiGiGaD")
     paths = hetnetpy.pathtools.paths_between(
         graph,
-        source=('Compound', compound),
-        target=('Disease', disease),
+        source=("Compound", compound),
+        target=("Disease", disease),
         metapath=metapath,
         duplicates=False,
     )
@@ -55,16 +55,19 @@ def test_CbGiGiGaD_traversal():
     assert dwpc_matrix[i, j] == pytest.approx(hetnetpy_dwpc)
 
 
-@pytest.mark.parametrize('metapath', [
-    'CbGaD',
-    'CbGbCtD',
-    'CrCtD',
-    'CtDrD',
-    'CuGr>GuD',
-    'CuG<rGuD',
-    'CcSEcCtDpSpD',
-])
-@pytest.mark.parametrize('hetmat', [True, False])
+@pytest.mark.parametrize(
+    "metapath",
+    [
+        "CbGaD",
+        "CbGbCtD",
+        "CrCtD",
+        "CtDrD",
+        "CuGr>GuD",
+        "CuG<rGuD",
+        "CcSEcCtDpSpD",
+    ],
+)
+@pytest.mark.parametrize("hetmat", [True, False])
 def test_path_traversal(metapath, hetmat, tmpdir):
     """
     Test PC (path count) and DWPC (degree-weighted path count) computation
@@ -74,10 +77,10 @@ def test_path_traversal(metapath, hetmat, tmpdir):
     # Read graph
     if platform.system() == "Windows":
         pytest.xfail("path contains invalid character for Windows: >")
-    graph = get_graph('random-subgraph')
+    graph = get_graph("random-subgraph")
     graph_or_hetmat = graph
     if hetmat:
-        graph_or_hetmat = get_graph('random-subgraph', hetmat=hetmat, directory=tmpdir)
+        graph_or_hetmat = get_graph("random-subgraph", hetmat=hetmat, directory=tmpdir)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
     # Matrix computations
@@ -92,8 +95,8 @@ def test_path_traversal(metapath, hetmat, tmpdir):
     # hetnetpy.pathtools computations
     paths = hetnetpy.pathtools.paths_between(
         graph,
-        source=('Compound', compound),
-        target=('Disease', disease),
+        source=("Compound", compound),
+        target=("Disease", disease),
         metapath=metapath,
         duplicates=False,
     )

@@ -5,8 +5,8 @@ import numpy
 import pandas
 import scipy.sparse
 
-from hetmatpy.matrix import metaedge_to_adjacency_matrix
 import hetmatpy.degree_weight
+from hetmatpy.matrix import metaedge_to_adjacency_matrix
 
 
 def degrees_to_degree_to_ind(degrees):
@@ -18,8 +18,12 @@ def degrees_to_degree_to_ind(degrees):
 
 def metapath_to_degree_dicts(graph, metapath):
     metapath = graph.metagraph.get_metapath(metapath)
-    _, _, source_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[0], dense_threshold=0.7)
-    _, _, target_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[-1], dense_threshold=0.7)
+    _, _, source_adj_mat = metaedge_to_adjacency_matrix(
+        graph, metapath[0], dense_threshold=0.7
+    )
+    _, _, target_adj_mat = metaedge_to_adjacency_matrix(
+        graph, metapath[-1], dense_threshold=0.7
+    )
     source_degrees = source_adj_mat.sum(axis=1).flat
     target_degrees = target_adj_mat.sum(axis=0).flat
     source_degree_to_ind = degrees_to_degree_to_ind(source_degrees)
@@ -27,7 +31,9 @@ def metapath_to_degree_dicts(graph, metapath):
     return source_degree_to_ind, target_degree_to_ind
 
 
-def generate_degree_group_stats(source_degree_to_ind, target_degree_to_ind, matrix, scale=False, scaler=1):
+def generate_degree_group_stats(
+    source_degree_to_ind, target_degree_to_ind, matrix, scale=False, scaler=1
+):
     """
     Yield dictionaries with degree grouped stats
     """
@@ -41,31 +47,37 @@ def generate_degree_group_stats(source_degree_to_ind, target_degree_to_ind, matr
                 # row_matrix = scipy.sparse.csc_matrix(row_matrix)
         for target_degree, col_inds in target_degree_to_ind.items():
             row = {
-                'source_degree': source_degree,
-                'target_degree': target_degree,
+                "source_degree": source_degree,
+                "target_degree": target_degree,
             }
-            row['n'] = len(row_inds) * len(col_inds)
+            row["n"] = len(row_inds) * len(col_inds)
             if source_degree == 0 or target_degree == 0:
-                row['sum'] = 0
-                row['nnz'] = 0
-                row['sum_of_squares'] = 0
+                row["sum"] = 0
+                row["nnz"] = 0
+                row["sum_of_squares"] = 0
                 yield row
                 continue
 
             slice_matrix = row_matrix[:, col_inds]
-            values = slice_matrix.data if scipy.sparse.issparse(slice_matrix) else slice_matrix
+            values = (
+                slice_matrix.data
+                if scipy.sparse.issparse(slice_matrix)
+                else slice_matrix
+            )
             if scale:
                 values = numpy.arcsinh(values / scaler)
-            row['sum'] = values.sum()
-            row['sum_of_squares'] = (values ** 2).sum()
+            row["sum"] = values.sum()
+            row["sum_of_squares"] = (values**2).sum()
             if scipy.sparse.issparse(slice_matrix):
-                row['nnz'] = slice_matrix.nnz
+                row["nnz"] = slice_matrix.nnz
             else:
-                row['nnz'] = numpy.count_nonzero(slice_matrix)
+                row["nnz"] = numpy.count_nonzero(slice_matrix)
             yield row
 
 
-def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False, ignore_redundant=True):
+def dwpc_to_degrees(
+    graph, metapath, damping=0.5, ignore_zeros=False, ignore_redundant=True
+):
     """
     Yield a description of each cell in a DWPC matrix adding source and target
     node degree info as well as the corresponding path count.
@@ -78,26 +90,32 @@ def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False, ignore_red
         the same DWPC.
     """
     metapath = graph.metagraph.get_metapath(metapath)
-    _, _, source_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[0], dense_threshold=0.7)
-    _, _, target_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[-1], dense_threshold=0.7)
+    _, _, source_adj_mat = metaedge_to_adjacency_matrix(
+        graph, metapath[0], dense_threshold=0.7
+    )
+    _, _, target_adj_mat = metaedge_to_adjacency_matrix(
+        graph, metapath[-1], dense_threshold=0.7
+    )
     source_degrees = source_adj_mat.sum(axis=1).flat
     target_degrees = target_adj_mat.sum(axis=0).flat
     del source_adj_mat, target_adj_mat
 
-    source_path = graph.get_nodes_path(metapath.source(), file_format='tsv')
-    source_node_df = pandas.read_csv(source_path, sep='\t')
-    source_node_names = list(source_node_df['name'])
+    source_path = graph.get_nodes_path(metapath.source(), file_format="tsv")
+    source_node_df = pandas.read_csv(source_path, sep="\t")
+    source_node_names = list(source_node_df["name"])
 
-    target_path = graph.get_nodes_path(metapath.target(), file_format='tsv')
-    target_node_df = pandas.read_csv(target_path, sep='\t')
-    target_node_names = list(target_node_df['name'])
+    target_path = graph.get_nodes_path(metapath.target(), file_format="tsv")
+    target_node_df = pandas.read_csv(target_path, sep="\t")
+    target_node_names = list(target_node_df["name"])
 
-    row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', damping)
+    row_names, col_names, dwpc_matrix = graph.read_path_counts(
+        metapath, "dwpc", damping
+    )
     dwpc_matrix = numpy.arcsinh(dwpc_matrix / dwpc_matrix.mean())
     if scipy.sparse.issparse(dwpc_matrix):
         dwpc_matrix = dwpc_matrix.toarray()
 
-    _, _, path_count = graph.read_path_counts(metapath, 'dwpc', 0.0)
+    _, _, path_count = graph.read_path_counts(metapath, "dwpc", 0.0)
     if scipy.sparse.issparse(path_count):
         path_count = path_count.toarray()
 
@@ -110,14 +128,14 @@ def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False, ignore_red
         if ignore_zeros and dwpc_value == 0:
             continue
         row = {
-            'source_id': row_names[row_ind],
-            'target_id': col_names[col_ind],
-            'source_name': source_node_names[row_ind],
-            'target_name': target_node_names[col_ind],
-            'source_degree': source_degrees[row_ind],
-            'target_degree': target_degrees[col_ind],
-            'path_count': path_count[row_ind, col_ind],
-            'dwpc': dwpc_value,
+            "source_id": row_names[row_ind],
+            "target_id": col_names[col_ind],
+            "source_name": source_node_names[row_ind],
+            "target_name": target_node_names[col_ind],
+            "source_degree": source_degrees[row_ind],
+            "target_degree": target_degrees[col_ind],
+            "path_count": path_count[row_ind, col_ind],
+            "dwpc": dwpc_value,
         }
         yield collections.OrderedDict(row)
 
@@ -127,13 +145,19 @@ def single_permutation_degree_group(permuted_hetmat, metapath, dwpc_mean, dampin
     Compute degree-grouped permutations for a single permuted_hetmat,
     for one metapath.
     """
-    _, _, matrix = hetmatpy.degree_weight.dwpc(permuted_hetmat, metapath, damping=damping, dense_threshold=0.7)
-    source_deg_to_ind, target_deg_to_ind = hetmatpy.degree_group.metapath_to_degree_dicts(permuted_hetmat, metapath)
+    _, _, matrix = hetmatpy.degree_weight.dwpc(
+        permuted_hetmat, metapath, damping=damping, dense_threshold=0.7
+    )
+    (
+        source_deg_to_ind,
+        target_deg_to_ind,
+    ) = hetmatpy.degree_group.metapath_to_degree_dicts(permuted_hetmat, metapath)
     row_generator = hetmatpy.degree_group.generate_degree_group_stats(
-        source_deg_to_ind, target_deg_to_ind, matrix, scale=True, scaler=dwpc_mean)
+        source_deg_to_ind, target_deg_to_ind, matrix, scale=True, scaler=dwpc_mean
+    )
     degree_grouped_df = (
         pandas.DataFrame(row_generator)
-        .set_index(['source_degree', 'target_degree'])
+        .set_index(["source_degree", "target_degree"])
         .assign(n_perms=1)
     )
     return degree_grouped_df
