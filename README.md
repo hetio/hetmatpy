@@ -28,6 +28,15 @@ pip install git+https://github.com/hetio/hetmatpy
 pip install --editable .
 ```
 
+## Development
+
+This repo uses pre-commit checks:
+
+
+```shell
+# run once per local repo before committing
+pre-commit install
+```
 
 ## Acknowledgments
 

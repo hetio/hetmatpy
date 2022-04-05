@@ -8,6 +8,7 @@ __pycache__/
 .ipynb_checkpoints
 .cache
 .pytest_cache/
+.venv/
 
 # System specific files
 
