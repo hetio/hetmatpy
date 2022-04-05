@@ -30,7 +30,7 @@ setuptools.setup(
     },
     license="BSD-2-Clause Plus Patent License",
     packages=setuptools.find_packages(),
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     install_requires=[
         "hetnetpy>=0.3.0",
         "numpy",
