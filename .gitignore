@@ -9,6 +9,8 @@ __pycache__/
 .cache
 .pytest_cache/
 .venv/
+/build
+/dist
 
 # System specific files
 
