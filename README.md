@@ -3,6 +3,8 @@
 [![Documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&style=for-the-badge)](https://hetio.github.io/hetmatpy/)
 [![PyPI](https://img.shields.io/pypi/v/hetmatpy.svg?logo=PyPI&style=for-the-badge)](https://pypi.org/project/hetmatpy/)
 [![GitHub Actions CI Build Status](https://img.shields.io/github/actions/workflow/status/hetio/hetmatpy/test.yaml?branch=main&label=actions&style=for-the-badge&logo=github&logoColor=white)](https://github.com/hetio/hetmatpy/actions)
+[![Bio Tools Badge](https://img.shields.io/badge/biotools-hetmatpy-lightgray?style=for-the-badge)](https://bio.tools/hetmatpy)
+[![SciCrunch RRID Badge](https://img.shields.io/badge/RRID-SCR__023409-lightgray?style=for-the-badge)](https://scicrunch.org/resolver/RRID:SCR_023409)
 
 <!--
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge&logo=Python)](https://github.com/psf/black)
