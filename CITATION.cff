@@ -1,0 +1,67 @@
+cff-version: 1.2.0
+title: >-
+  hetio/hetmatpy repository:
+  Python package for matrix storage and operations on hetnets
+message: >-
+  This citation is for the source code of the hetmatpy Python library.
+  The methods implemented by this software have been developed largely in
+  <https://greenelab.github.io/connectivity-search-manuscript/>.
+  See that manuscript for a more general citation to Hetnet Connectivity Search.
+type: software
+authors:
+  - given-names: Daniel
+    family-names: Himmelstein
+    orcid: 'https://orcid.org/0000-0002-3012-7446'
+  - given-names: Michael
+    family-names: Zietz
+    orcid: 'https://orcid.org/0000-0003-0539-630X'
+  - given-names: Kyle
+    family-names: Kloster
+    orcid: 'https://orcid.org/0000-0001-5678-7197'
+  - given-names: Benjamin
+    family-names: Heil
+    orcid: 'https://orcid.org/0000-0002-2811-1031'
+  - given-names: Gregory
+    family-names: Way
+    orcid: 'https://orcid.org/0000-0002-0503-9348'
+  - given-names: Blair
+    family-names: Sullivan
+    orcid: 'https://orcid.org/0000-0001-7720-6208'
+  - given-names: Casey
+    family-names: Greene
+    orcid: 'https://orcid.org/0000-0001-8713-9213'
+identifiers:
+  - type: swh
+    value: 'swh:1:dir:7a20d7c3a5a1b8e6ec0a455e22808dd61a987b02'
+    description: Software Heritage Directory Snapshot
+  - type: swh
+    value: 'swh:1:rev:5ada9c37980296b2594c2fa69dc6a5d215218d0c'
+    description: Software Heritage Revision Snapshot
+  - type: other
+    value: 'RRID:SCR_023409'
+    description: Research Resource Identification CURIE
+  - type: url
+    value: 'https://bio.tools/hetmatpy'
+    description: 'biotools:hetmatpy'
+repository-code: 'https://github.com/hetio/hetmatpy'
+url: 'https://hetio.github.io/hetmatpy/'
+repository-artifact: 'https://pypi.org/project/hetmatpy/'
+abstract: >-
+  Python package for matrix storage and operations on
+  hetnets.
+keywords:
+  - python
+  - numpy
+  - scipy
+  - matrix
+  - networks
+  - hetmech
+  - greenelab
+  - hetmat
+  - hetio
+  - hetnets
+  - hetnet-connectivity-search
+license: BSD-2-Clause-Patent
+commit: 3a426ccbcf63b27911e43be5ff305a3968224439
+version: v0.1.0
+date-released: '2022-04-05'
